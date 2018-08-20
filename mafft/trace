@@ -1,0 +1,8 @@
+PID = 47592
+BLOSUM 62
+tree-base method
+clustalw-like weighting
+Gap Penalty = +2.00, +0.10, +0.10
+Unknown algorithm
+FFT off
+done.
