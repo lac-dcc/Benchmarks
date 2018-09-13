@@ -1,6 +1,8 @@
 
 # A curated set of 210 benchmarks used in compilers. 
 
+![arnoldao](https://media.giphy.com/media/YkOJT3bnwp2Xm/giphy-downsized.gif)
+
 This project is intended for people working with compiler optimizations. If this is your case, [this other project might](https://github.com/guilhermeleobas/tf) be of your interested.
 
 ## Benchmarks
