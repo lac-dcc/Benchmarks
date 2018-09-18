@@ -349,12 +349,12 @@ int getInput(void)
     nums[2] = 14;
     nums[3] = 1412;
 
-    while( ( c = getchar() ) != '\n' && c != EOF )
-    {
-	ungetc( c, stdin );
-	fscanf( stdin, "%d", &nums[i] );
-	i++;
-    }
+ //    while( ( c = getchar() ) != '\n' && c != EOF )
+ //    {
+	// ungetc( c, stdin );
+	// fscanf( stdin, "%d", &nums[i] );
+	// i++;
+ //    }
 
     if( i == 0 ) i = 4;
 
