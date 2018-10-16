@@ -1,21 +1,22 @@
 
-int foo(int b){
-
-  int a = 0;
-  int d = 12;
-  
-  if (b){
-    a = 42;
-    d = 32;
-  }
-  
-  a = a + 10;
-  d = d + 29;
-  
-}
-
 int main(int argc, char *argv[]){
+  int *v = malloc(sizeof(int) * atoi(argv[1])); 
   
+  int n = atoi(argv[1]);
+  
+  for (int i=0; i<n; i++)
+    v[i] = i;
+  
+  int a = atoi(argv[1]);
+
+  for (int i=0; i<n; i++){
+    int a = v[i];
+    if (i % 2 == 0){
+      v[i] = a + argc;
+    }
+  }
+
+  printf("%d\n", a);
   
   return 0;
 }

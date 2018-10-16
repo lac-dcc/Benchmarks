@@ -5,3 +5,6 @@
 *.exe
 *.csv
 *.log
+map.txt
+store_count.txt
+arith.txt

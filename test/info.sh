@@ -4,6 +4,6 @@ prf_name="$bnc_name.ibc" ;
 obj_name="$bnc_name.o" ;
 exe_name="$bnc_name.exe" ;
 
-source_files=( "t10.c" )
+source_files=( "t3.c" )
 CXXFLAGS=" " ;
-RUN_OPTIONS="5" ;
+RUN_OPTIONS="10" ;
