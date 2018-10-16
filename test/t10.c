@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
   
   int a = atoi(argv[1]);
   for (int i=0; i<n; i++){
-    v[i] += a;
+    v[i] = v[i] + a;
   }
   
   return 0;
