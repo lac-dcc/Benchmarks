@@ -34,20 +34,20 @@ void init_array(int ni, int nj, int nk, int nl,
   *beta = 2123;
   for (i = 0; i < ni; i++)
     for (j = 0; j < nk; j++)
-      // A[i][j] = ((DATA_TYPE) i*j) / ni;
-      A[i][j] = ((DATA_TYPE) i*0) / ni;
+      A[i][j] = ((DATA_TYPE) i*j) / ni;
+      // A[i][j] = 0;
   for (i = 0; i < nk; i++)
     for (j = 0; j < nj; j++)
-      // B[i][j] = ((DATA_TYPE) i*(j+1)) / nj;
-      B[i][j] = ((DATA_TYPE) 0*(j+1)) / nj;
+      B[i][j] = ((DATA_TYPE) i*(j+1)) / nj;
+      // B[i][j] = 0;
   for (i = 0; i < nl; i++)
     for (j = 0; j < nj; j++)
-      // C[i][j] = ((DATA_TYPE) i*(j+3)) / nl;
-      C[i][j] = ((DATA_TYPE) 0*(j+3)) / nl;
+      C[i][j] = ((DATA_TYPE) i*(j+3)) / nl;
+      // C[i][j] = 0;
   for (i = 0; i < ni; i++)
     for (j = 0; j < nl; j++)
-      // D[i][j] = ((DATA_TYPE) i*(j+2)) / nk;
-      D[i][j] = ((DATA_TYPE) 0*(j+2)) / nk;
+      D[i][j] = ((DATA_TYPE) i*(j+2)) / nk;
+      // D[i][j] = 0;
 }
 
 
