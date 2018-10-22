@@ -42,6 +42,7 @@ Here is a list of benchmarks available in this repo:
 - Trimaran
 - TSVC
 - VersaBench
+- PolyBench
 
 ## How do I compile any of these benchmarks?
 
