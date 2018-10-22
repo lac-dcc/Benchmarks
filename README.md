@@ -1,5 +1,5 @@
 
-# A curated set of 210 benchmarks used in compilers. 
+# A curated set of more than 200 benchmarks used in compilers. 
 
 ![arnoldao](https://media.giphy.com/media/YkOJT3bnwp2Xm/giphy-downsized.gif)
 
