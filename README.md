@@ -69,18 +69,3 @@ Saw something wrong or want to increase the list of benchmarks, send a pull requ
  RUN_OPTIONS=" irsmk_input " ;
  STDIN=" file.in "
 ```
-2) Add a function into `benchs.sh`, for the new benchmark.
-
-If the benchmark does not contain subfolders, add:
-```bash
-function Fhourstones() {
-	walk "." ;
-}
-```
-otherwise, add:
-```bash
-function Misc() {
-	dirs=($( ls -d */ )) ;   # list every folder inside Misc/
-	walk "${dirs[@]}" ;
-}
-```
