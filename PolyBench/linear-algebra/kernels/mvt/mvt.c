@@ -1,10 +1,14 @@
 /**
- * mvt.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* mvt.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,7 +18,6 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 4000. */
 #include "mvt.h"
 
 
@@ -31,12 +34,12 @@ void init_array(int n,
 
   for (i = 0; i < n; i++)
     {
-      x1[i] = ((DATA_TYPE) i) / n;
-      x2[i] = ((DATA_TYPE) i + 1) / n;
-      y_1[i] = ((DATA_TYPE) i + 3) / n;
-      y_2[i] = ((DATA_TYPE) i + 4) / n;
+      x1[i] = (DATA_TYPE) (i % n) / n;
+      x2[i] = (DATA_TYPE) ((i + 1) % n) / n;
+      y_1[i] = (DATA_TYPE) ((i + 3) % n) / n;
+      y_2[i] = (DATA_TYPE) ((i + 4) % n) / n;
       for (j = 0; j < n; j++)
-	A[i][j] = ((DATA_TYPE) i*j) / N;
+	A[i][j] = (DATA_TYPE) (i*j % n) / n;
     }
 }
 
@@ -51,11 +54,21 @@ void print_array(int n,
 {
   int i;
 
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("x1");
   for (i = 0; i < n; i++) {
-    fprintf (stderr, DATA_PRINTF_MODIFIER, x1[i]);
-    fprintf (stderr, DATA_PRINTF_MODIFIER, x2[i]);
-    if (i % 20 == 0) fprintf (stderr, "\n");
+    if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+    fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, x1[i]);
   }
+  POLYBENCH_DUMP_END("x1");
+
+  POLYBENCH_DUMP_BEGIN("x2");
+  for (i = 0; i < n; i++) {
+    if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+    fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, x2[i]);
+  }
+  POLYBENCH_DUMP_END("x2");
+  POLYBENCH_DUMP_FINISH;
 }
 
 

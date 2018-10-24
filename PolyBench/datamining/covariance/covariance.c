@@ -1,10 +1,14 @@
 /**
- * covariance.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* covariance.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,7 +18,6 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 4000. */
 #include "covariance.h"
 
 
@@ -22,14 +25,14 @@
 static
 void init_array (int m, int n,
 		 DATA_TYPE *float_n,
-		 DATA_TYPE POLYBENCH_2D(data,M,N,m,n))
+		 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
 {
   int i, j;
 
-  *float_n = 1.2;
+  *float_n = (DATA_TYPE)n;
 
-  for (i = 0; i < M; i++)
-    for (j = 0; j < N; j++)
+  for (i = 0; i < N; i++)
+    for (j = 0; j < M; j++)
       data[i][j] = ((DATA_TYPE) i*j) / M;
 }
 
@@ -38,17 +41,20 @@ void init_array (int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE POLYBENCH_2D(symmat,M,M,m,m))
+		 DATA_TYPE POLYBENCH_2D(cov,M,M,m,m))
 
 {
   int i, j;
 
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("cov");
   for (i = 0; i < m; i++)
     for (j = 0; j < m; j++) {
-      fprintf (stderr, DATA_PRINTF_MODIFIER, symmat[i][j]);
-      if ((i * m + j) % 20 == 0) fprintf (stderr, "\n");
+      if ((i * m + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+      fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, cov[i][j]);
     }
-  fprintf (stderr, "\n");
+  POLYBENCH_DUMP_END("cov");
+  POLYBENCH_DUMP_FINISH;
 }
 
 
@@ -57,35 +63,33 @@ void print_array(int m,
 static
 void kernel_covariance(int m, int n,
 		       DATA_TYPE float_n,
-		       DATA_TYPE POLYBENCH_2D(data,M,N,m,n),
-		       DATA_TYPE POLYBENCH_2D(symmat,M,M,m,m),
+		       DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
+		       DATA_TYPE POLYBENCH_2D(cov,M,M,m,m),
 		       DATA_TYPE POLYBENCH_1D(mean,M,m))
 {
-  int i, j, j1, j2;
+  int i, j, k;
 
 #pragma scop
-  /* Determine mean of column vectors of input data matrix */
   for (j = 0; j < _PB_M; j++)
     {
-      mean[j] = 0.0;
+      mean[j] = SCALAR_VAL(0.0);
       for (i = 0; i < _PB_N; i++)
         mean[j] += data[i][j];
       mean[j] /= float_n;
     }
 
-  /* Center the column vectors. */
   for (i = 0; i < _PB_N; i++)
     for (j = 0; j < _PB_M; j++)
       data[i][j] -= mean[j];
 
-  /* Calculate the m * m covariance matrix. */
-  for (j1 = 0; j1 < _PB_M; j1++)
-    for (j2 = j1; j2 < _PB_M; j2++)
+  for (i = 0; i < _PB_M; i++)
+    for (j = i; j < _PB_M; j++)
       {
-        symmat[j1][j2] = 0.0;
-        for (i = 0; i < _PB_N; i++)
-	  symmat[j1][j2] += data[i][j1] * data[i][j2];
-        symmat[j2][j1] = symmat[j1][j2];
+        cov[i][j] = SCALAR_VAL(0.0);
+        for (k = 0; k < _PB_N; k++)
+	  cov[i][j] += data[k][i] * data[k][j];
+        cov[i][j] /= (float_n - SCALAR_VAL(1.0));
+        cov[j][i] = cov[i][j];
       }
 #pragma endscop
 
@@ -100,8 +104,8 @@ int main(int argc, char** argv)
 
   /* Variable declaration/allocation. */
   DATA_TYPE float_n;
-  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE,M,N,m,n);
-  POLYBENCH_2D_ARRAY_DECL(symmat,DATA_TYPE,M,M,m,m);
+  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE,N,M,n,m);
+  POLYBENCH_2D_ARRAY_DECL(cov,DATA_TYPE,M,M,m,m);
   POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE,M,m);
 
 
@@ -114,7 +118,7 @@ int main(int argc, char** argv)
   /* Run kernel. */
   kernel_covariance (m, n, float_n,
 		     POLYBENCH_ARRAY(data),
-		     POLYBENCH_ARRAY(symmat),
+		     POLYBENCH_ARRAY(cov),
 		     POLYBENCH_ARRAY(mean));
 
   /* Stop and print timer. */
@@ -123,11 +127,11 @@ int main(int argc, char** argv)
 
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
-  polybench_prevent_dce(print_array(m, POLYBENCH_ARRAY(symmat)));
+  polybench_prevent_dce(print_array(m, POLYBENCH_ARRAY(cov)));
 
   /* Be clean. */
   POLYBENCH_FREE_ARRAY(data);
-  POLYBENCH_FREE_ARRAY(symmat);
+  POLYBENCH_FREE_ARRAY(cov);
   POLYBENCH_FREE_ARRAY(mean);
 
   return 0;

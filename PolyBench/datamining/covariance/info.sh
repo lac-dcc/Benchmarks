@@ -1,10 +1,10 @@
-bnc_name="covariance" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bnc_name="$(basename $(pwd))"
+lnk_name="$bnc_name.rbc"
+prf_name="$bnc_name.ibc"
+obj_name="$bnc_name.o"
+exe_name="$bnc_name.exe"
 
-source_files=( "covariance.c" "polybench.c" )
+source_files=($(ls *.c))
 
 CXXFLAGS=" -I. " ;
 RUN_OPTIONS=" " ;

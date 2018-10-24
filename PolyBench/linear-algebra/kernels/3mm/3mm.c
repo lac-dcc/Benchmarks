@@ -1,10 +1,14 @@
 /**
- * 3mm.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* 3mm.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,7 +18,6 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 4000. */
 #include "3mm.h"
 
 
@@ -30,16 +33,16 @@ void init_array(int ni, int nj, int nk, int nl, int nm,
 
   for (i = 0; i < ni; i++)
     for (j = 0; j < nk; j++)
-      A[i][j] = ((DATA_TYPE) i*j) / ni;
+      A[i][j] = (DATA_TYPE) ((i*j+1) % ni) / (5*ni);
   for (i = 0; i < nk; i++)
     for (j = 0; j < nj; j++)
-      B[i][j] = ((DATA_TYPE) i*(j+1)) / nj;
+      B[i][j] = (DATA_TYPE) ((i*(j+1)+2) % nj) / (5*nj);
   for (i = 0; i < nj; i++)
     for (j = 0; j < nm; j++)
-      C[i][j] = ((DATA_TYPE) i*(j+3)) / nl;
+      C[i][j] = (DATA_TYPE) (i*(j+3) % nl) / (5*nl);
   for (i = 0; i < nm; i++)
     for (j = 0; j < nl; j++)
-      D[i][j] = ((DATA_TYPE) i*(j+2)) / nk;
+      D[i][j] = (DATA_TYPE) ((i*(j+2)+2) % nk) / (5*nk);
 }
 
 
@@ -51,12 +54,15 @@ void print_array(int ni, int nl,
 {
   int i, j;
 
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("G");
   for (i = 0; i < ni; i++)
     for (j = 0; j < nl; j++) {
-	fprintf (stderr, DATA_PRINTF_MODIFIER, G[i][j]);
-	if ((i * ni + j) % 20 == 0) fprintf (stderr, "\n");
+	if ((i * ni + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+	fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, G[i][j]);
     }
-  fprintf (stderr, "\n");
+  POLYBENCH_DUMP_END("G");
+  POLYBENCH_DUMP_FINISH;
 }
 
 
@@ -79,7 +85,7 @@ void kernel_3mm(int ni, int nj, int nk, int nl, int nm,
   for (i = 0; i < _PB_NI; i++)
     for (j = 0; j < _PB_NJ; j++)
       {
-	E[i][j] = 0;
+	E[i][j] = SCALAR_VAL(0.0);
 	for (k = 0; k < _PB_NK; ++k)
 	  E[i][j] += A[i][k] * B[k][j];
       }
@@ -87,7 +93,7 @@ void kernel_3mm(int ni, int nj, int nk, int nl, int nm,
   for (i = 0; i < _PB_NJ; i++)
     for (j = 0; j < _PB_NL; j++)
       {
-	F[i][j] = 0;
+	F[i][j] = SCALAR_VAL(0.0);
 	for (k = 0; k < _PB_NM; ++k)
 	  F[i][j] += C[i][k] * D[k][j];
       }
@@ -95,7 +101,7 @@ void kernel_3mm(int ni, int nj, int nk, int nl, int nm,
   for (i = 0; i < _PB_NI; i++)
     for (j = 0; j < _PB_NL; j++)
       {
-	G[i][j] = 0;
+	G[i][j] = SCALAR_VAL(0.0);
 	for (k = 0; k < _PB_NJ; ++k)
 	  G[i][j] += E[i][k] * F[k][j];
       }
