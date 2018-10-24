@@ -1,10 +1,14 @@
 /**
- * bicg.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* bicg.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,25 +18,24 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 4000. */
 #include "bicg.h"
 
 
 /* Array initialization. */
 static
-void init_array (int nx, int ny,
-		 DATA_TYPE POLYBENCH_2D(A,NX,NY,nx,ny),
-		 DATA_TYPE POLYBENCH_1D(r,NX,nx),
-		 DATA_TYPE POLYBENCH_1D(p,NY,ny))
+void init_array (int m, int n,
+		 DATA_TYPE POLYBENCH_2D(A,N,M,n,m),
+		 DATA_TYPE POLYBENCH_1D(r,N,n),
+		 DATA_TYPE POLYBENCH_1D(p,M,m))
 {
   int i, j;
 
-  for (i = 0; i < ny; i++)
-    p[i] = i * M_PI;
-  for (i = 0; i < nx; i++) {
-    r[i] = i * M_PI;
-    for (j = 0; j < ny; j++)
-      A[i][j] = ((DATA_TYPE) i*(j+1))/nx;
+  for (i = 0; i < m; i++)
+    p[i] = (DATA_TYPE)(i % m) / m;
+  for (i = 0; i < n; i++) {
+    r[i] = (DATA_TYPE)(i % n) / n;
+    for (j = 0; j < m; j++)
+      A[i][j] = (DATA_TYPE) (i*(j+1) % n)/n;
   }
 }
 
@@ -40,44 +43,49 @@ void init_array (int nx, int ny,
 /* DCE code. Must scan the entire live-out data.
    Can be used also to check the correctness of the output. */
 static
-void print_array(int nx, int ny,
-		 DATA_TYPE POLYBENCH_1D(s,NY,ny),
-		 DATA_TYPE POLYBENCH_1D(q,NX,nx))
+void print_array(int m, int n,
+		 DATA_TYPE POLYBENCH_1D(s,M,m),
+		 DATA_TYPE POLYBENCH_1D(q,N,n))
 
 {
   int i;
 
-  for (i = 0; i < ny; i++) {
-    fprintf (stderr, DATA_PRINTF_MODIFIER, s[i]);
-    if (i % 20 == 0) fprintf (stderr, "\n");
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("s");
+  for (i = 0; i < m; i++) {
+    if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+    fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, s[i]);
   }
-  for (i = 0; i < nx; i++) {
-    fprintf (stderr, DATA_PRINTF_MODIFIER, q[i]);
-    if (i % 20 == 0) fprintf (stderr, "\n");
+  POLYBENCH_DUMP_END("s");
+  POLYBENCH_DUMP_BEGIN("q");
+  for (i = 0; i < n; i++) {
+    if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
+    fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, q[i]);
   }
-  fprintf (stderr, "\n");
+  POLYBENCH_DUMP_END("q");
+  POLYBENCH_DUMP_FINISH;
 }
 
 
 /* Main computational kernel. The whole function will be timed,
    including the call and return. */
 static
-void kernel_bicg(int nx, int ny,
-		 DATA_TYPE POLYBENCH_2D(A,NX,NY,nx,ny),
-		 DATA_TYPE POLYBENCH_1D(s,NY,ny),
-		 DATA_TYPE POLYBENCH_1D(q,NX,nx),
-		 DATA_TYPE POLYBENCH_1D(p,NY,ny),
-		 DATA_TYPE POLYBENCH_1D(r,NX,nx))
+void kernel_bicg(int m, int n,
+		 DATA_TYPE POLYBENCH_2D(A,N,M,n,m),
+		 DATA_TYPE POLYBENCH_1D(s,M,m),
+		 DATA_TYPE POLYBENCH_1D(q,N,n),
+		 DATA_TYPE POLYBENCH_1D(p,M,m),
+		 DATA_TYPE POLYBENCH_1D(r,N,n))
 {
   int i, j;
 
 #pragma scop
-  for (i = 0; i < _PB_NY; i++)
+  for (i = 0; i < _PB_M; i++)
     s[i] = 0;
-  for (i = 0; i < _PB_NX; i++)
+  for (i = 0; i < _PB_N; i++)
     {
-      q[i] = 0;
-      for (j = 0; j < _PB_NY; j++)
+      q[i] = SCALAR_VAL(0.0);
+      for (j = 0; j < _PB_M; j++)
 	{
 	  s[j] = s[j] + r[i] * A[i][j];
 	  q[i] = q[i] + A[i][j] * p[j];
@@ -91,18 +99,18 @@ void kernel_bicg(int nx, int ny,
 int main(int argc, char** argv)
 {
   /* Retrieve problem size. */
-  int nx = NX;
-  int ny = NY;
+  int n = N;
+  int m = M;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, NX, NY, nx, ny);
-  POLYBENCH_1D_ARRAY_DECL(s, DATA_TYPE, NY, ny);
-  POLYBENCH_1D_ARRAY_DECL(q, DATA_TYPE, NX, nx);
-  POLYBENCH_1D_ARRAY_DECL(p, DATA_TYPE, NY, ny);
-  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE, NX, nx);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, N, M, n, m);
+  POLYBENCH_1D_ARRAY_DECL(s, DATA_TYPE, M, m);
+  POLYBENCH_1D_ARRAY_DECL(q, DATA_TYPE, N, n);
+  POLYBENCH_1D_ARRAY_DECL(p, DATA_TYPE, M, m);
+  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE, N, n);
 
   /* Initialize array(s). */
-  init_array (nx, ny,
+  init_array (m, n,
 	      POLYBENCH_ARRAY(A),
 	      POLYBENCH_ARRAY(r),
 	      POLYBENCH_ARRAY(p));
@@ -111,7 +119,7 @@ int main(int argc, char** argv)
   polybench_start_instruments;
 
   /* Run kernel. */
-  kernel_bicg (nx, ny,
+  kernel_bicg (m, n,
 	       POLYBENCH_ARRAY(A),
 	       POLYBENCH_ARRAY(s),
 	       POLYBENCH_ARRAY(q),
@@ -124,7 +132,7 @@ int main(int argc, char** argv)
 
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
-  polybench_prevent_dce(print_array(nx, ny, POLYBENCH_ARRAY(s), POLYBENCH_ARRAY(q)));
+  polybench_prevent_dce(print_array(m, n, POLYBENCH_ARRAY(s), POLYBENCH_ARRAY(q)));
 
   /* Be clean. */
   POLYBENCH_FREE_ARRAY(A);

@@ -1,10 +1,14 @@
 /**
- * fdtd-2d.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* fdtd-2d.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,7 +18,6 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 50x1000x1000. */
 #include "fdtd-2d.h"
 
 
@@ -53,14 +56,31 @@ void print_array(int nx,
 {
   int i, j;
 
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("ex");
   for (i = 0; i < nx; i++)
     for (j = 0; j < ny; j++) {
-      fprintf(stderr, DATA_PRINTF_MODIFIER, ex[i][j]);
-      fprintf(stderr, DATA_PRINTF_MODIFIER, ey[i][j]);
-      fprintf(stderr, DATA_PRINTF_MODIFIER, hz[i][j]);
-      if ((i * nx + j) % 20 == 0) fprintf(stderr, "\n");
+      if ((i * nx + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
+      fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, ex[i][j]);
     }
-  fprintf(stderr, "\n");
+  POLYBENCH_DUMP_END("ex");
+  POLYBENCH_DUMP_FINISH;
+
+  POLYBENCH_DUMP_BEGIN("ey");
+  for (i = 0; i < nx; i++)
+    for (j = 0; j < ny; j++) {
+      if ((i * nx + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
+      fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, ey[i][j]);
+    }
+  POLYBENCH_DUMP_END("ey");
+
+  POLYBENCH_DUMP_BEGIN("hz");
+  for (i = 0; i < nx; i++)
+    for (j = 0; j < ny; j++) {
+      if ((i * nx + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
+      fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, hz[i][j]);
+    }
+  POLYBENCH_DUMP_END("hz");
 }
 
 
@@ -85,13 +105,13 @@ void kernel_fdtd_2d(int tmax,
 	ey[0][j] = _fict_[t];
       for (i = 1; i < _PB_NX; i++)
 	for (j = 0; j < _PB_NY; j++)
-	  ey[i][j] = ey[i][j] - 0.5*(hz[i][j]-hz[i-1][j]);
+	  ey[i][j] = ey[i][j] - SCALAR_VAL(0.5)*(hz[i][j]-hz[i-1][j]);
       for (i = 0; i < _PB_NX; i++)
 	for (j = 1; j < _PB_NY; j++)
-	  ex[i][j] = ex[i][j] - 0.5*(hz[i][j]-hz[i][j-1]);
+	  ex[i][j] = ex[i][j] - SCALAR_VAL(0.5)*(hz[i][j]-hz[i][j-1]);
       for (i = 0; i < _PB_NX - 1; i++)
 	for (j = 0; j < _PB_NY - 1; j++)
-	  hz[i][j] = hz[i][j] - 0.7*  (ex[i][j+1] - ex[i][j] +
+	  hz[i][j] = hz[i][j] - SCALAR_VAL(0.7)*  (ex[i][j+1] - ex[i][j] +
 				       ey[i+1][j] - ey[i][j]);
     }
 

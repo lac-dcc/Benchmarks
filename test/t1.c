@@ -1,17 +1,17 @@
 
-int v[20000];
+#define N 5
 
-int solve(int k, int z){
+double v[N];
+
+int solve(int k){
   for (int i=0; i<k; i++){
-    for (int j=0; j<z; j++){
-      v[i] = i*j + i + j;
-    }
+    v[i] += (i + 1.23);
   }
 }
 
 int main(){
   
-  solve(30000, 30000);
+  solve(N);
   
   return 0;
 }

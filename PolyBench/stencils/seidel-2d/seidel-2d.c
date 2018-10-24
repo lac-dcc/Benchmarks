@@ -1,10 +1,14 @@
 /**
- * seidel-2d.c: This file is part of the PolyBench/C 3.2 test suite.
+ * This version is stamped on May 10, 2016
  *
+ * Contact:
+ *   Louis-Noel Pouchet <pouchet.ohio-state.edu>
+ *   Tomofumi Yuki <tomofumi.yuki.fr>
  *
- * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
  */
+/* seidel-2d.c: this file is part of PolyBench/C */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -14,7 +18,6 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-/* Default data type is double, default size is 20x1000. */
 #include "seidel-2d.h"
 
 
@@ -40,12 +43,15 @@ void print_array(int n,
 {
   int i, j;
 
+  POLYBENCH_DUMP_START;
+  POLYBENCH_DUMP_BEGIN("A");
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++) {
-      fprintf(stderr, DATA_PRINTF_MODIFIER, A[i][j]);
-      if ((i * n + j) % 20 == 0) fprintf(stderr, "\n");
+      if ((i * n + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
+      fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j]);
     }
-  fprintf(stderr, "\n");
+  POLYBENCH_DUMP_END("A");
+  POLYBENCH_DUMP_FINISH;
 }
 
 
@@ -64,7 +70,7 @@ void kernel_seidel_2d(int tsteps,
       for (j = 1; j <= _PB_N - 2; j++)
 	A[i][j] = (A[i-1][j-1] + A[i-1][j] + A[i-1][j+1]
 		   + A[i][j-1] + A[i][j] + A[i][j+1]
-		   + A[i+1][j-1] + A[i+1][j] + A[i+1][j+1])/9.0;
+		   + A[i+1][j-1] + A[i+1][j] + A[i+1][j+1])/SCALAR_VAL(9.0);
 #pragma endscop
 
 }
