@@ -27,8 +27,6 @@ source_files=("gsmain.c" "gs.c" "gp_unix.c" "utrace.c" \
 CXXFLAGS=" -lm -DNOMEMOPT \
            -DGS_LIB_DEFAULT=\\\"${PROJ_SRC_DIR}:${PROJ_SRC_DIR}/fonts\\\"" ;
 
-echo $CXXFLAGS
-
 RUN_OPTIONS="-DNODISPLAY $PROJ_SRC_DIR/INPUT/large.ps" ;
 
 
