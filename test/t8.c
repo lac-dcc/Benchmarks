@@ -1,10 +1,27 @@
-void test(int *restrict a, int *restrict b, int *restrict c, int *restrict d, int *restrict e, int N) {
-  int i;
-  for (i = 0; i < N; i = i + 5) {
-     a[i] = b[i] + c[i];
+#include <stdio.h>
+#include <stdlib.h>
+
+void solve(int *a, int *b, int *c, int *d, int n){
+  for (int i=0; i<n; i++){
+    a[i] = (b[i] * c[i]) + a[i]; // c[i] is always 0 
+  }
+}
+
+int main(int argc, char** argv) {
+  int n = atoi(argv[1]);
+  int* a = (int*)malloc(sizeof(int)*n);
+  int* b = (int*)malloc(sizeof(int)*n);
+  int* c = (int*)malloc(sizeof(int)*n);
+  int* d = (int*)malloc(sizeof(int)*n);
+
+  for (int i = 0; i < n; i++) {
+    a[i] = i;
+    b[i] = i % 2 ? i + 10 : i - 3;
+    c[i] = 0;
+    d[i] = i % 3 ? i : 2 * i;
   }
 
-  for (i = 0; i < N - 5; i = i + 5) {
-     e[i] = a[i] * d[i];
-  }
+  solve(a, b, c, d, n);
+
+  return 0;
 }
