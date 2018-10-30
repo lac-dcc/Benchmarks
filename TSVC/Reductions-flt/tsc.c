@@ -3,4 +3,3 @@
 #include "../tests.h"
 #define TESTS REDUCTIONS
 #include "../tsc.inc"
-

@@ -25,7 +25,7 @@ void MultMatrixMatrix(Matrix *A, Matrix *B, Matrix *C) {
       (*C)[i][j] = 0;
       for (k = 0; k < 4; k++) {
         // if ((*B)[k][j] != 0.0 || (*A)[i][k] != 0.0)
-          (*C)[i][j] += (*A)[i][k] * (*B)[k][j];
+        (*C)[i][j] += (*A)[i][k] * (*B)[k][j];
       }
     }
   }

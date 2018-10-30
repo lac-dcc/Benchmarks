@@ -3,4 +3,3 @@
 #include "../tests.h"
 #define TESTS INDUCTION_VARIABLE
 #include "../tsc.inc"
-

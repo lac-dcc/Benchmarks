@@ -10,54 +10,42 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ****/
 
-#include <stdio.h>
 #include "IOtest.h"
+#include <stdio.h>
 
 /* fast version */
 
-void initA(struct global_result *res)
-{
+void initA(struct global_result *res) {
   setac(0);
-  res->min=255;
-  res->max=0;
-  res->add=0;
-  res->mult=1;
+  res->min = 255;
+  res->max = 0;
+  res->add = 0;
+  res->mult = 1;
 }
 
-void stepA(struct global_result *res)
-{
+void stepA(struct global_result *res) {
   register char_t t;
   unsigned long i;
-  t=array(getac());
-  res->min=min(res->min,t);
-  res->max=max(res->max,t);
-  res->add=add(res->add,t);
-  res->mult=mult(res->mult,t);
-  i=getac();
+  t = array(getac());
+  res->min = min(res->min, t);
+  res->max = max(res->max, t);
+  res->add = add(res->add, t);
+  res->mult = mult(res->mult, t);
+  i = getac();
   i++;
   setac(i);
 }
 
-void testA()
-{
+void testA() {
   struct global_result res;
 
   initarray();
 
-  loop((void (*)(void *))&initA,(void (*)(void *))&stepA,&res);
+  loop((void (*)(void *)) & initA, (void (*)(void *)) & stepA, &res);
 
-  printf("A %d min %d max %d add %d mult \n",res.min,res.max,res.add,res.mult);
-
+  printf("A %d min %d max %d add %d mult \n", res.min, res.max, res.add,
+         res.mult);
 }
-
-
-
-
-
-
-
-
-

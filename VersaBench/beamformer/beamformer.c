@@ -19,7 +19,7 @@
  * BE LIABLE FOR ANY CLAIM,  DAMAGES OR OTHER LIABILITY, WHETHER IN AN
  * ACTION OF  CONTRACT, TORT OR OTHERWISE, ARISING FROM,  OUT OF OR IN
  * CONNECTION  WITH THE SOFTWARE OR  THE USE OR OTHER  DEALINGS IN THE
- * SOFTWARE.  
+ * SOFTWARE.
  */
 
 /*
@@ -30,12 +30,12 @@
 
 /* Modified by: Rodric M. Rabbah 06-03-04 */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <math.h>
 
-/* 
+/*
 This implementation is derived from the StreamIt implementation,
 rather than from the PCA VSIPL-based implementation.  It is intended
 to be easier to synchronize our reference implementation with our
@@ -68,8 +68,7 @@ implementation.
 
 #define RANDOM_INPUTS
 
-struct BeamFirData
-{
+struct BeamFirData {
   int len, count, pos;
   float *weight, *buffer;
 };
@@ -77,9 +76,8 @@ struct BeamFirData
 void begin(void);
 void InputGenerate(int channel, float *inputs, int n);
 void BeamFirSetup(struct BeamFirData *data, int n);
-void BeamFirFilter(struct BeamFirData *data,
-                   int input_length, int decimation_ratio,
-                   float *in, float *out);
+void BeamFirFilter(struct BeamFirData *data, int input_length,
+                   int decimation_ratio, float *in, float *out);
 void BeamFormWeights(int beam, float *weights);
 void BeamForm(int beam, const float *weights, const float *input,
               float *output);
@@ -89,9 +87,8 @@ void Detector(int beam, float *data, float *output);
 void begin_StrictFP(void);
 void InputGenerate_StrictFP(int channel, float *inputs, int n);
 void BeamFirSetup_StrictFP(struct BeamFirData *data, int n);
-void BeamFirFilter_StrictFP(struct BeamFirData *data,
-                            int input_length, int decimation_ratio,
-                            float *in, float *out);
+void BeamFirFilter_StrictFP(struct BeamFirData *data, int input_length,
+                            int decimation_ratio, float *in, float *out);
 void BeamFormWeights_StrictFP(int beam, float *weights);
 void BeamForm_StrictFP(int beam, const float *weights, const float *input,
                        float *output);
@@ -108,30 +105,27 @@ void Detector_StrictFP(int beam, float *data, float *output);
 #define COARSE_DECIMATION_RATIO 1
 #define FINE_DECIMATION_RATIO 2
 #define NUM_SEGMENTS 1
-#define NUM_POST_DEC_1 (NUM_SAMPLES/COARSE_DECIMATION_RATIO)
-#define NUM_POST_DEC_2 (NUM_POST_DEC_1/FINE_DECIMATION_RATIO)
-#define MF_SIZE (NUM_SEGMENTS*NUM_POST_DEC_2)
-#define PULSE_SIZE (NUM_POST_DEC_2/2)
-#define PREDEC_PULSE_SIZE \
-  (PULSE_SIZE*COARSE_DECIMATION_RATIO*FINE_DECIMATION_RATIO)
-#define TARGET_BEAM (NUM_BEAMS/4)
-#define TARGET_SAMPLE (NUM_SAMPLES/4)
-#define TARGET_SAMPLE_POST_DEC \
-   (TARGET_SAMPLE/COARSE_DECIMATION_RATIO/FINE_DECIMATION_RATIO)
+#define NUM_POST_DEC_1 (NUM_SAMPLES / COARSE_DECIMATION_RATIO)
+#define NUM_POST_DEC_2 (NUM_POST_DEC_1 / FINE_DECIMATION_RATIO)
+#define MF_SIZE (NUM_SEGMENTS * NUM_POST_DEC_2)
+#define PULSE_SIZE (NUM_POST_DEC_2 / 2)
+#define PREDEC_PULSE_SIZE                                                      \
+  (PULSE_SIZE * COARSE_DECIMATION_RATIO * FINE_DECIMATION_RATIO)
+#define TARGET_BEAM (NUM_BEAMS / 4)
+#define TARGET_SAMPLE (NUM_SAMPLES / 4)
+#define TARGET_SAMPLE_POST_DEC                                                 \
+  (TARGET_SAMPLE / COARSE_DECIMATION_RATIO / FINE_DECIMATION_RATIO)
 #define D_OVER_LAMBDA 0.5
-#define CFAR_THRESHOLD (0.95*D_OVER_LAMBDA*NUM_CHANNELS*0.5*PULSE_SIZE)
+#define CFAR_THRESHOLD (0.95 * D_OVER_LAMBDA * NUM_CHANNELS * 0.5 * PULSE_SIZE)
 
 float detector_out_StrictFP[NUM_BEAMS][NUM_POST_DEC_2];
 static int numiters = 100;
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   int option;
 
-  while ((option = getopt(argc, argv, "i:")) != -1)
-  {
-    switch(option)
-    {
+  while ((option = getopt(argc, argv, "i:")) != -1) {
+    switch (option) {
     case 'i':
       numiters = atoi(optarg);
     }
@@ -143,13 +137,14 @@ int main(int argc, char **argv)
 }
 
 /* Return 0 when V1 and V2 do not match within the allowed FP_ABSTOLERANCE.  */
-static inline int
-check_FP(float V1, float V2) {
+static inline int check_FP(float V1, float V2) {
   double AbsTolerance = FP_ABSTOLERANCE;
   double Diff = fabs(V1 - V2);
   if (Diff > AbsTolerance) {
-    fprintf(stderr, "A = %lf and B = %lf differ more than"
-                  " FP_ABSTOLERANCE = %lf\n", V1, V2, AbsTolerance);
+    fprintf(stderr,
+            "A = %lf and B = %lf differ more than"
+            " FP_ABSTOLERANCE = %lf\n",
+            V1, V2, AbsTolerance);
     return 0;
   }
 
@@ -176,73 +171,62 @@ check_FP(float V1, float V2) {
  * The input generator produces 2*TARGET_SAMPLE values.
  */
 
-void begin(void)
-{
+void begin(void) {
 #ifdef AVOID_PRINTF
   volatile float result;
 #endif
   struct BeamFirData coarse_fir_data[NUM_CHANNELS];
   struct BeamFirData fine_fir_data[NUM_CHANNELS];
   struct BeamFirData mf_fir_data[NUM_BEAMS];
-  float inputs[2*NUM_SAMPLES*NUM_CHANNELS];
-  float predec[2*NUM_POST_DEC_1*NUM_CHANNELS];
-  float postdec[NUM_CHANNELS][2*NUM_POST_DEC_2*NUM_CHANNELS];
-  float beam_weights[NUM_BEAMS][2*NUM_CHANNELS];
-  float beam_input[2*NUM_CHANNELS*NUM_POST_DEC_2];
-  float beam_output[2*NUM_POST_DEC_2];
-  float beam_fir_output[2*NUM_POST_DEC_2];
+  float inputs[2 * NUM_SAMPLES * NUM_CHANNELS];
+  float predec[2 * NUM_POST_DEC_1 * NUM_CHANNELS];
+  float postdec[NUM_CHANNELS][2 * NUM_POST_DEC_2 * NUM_CHANNELS];
+  float beam_weights[NUM_BEAMS][2 * NUM_CHANNELS];
+  float beam_input[2 * NUM_CHANNELS * NUM_POST_DEC_2];
+  float beam_output[2 * NUM_POST_DEC_2];
+  float beam_fir_output[2 * NUM_POST_DEC_2];
   float beam_fir_mag[NUM_POST_DEC_2];
   float detector_out[NUM_BEAMS][NUM_POST_DEC_2];
   int i, j;
 
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
+  for (i = 0; i < NUM_CHANNELS; i++) {
     BeamFirSetup(&coarse_fir_data[i], NUM_COARSE_TAPS);
     BeamFirSetup(&fine_fir_data[i], NUM_FINE_TAPS);
   }
-  for (i = 0; i < NUM_BEAMS; i++)
-  {
+  for (i = 0; i < NUM_BEAMS; i++) {
     BeamFirSetup(&mf_fir_data[i], MF_SIZE);
     BeamFormWeights(i, beam_weights[i]);
   }
 
   /*** VERSABENCH START ***/
-  
-  while (numiters == -1 || numiters-- > 0) {      
+
+  while (numiters == -1 || numiters-- > 0) {
     for (i = 0; i < NUM_CHANNELS; i++) {
       for (j = 0; j < NUM_CHANNELS; j++)
-        InputGenerate(i, inputs + j*NUM_SAMPLES*2,
-                      NUM_SAMPLES);
+        InputGenerate(i, inputs + j * NUM_SAMPLES * 2, NUM_SAMPLES);
       for (j = 0; j < NUM_POST_DEC_1; j++)
-        BeamFirFilter(&coarse_fir_data[i],
-                      NUM_SAMPLES, COARSE_DECIMATION_RATIO,
-                      inputs + j * COARSE_DECIMATION_RATIO*2,
-                      predec + j * 2);
+        BeamFirFilter(&coarse_fir_data[i], NUM_SAMPLES, COARSE_DECIMATION_RATIO,
+                      inputs + j * COARSE_DECIMATION_RATIO * 2, predec + j * 2);
       for (j = 0; j < NUM_POST_DEC_2; j++)
-        BeamFirFilter(&fine_fir_data[i],
-                      NUM_POST_DEC_1, FINE_DECIMATION_RATIO,
+        BeamFirFilter(&fine_fir_data[i], NUM_POST_DEC_1, FINE_DECIMATION_RATIO,
                       predec + j * FINE_DECIMATION_RATIO * 2,
                       postdec[i] + j * 2);
     }
     /* Assemble beam-forming input: */
     for (i = 0; i < NUM_CHANNELS; i++)
-      for (j = 0; j < NUM_POST_DEC_2; j++)
-      {
-        beam_input[j*NUM_CHANNELS*2+2*i] = postdec[i][2*j];
-        beam_input[j*NUM_CHANNELS*2+2*i+1] = postdec[i][2*j+1];
+      for (j = 0; j < NUM_POST_DEC_2; j++) {
+        beam_input[j * NUM_CHANNELS * 2 + 2 * i] = postdec[i][2 * j];
+        beam_input[j * NUM_CHANNELS * 2 + 2 * i + 1] = postdec[i][2 * j + 1];
       }
-    for (i = 0; i < NUM_BEAMS; i++)
-    {
+    for (i = 0; i < NUM_BEAMS; i++) {
       /* Have now rearranged NUM_CHANNELS*NUM_POST_DEC_2 items.
        * BeamForm takes NUM_CHANNELS inputs, 2 outputs. */
       for (j = 0; j < NUM_POST_DEC_2; j++)
-        BeamForm(i, beam_weights[i],
-                 beam_input + j*NUM_CHANNELS*2,
-                 beam_output + j*2);
+        BeamForm(i, beam_weights[i], beam_input + j * NUM_CHANNELS * 2,
+                 beam_output + j * 2);
       for (j = 0; j < NUM_POST_DEC_2; j++)
-        BeamFirFilter(&mf_fir_data[i],
-                      NUM_POST_DEC_2, 1,
-                      beam_output+j*2, beam_fir_output+j*2);
+        BeamFirFilter(&mf_fir_data[i], NUM_POST_DEC_2, 1, beam_output + j * 2,
+                      beam_fir_output + j * 2);
       Magnitude(beam_fir_output, beam_fir_mag, NUM_POST_DEC_2);
       Detector(i, beam_fir_mag, detector_out[i]);
     }
@@ -259,68 +243,61 @@ void begin(void)
   }
 
   /*** VERSABENCH END ***/
-  
 }
 
-void InputGenerate(int channel, float *inputs, int n)
-{
+void InputGenerate(int channel, float *inputs, int n) {
   int i;
-  for (i = 0; i < n; i++)
-  {
-    if (channel == TARGET_BEAM && i == TARGET_SAMPLE)
-    {
+  for (i = 0; i < n; i++) {
+    if (channel == TARGET_BEAM && i == TARGET_SAMPLE) {
 #ifdef RANDOM_INPUTS
-      inputs[2*i] = sqrt(i*channel);
-      inputs[2*i+1] = sqrt(i*channel)+1;
+      inputs[2 * i] = sqrt(i * channel);
+      inputs[2 * i + 1] = sqrt(i * channel) + 1;
 #else
-      inputs[2*i] = sqrt(CFAR_THRESHOLD);
-      inputs[2*i+1] = 0;
+      inputs[2 * i] = sqrt(CFAR_THRESHOLD);
+      inputs[2 * i + 1] = 0;
 #endif
     } else {
 #ifdef RANDOM_INPUTS
-      float root = sqrt(i*channel);
-      inputs[2*i] = -root;
-      inputs[2*i+1] = -(root+1);
+      float root = sqrt(i * channel);
+      inputs[2 * i] = -root;
+      inputs[2 * i + 1] = -(root + 1);
 #else
-      inputs[2*i] = 0;
-      inputs[2*i+1] = 0;
+      inputs[2 * i] = 0;
+      inputs[2 * i + 1] = 0;
 #endif
     }
   }
 }
 
-void BeamFirSetup(struct BeamFirData *data, int n)
-{
+void BeamFirSetup(struct BeamFirData *data, int n) {
   int i, j;
-  
+
   data->len = n;
   data->count = 0;
   data->pos = 0;
-  data->weight = malloc(sizeof(float)*2*n);
-  data->buffer = malloc(sizeof(float)*2*n);
-  
+  data->weight = malloc(sizeof(float) * 2 * n);
+  data->buffer = malloc(sizeof(float) * 2 * n);
+
 #ifdef RANDOM_WEIGHTS
   for (j = 0; j < n; j++) {
-    int idx = j+1;
-    data->weight[j*2] = sin(idx) / ((float)idx);
-    data->weight[j*2+1] = cos(idx) / ((float)idx);
-    data->buffer[j*2] = 0.0;
-    data->buffer[j*2+1] = 0.0;
+    int idx = j + 1;
+    data->weight[j * 2] = sin(idx) / ((float)idx);
+    data->weight[j * 2 + 1] = cos(idx) / ((float)idx);
+    data->buffer[j * 2] = 0.0;
+    data->buffer[j * 2 + 1] = 0.0;
   }
 #else
   data->weight[0] = 1.0;
   data->weight[1] = 0.0;
-  for (i = 1; i < 2*n; i++) {
+  for (i = 1; i < 2 * n; i++) {
     data->weight[i] = 0.0;
     data->buffer[i] = 0.0;
   }
 #endif
 }
 
-void BeamFirFilter(struct BeamFirData *data,
-                   int input_length, int decimation_ratio,
-                   float *in, float *out)
-{
+void BeamFirFilter(struct BeamFirData *data, int input_length,
+                   int decimation_ratio, float *in, float *out) {
   /* Input must be exactly 2*decimation_ratio long; output must be
    * exactly 2 long. */
   float real_curr = 0;
@@ -328,20 +305,20 @@ void BeamFirFilter(struct BeamFirData *data,
   int i;
   int modPos;
   int len, mask, mask2;
-  
+
   len = data->len;
   mask = len - 1;
   mask2 = 2 * len - 1;
-  modPos = 2*(len - 1 - data->pos);
+  modPos = 2 * (len - 1 - data->pos);
   data->buffer[modPos] = in[0];
-  data->buffer[modPos+1] = in[1];
-  
+  data->buffer[modPos + 1] = in[1];
+
   /* Profiling says: this is the single inner loop that matters! */
-  for (i = 0; i < 2*len; i+=2) {
+  for (i = 0; i < 2 * len; i += 2) {
     float rd = data->buffer[modPos];
-    float id = data->buffer[modPos+1];
+    float id = data->buffer[modPos + 1];
     float rw = data->weight[i];
-    float iw = data->weight[i+1];
+    float iw = data->weight[i + 1];
     float rci = rd * rw + id * iw;
     /* sign error?  this is consistent with StreamIt --dzm */
     float ici = id * rw + rd * iw;
@@ -349,216 +326,194 @@ void BeamFirFilter(struct BeamFirData *data,
     imag_curr += ici;
     modPos = (modPos + 2) & mask2;
   }
-  
+
   data->pos = (data->pos + 1) & mask;
   out[0] = real_curr;
   out[1] = imag_curr;
   data->count += decimation_ratio;
-  if (data->count == input_length)
-  {
+  if (data->count == input_length) {
     data->count = 0;
     data->pos = 0;
-    for (i = 0; i < 2*data->len; i++) {
+    for (i = 0; i < 2 * data->len; i++) {
       data->buffer[i] = 0.0;
     }
   }
 }
 
-void BeamFormWeights(int beam, float *weights)
-{
+void BeamFormWeights(int beam, float *weights) {
   int i;
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
+  for (i = 0; i < NUM_CHANNELS; i++) {
 #ifdef RANDOM_WEIGHTS
-    int idx = i+1;
-    weights[2*i] = sin(idx) / (float)(beam+idx);
-    weights[2*i+1] = cos(idx) / (float)(beam+idx);
+    int idx = i + 1;
+    weights[2 * i] = sin(idx) / (float)(beam + idx);
+    weights[2 * i + 1] = cos(idx) / (float)(beam + idx);
 #else
     if (i == beam) {
-      weights[2*i] = 1;
-      weights[2*i+1] = 0;
+      weights[2 * i] = 1;
+      weights[2 * i + 1] = 0;
     } else {
-      weights[2*i] = 0;
-      weights[2*i+1] = 0;
+      weights[2 * i] = 0;
+      weights[2 * i + 1] = 0;
     }
 #endif
   }
 }
 
 void BeamForm(int beam, const float *weights, const float *input,
-              float *output)
-{
+              float *output) {
   /* 2*NUM_CHANNELS inputs and weights; 2 outputs. */
   float real_curr = 0;
   float imag_curr = 0;
   int i;
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
-    real_curr += weights[2*i] * input[2*i] - weights[2*i+1] * input[2*i+1];
-    imag_curr += weights[2*i] * input[2*i+1] + weights[2*i+1] * input[2*i];
+  for (i = 0; i < NUM_CHANNELS; i++) {
+    real_curr +=
+        weights[2 * i] * input[2 * i] - weights[2 * i + 1] * input[2 * i + 1];
+    imag_curr +=
+        weights[2 * i] * input[2 * i + 1] + weights[2 * i + 1] * input[2 * i];
   }
   output[0] = real_curr;
   output[1] = imag_curr;
 }
 
-void Magnitude(float *in, float *out, int n)
-{
+void Magnitude(float *in, float *out, int n) {
   int i;
   /* Should be 2n inputs, n outputs. */
   for (i = 0; i < n; i++)
-    out[i] = sqrt(in[2*i]*in[2*i] + in[2*i+1]*in[2*i+1]);
+    out[i] = sqrt(in[2 * i] * in[2 * i] + in[2 * i + 1] * in[2 * i + 1]);
 }
 
-void Detector(int beam, float *data, float *output)
-{
+void Detector(int beam, float *data, float *output) {
   int sample;
   /* Should be exactly NUM_POST_DEC_2 samples. */
-  for (sample = 0; sample < NUM_POST_DEC_2; sample++)
-  {
+  for (sample = 0; sample < NUM_POST_DEC_2; sample++) {
     float outputVal;
     if (beam == TARGET_BEAM && sample == TARGET_SAMPLE) {
       if (data[sample] >= 0.1)
-        outputVal = beam+1;
+        outputVal = beam + 1;
       else
         outputVal = 0;
     } else {
       if (data[sample] >= 0.1)
-        outputVal = -(beam+1);
+        outputVal = -(beam + 1);
       else
         outputVal = 0;
     }
     outputVal = data[sample];
-    output[sample]= outputVal;
+    output[sample] = outputVal;
   }
 }
 
-void begin_StrictFP(void)
-{
+void begin_StrictFP(void) {
 #pragma STDC FP_CONTRACT OFF
   struct BeamFirData coarse_fir_data[NUM_CHANNELS];
   struct BeamFirData fine_fir_data[NUM_CHANNELS];
   struct BeamFirData mf_fir_data[NUM_BEAMS];
-  float inputs[2*NUM_SAMPLES*NUM_CHANNELS];
-  float predec[2*NUM_POST_DEC_1*NUM_CHANNELS];
-  float postdec[NUM_CHANNELS][2*NUM_POST_DEC_2*NUM_CHANNELS];
-  float beam_weights[NUM_BEAMS][2*NUM_CHANNELS];
-  float beam_input[2*NUM_CHANNELS*NUM_POST_DEC_2];
-  float beam_output[2*NUM_POST_DEC_2];
-  float beam_fir_output[2*NUM_POST_DEC_2];
+  float inputs[2 * NUM_SAMPLES * NUM_CHANNELS];
+  float predec[2 * NUM_POST_DEC_1 * NUM_CHANNELS];
+  float postdec[NUM_CHANNELS][2 * NUM_POST_DEC_2 * NUM_CHANNELS];
+  float beam_weights[NUM_BEAMS][2 * NUM_CHANNELS];
+  float beam_input[2 * NUM_CHANNELS * NUM_POST_DEC_2];
+  float beam_output[2 * NUM_POST_DEC_2];
+  float beam_fir_output[2 * NUM_POST_DEC_2];
   float beam_fir_mag[NUM_POST_DEC_2];
   int i, j;
 
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
+  for (i = 0; i < NUM_CHANNELS; i++) {
     BeamFirSetup_StrictFP(&coarse_fir_data[i], NUM_COARSE_TAPS);
     BeamFirSetup_StrictFP(&fine_fir_data[i], NUM_FINE_TAPS);
   }
-  for (i = 0; i < NUM_BEAMS; i++)
-  {
+  for (i = 0; i < NUM_BEAMS; i++) {
     BeamFirSetup_StrictFP(&mf_fir_data[i], MF_SIZE);
     BeamFormWeights_StrictFP(i, beam_weights[i]);
   }
 
   for (i = 0; i < NUM_CHANNELS; i++) {
     for (j = 0; j < NUM_CHANNELS; j++)
-      InputGenerate_StrictFP(i, inputs + j*NUM_SAMPLES*2,
-                             NUM_SAMPLES);
+      InputGenerate_StrictFP(i, inputs + j * NUM_SAMPLES * 2, NUM_SAMPLES);
     for (j = 0; j < NUM_POST_DEC_1; j++)
-      BeamFirFilter_StrictFP(&coarse_fir_data[i],
-                             NUM_SAMPLES, COARSE_DECIMATION_RATIO,
-                             inputs + j * COARSE_DECIMATION_RATIO*2,
-                             predec + j * 2);
+      BeamFirFilter_StrictFP(
+          &coarse_fir_data[i], NUM_SAMPLES, COARSE_DECIMATION_RATIO,
+          inputs + j * COARSE_DECIMATION_RATIO * 2, predec + j * 2);
     for (j = 0; j < NUM_POST_DEC_2; j++)
-      BeamFirFilter_StrictFP(&fine_fir_data[i],
-                             NUM_POST_DEC_1, FINE_DECIMATION_RATIO,
-                             predec + j * FINE_DECIMATION_RATIO * 2,
-                             postdec[i] + j * 2);
+      BeamFirFilter_StrictFP(
+          &fine_fir_data[i], NUM_POST_DEC_1, FINE_DECIMATION_RATIO,
+          predec + j * FINE_DECIMATION_RATIO * 2, postdec[i] + j * 2);
   }
   /* Assemble beam-forming input: */
   for (i = 0; i < NUM_CHANNELS; i++)
-    for (j = 0; j < NUM_POST_DEC_2; j++)
-      {
-        beam_input[j*NUM_CHANNELS*2+2*i] = postdec[i][2*j];
-        beam_input[j*NUM_CHANNELS*2+2*i+1] = postdec[i][2*j+1];
-      }
-  for (i = 0; i < NUM_BEAMS; i++)
-    {
-      /* Have now rearranged NUM_CHANNELS*NUM_POST_DEC_2 items.
-       * BeamForm takes NUM_CHANNELS inputs, 2 outputs. */
-      for (j = 0; j < NUM_POST_DEC_2; j++)
-        BeamForm_StrictFP(i, beam_weights[i],
-                          beam_input + j*NUM_CHANNELS*2,
-                          beam_output + j*2);
-      for (j = 0; j < NUM_POST_DEC_2; j++)
-        BeamFirFilter_StrictFP(&mf_fir_data[i],
-                               NUM_POST_DEC_2, 1,
-                               beam_output+j*2, beam_fir_output+j*2);
-      Magnitude_StrictFP(beam_fir_output, beam_fir_mag, NUM_POST_DEC_2);
-      Detector_StrictFP(i, beam_fir_mag, detector_out_StrictFP[i]);
+    for (j = 0; j < NUM_POST_DEC_2; j++) {
+      beam_input[j * NUM_CHANNELS * 2 + 2 * i] = postdec[i][2 * j];
+      beam_input[j * NUM_CHANNELS * 2 + 2 * i + 1] = postdec[i][2 * j + 1];
     }
+  for (i = 0; i < NUM_BEAMS; i++) {
+    /* Have now rearranged NUM_CHANNELS*NUM_POST_DEC_2 items.
+     * BeamForm takes NUM_CHANNELS inputs, 2 outputs. */
+    for (j = 0; j < NUM_POST_DEC_2; j++)
+      BeamForm_StrictFP(i, beam_weights[i], beam_input + j * NUM_CHANNELS * 2,
+                        beam_output + j * 2);
+    for (j = 0; j < NUM_POST_DEC_2; j++)
+      BeamFirFilter_StrictFP(&mf_fir_data[i], NUM_POST_DEC_2, 1,
+                             beam_output + j * 2, beam_fir_output + j * 2);
+    Magnitude_StrictFP(beam_fir_output, beam_fir_mag, NUM_POST_DEC_2);
+    Detector_StrictFP(i, beam_fir_mag, detector_out_StrictFP[i]);
+  }
 }
 
-void InputGenerate_StrictFP(int channel, float *inputs, int n)
-{
+void InputGenerate_StrictFP(int channel, float *inputs, int n) {
 #pragma STDC FP_CONTRACT OFF
   int i;
-  for (i = 0; i < n; i++)
-  {
-    if (channel == TARGET_BEAM && i == TARGET_SAMPLE)
-    {
+  for (i = 0; i < n; i++) {
+    if (channel == TARGET_BEAM && i == TARGET_SAMPLE) {
 #ifdef RANDOM_INPUTS
-      inputs[2*i] = sqrt(i*channel);
-      inputs[2*i+1] = sqrt(i*channel)+1;
+      inputs[2 * i] = sqrt(i * channel);
+      inputs[2 * i + 1] = sqrt(i * channel) + 1;
 #else
-      inputs[2*i] = sqrt(CFAR_THRESHOLD);
-      inputs[2*i+1] = 0;
+      inputs[2 * i] = sqrt(CFAR_THRESHOLD);
+      inputs[2 * i + 1] = 0;
 #endif
     } else {
 #ifdef RANDOM_INPUTS
-      float root = sqrt(i*channel);
-      inputs[2*i] = -root;
-      inputs[2*i+1] = -(root+1);
+      float root = sqrt(i * channel);
+      inputs[2 * i] = -root;
+      inputs[2 * i + 1] = -(root + 1);
 #else
-      inputs[2*i] = 0;
-      inputs[2*i+1] = 0;
+      inputs[2 * i] = 0;
+      inputs[2 * i + 1] = 0;
 #endif
     }
   }
 }
 
-void BeamFirSetup_StrictFP(struct BeamFirData *data, int n)
-{
+void BeamFirSetup_StrictFP(struct BeamFirData *data, int n) {
 #pragma STDC FP_CONTRACT OFF
   int i, j;
 
   data->len = n;
   data->count = 0;
   data->pos = 0;
-  data->weight = malloc(sizeof(float)*2*n);
-  data->buffer = malloc(sizeof(float)*2*n);
+  data->weight = malloc(sizeof(float) * 2 * n);
+  data->buffer = malloc(sizeof(float) * 2 * n);
 
 #ifdef RANDOM_WEIGHTS
   for (j = 0; j < n; j++) {
-    int idx = j+1;
-    data->weight[j*2] = sin(idx) / ((float)idx);
-    data->weight[j*2+1] = cos(idx) / ((float)idx);
-    data->buffer[j*2] = 0.0;
-    data->buffer[j*2+1] = 0.0;
+    int idx = j + 1;
+    data->weight[j * 2] = sin(idx) / ((float)idx);
+    data->weight[j * 2 + 1] = cos(idx) / ((float)idx);
+    data->buffer[j * 2] = 0.0;
+    data->buffer[j * 2 + 1] = 0.0;
   }
 #else
   data->weight[0] = 1.0;
   data->weight[1] = 0.0;
-  for (i = 1; i < 2*n; i++) {
+  for (i = 1; i < 2 * n; i++) {
     data->weight[i] = 0.0;
     data->buffer[i] = 0.0;
   }
 #endif
 }
 
-void BeamFirFilter_StrictFP(struct BeamFirData *data,
-                            int input_length, int decimation_ratio,
-                            float *in, float *out)
-{
+void BeamFirFilter_StrictFP(struct BeamFirData *data, int input_length,
+                            int decimation_ratio, float *in, float *out) {
 #pragma STDC FP_CONTRACT OFF
   /* Input must be exactly 2*decimation_ratio long; output must be
    * exactly 2 long. */
@@ -571,16 +526,16 @@ void BeamFirFilter_StrictFP(struct BeamFirData *data,
   len = data->len;
   mask = len - 1;
   mask2 = 2 * len - 1;
-  modPos = 2*(len - 1 - data->pos);
+  modPos = 2 * (len - 1 - data->pos);
   data->buffer[modPos] = in[0];
-  data->buffer[modPos+1] = in[1];
+  data->buffer[modPos + 1] = in[1];
 
   /* Profiling says: this is the single inner loop that matters! */
-  for (i = 0; i < 2*len; i+=2) {
+  for (i = 0; i < 2 * len; i += 2) {
     float rd = data->buffer[modPos];
-    float id = data->buffer[modPos+1];
+    float id = data->buffer[modPos + 1];
     float rw = data->weight[i];
-    float iw = data->weight[i+1];
+    float iw = data->weight[i + 1];
     float rci = rd * rw + id * iw;
     /* sign error?  this is consistent with StreamIt --dzm */
     float ici = id * rw + rd * iw;
@@ -593,84 +548,78 @@ void BeamFirFilter_StrictFP(struct BeamFirData *data,
   out[0] = real_curr;
   out[1] = imag_curr;
   data->count += decimation_ratio;
-  if (data->count == input_length)
-  {
+  if (data->count == input_length) {
     data->count = 0;
     data->pos = 0;
-    for (i = 0; i < 2*data->len; i++) {
+    for (i = 0; i < 2 * data->len; i++) {
       data->buffer[i] = 0.0;
     }
   }
 }
 
-void BeamFormWeights_StrictFP(int beam, float *weights)
-{
+void BeamFormWeights_StrictFP(int beam, float *weights) {
 #pragma STDC FP_CONTRACT OFF
   int i;
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
+  for (i = 0; i < NUM_CHANNELS; i++) {
 #ifdef RANDOM_WEIGHTS
-    int idx = i+1;
-    weights[2*i] = sin(idx) / (float)(beam+idx);
-    weights[2*i+1] = cos(idx) / (float)(beam+idx);
+    int idx = i + 1;
+    weights[2 * i] = sin(idx) / (float)(beam + idx);
+    weights[2 * i + 1] = cos(idx) / (float)(beam + idx);
 #else
     if (i == beam) {
-      weights[2*i] = 1;
-      weights[2*i+1] = 0;
+      weights[2 * i] = 1;
+      weights[2 * i + 1] = 0;
     } else {
-      weights[2*i] = 0;
-      weights[2*i+1] = 0;
+      weights[2 * i] = 0;
+      weights[2 * i + 1] = 0;
     }
 #endif
   }
 }
 
 void BeamForm_StrictFP(int beam, const float *weights, const float *input,
-                       float *output)
-{
+                       float *output) {
 #pragma STDC FP_CONTRACT OFF
   /* 2*NUM_CHANNELS inputs and weights; 2 outputs. */
   float real_curr = 0;
   float imag_curr = 0;
   int i;
-  for (i = 0; i < NUM_CHANNELS; i++)
-  {
-    real_curr += weights[2*i] * input[2*i] - weights[2*i+1] * input[2*i+1];
-    imag_curr += weights[2*i] * input[2*i+1] + weights[2*i+1] * input[2*i];
+  for (i = 0; i < NUM_CHANNELS; i++) {
+    real_curr +=
+        weights[2 * i] * input[2 * i] - weights[2 * i + 1] * input[2 * i + 1];
+    imag_curr +=
+        weights[2 * i] * input[2 * i + 1] + weights[2 * i + 1] * input[2 * i];
   }
   output[0] = real_curr;
   output[1] = imag_curr;
 }
 
-void Magnitude_StrictFP(float *in, float *out, int n)
-{
+void Magnitude_StrictFP(float *in, float *out, int n) {
 #pragma STDC FP_CONTRACT OFF
   int i;
   /* Should be 2n inputs, n outputs. */
   for (i = 0; i < n; i++)
-    out[i] = sqrt(in[2*i]*in[2*i] + in[2*i+1]*in[2*i+1]);
+    out[i] = sqrt(in[2 * i] * in[2 * i] + in[2 * i + 1] * in[2 * i + 1]);
 }
 
-void Detector_StrictFP(int beam, float *data, float *output)
-{
+void Detector_StrictFP(int beam, float *data, float *output) {
 #pragma STDC FP_CONTRACT OFF
   int sample;
   /* Should be exactly NUM_POST_DEC_2 samples. */
-  for (sample = 0; sample < NUM_POST_DEC_2; sample++)
-  {
+  for (sample = 0; sample < NUM_POST_DEC_2; sample++) {
     float outputVal;
     if (beam == TARGET_BEAM && sample == TARGET_SAMPLE) {
       if (data[sample] >= 0.1)
-        outputVal = beam+1;
+        outputVal = beam + 1;
       else
         outputVal = 0;
     } else {
       if (data[sample] >= 0.1)
-        outputVal = -(beam+1);
+        outputVal = -(beam + 1);
       else
         outputVal = 0;
     }
     outputVal = data[sample];
-    output[sample]= outputVal;
+    output[sample] = outputVal;
   }
 }

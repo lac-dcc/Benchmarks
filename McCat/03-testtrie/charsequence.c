@@ -10,67 +10,61 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ****/
 
 /* dOPC - Assignment #1.
    Lasse R. Nielsen (920666) and Ren\'{e} R. Hansen (920319) */
 
+#include "charsequence.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "charsequence.h"
 
 /* Defines: */
 
 #define DEBUG
-#define TRUE   1
-#define FALSE  0
+#define TRUE 1
+#define FALSE 0
 #define TRIE_SIZE (sizeof(struct trie_s))
-#define ERROR(s)  (fprintf(stderr,s))
+#define ERROR(s) (fprintf(stderr, s))
 
-void  charsequence_reset(charsequence *cs)
-{
-  if(cs->buf!=NULL)free(cs->buf);
-  cs->buf=malloc(CHARSTREAM_STARTSIZE);
-  if(cs->buf==NULL)ERROR("OUT OF MEMORY");
-  cs->size=CHARSTREAM_STARTSIZE;
-  cs->pos=0;
+void charsequence_reset(charsequence *cs) {
+  if (cs->buf != NULL)
+    free(cs->buf);
+  cs->buf = malloc(CHARSTREAM_STARTSIZE);
+  if (cs->buf == NULL)
+    ERROR("OUT OF MEMORY");
+  cs->size = CHARSTREAM_STARTSIZE;
+  cs->pos = 0;
 }
 
-void  charsequence_push(charsequence *cs,char c)
-{
-  if(cs->size==0)
-    {
-      charsequence_reset(cs);
-    }
-  if(cs->pos==cs->size)
-    {
-      cs->size<<=1;
-      cs->buf=realloc(cs->buf,cs->size);
-      if(cs->buf==NULL)ERROR("OUT OF MEMORY");
-    }
-  cs->buf[cs->pos]=c;
+void charsequence_push(charsequence *cs, char c) {
+  if (cs->size == 0) {
+    charsequence_reset(cs);
+  }
+  if (cs->pos == cs->size) {
+    cs->size <<= 1;
+    cs->buf = realloc(cs->buf, cs->size);
+    if (cs->buf == NULL)
+      ERROR("OUT OF MEMORY");
+  }
+  cs->buf[cs->pos] = c;
   cs->pos++;
 }
-  
-char charsequence_pop(charsequence *cs)
-{
-  if(cs->pos==0)
-    {
-      ERROR("ATTEMPTED POP ON EMPTY SEQUENCE");
-    }
+
+char charsequence_pop(charsequence *cs) {
+  if (cs->pos == 0) {
+    ERROR("ATTEMPTED POP ON EMPTY SEQUENCE");
+  }
   return cs->buf[(cs->pos)--];
 }
 
-char *charsequence_val(charsequence *cs)
-{
+char *charsequence_val(charsequence *cs) {
   char *ret;
-  ret=calloc(cs->pos+1,sizeof(char));
-  if(ret==NULL)ERROR("OUT OF MEMORY");/* check for allocation error */
-  strncpy(ret,cs->buf,cs->pos);
+  ret = calloc(cs->pos + 1, sizeof(char));
+  if (ret == NULL)
+    ERROR("OUT OF MEMORY"); /* check for allocation error */
+  strncpy(ret, cs->buf, cs->pos);
   return ret;
 }
-
-
-

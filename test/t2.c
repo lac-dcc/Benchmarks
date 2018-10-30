@@ -4,8 +4,8 @@
 
 int c = 0;
 
-int main(int argc, char* argv[]){
-  
+int main(int argc, char *argv[]) {
+
   int a = argv[0];
 
   c = atoi(argv[0]);
@@ -24,8 +24,8 @@ int main(int argc, char* argv[]){
   a = a + b;
 
   c = a + c;
-  
+
   printf("%d\n", a);
-  
+
   return 0;
 }

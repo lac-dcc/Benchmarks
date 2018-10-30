@@ -10,7 +10,7 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ****/
 
 /************************************************************************/
@@ -21,9 +21,9 @@
 /*             email mikdam@daimi.aau.dk                                */
 /*                                                                      */
 /*  files :                                                             */
-/*  Divsol.c           QRfact.h           Divsol.h           Jacobi.c   */     
-/*  Jacobi.h           Triang.c           print.c            MM.c       */   
-/*  Triang.h           print.h            MM.h               QRfact.c   */   
+/*  Divsol.c           QRfact.h           Divsol.h           Jacobi.c   */
+/*  Jacobi.h           Triang.c           print.c            MM.c       */
+/*  Triang.h           print.h            MM.h               QRfact.c   */
 /*  main.c             main.h                                           */
 /*                                                                      */
 /*  It calculates the eigenvalues for 4 different matrixes. It does not */
@@ -33,135 +33,127 @@
 /*                                                                      */
 /************************************************************************/
 #include "main.h"
+#include "Jacobi.h"
 #include "QRfact.h"
 #include "Triang.h"
-#include "Jacobi.h"
 #include <stdio.h>
 #include <string.h>
-Matrix A,Q,U;
+Matrix A, Q, U;
 
-int comp(const double *a,const double *b)
-{
-  if (fabs(*a)<fabs(*b)) return 1;
-  else if (fabs(*a)>fabs(*b)) return -1;
-  else return 0;
+int comp(const double *a, const double *b) {
+  if (fabs(*a) < fabs(*b))
+    return 1;
+  else if (fabs(*a) > fabs(*b))
+    return -1;
+  else
+    return 0;
 }
 
-int main ()
-{
-  double a,b,c,d;
-  int i,j,k,l,m;
-  Vector v,u,z,w;
-  Matrix V,T,X,Z;
+int main() {
+  double a, b, c, d;
+  int i, j, k, l, m;
+  Vector v, u, z, w;
+  Matrix V, T, X, Z;
   FILE *vec;
-  char filename[20],num[3];
+  char filename[20], num[3];
 
-  for (l=2;l<=5;l++) 
-    {
-      strcpy(filename,"val");
-      sprintf(num,"%i\0",l);
-      strcat(filename,num);
-      /* printf("filename = %s\n",filename); */
+  for (l = 2; l <= 5; l++) {
+    strcpy(filename, "val");
+    sprintf(num, "%i\0", l);
+    strcat(filename, num);
+    /* printf("filename = %s\n",filename); */
 
-      A = MakeMatrix(l);
-      /*      if (l==5) printf("%e\n",A[0][5]); */
+    A = MakeMatrix(l);
+    /*      if (l==5) printf("%e\n",A[0][5]); */
 
+    /* Bauer-Fike */
+    /*      printf("%i : Norm af E = %e\n",l,2*A[0][l]); */
 
-      /* Bauer-Fike */
-      /*      printf("%i : Norm af E = %e\n",l,2*A[0][l]); */
+    /*      U = Trianglelise(A,l); */
+    U = Jacobi(A, l);
+    QRiterate(A, U);
 
-      /*      U = Trianglelise(A,l); */
-      U = Jacobi(A,l); 
-      QRiterate(A,U); 
+    v = newVector();
+    for (i = 0; i < n; i++)
+      v[i] = A[i][i];
 
-      v = newVector();
-      for (i=0;i<n;i++)
-	v[i] = A[i][i];
-      
-      qsort(v,n,sizeof(double),(int (*)(const void*,const void*))comp);
-      
-      for (i=0;i<n;i++)
-	fprintf(stdout,"%i %e\n",i,v[i]);
+    qsort(v, n, sizeof(double), (int (*)(const void *, const void *))comp);
 
-      /*      printf("sigma1 = %e, sigman = %e, k2 = %e\n",
-	      v[0],v[n-1],v[0]/v[n-1]); */
+    for (i = 0; i < n; i++)
+      fprintf(stdout, "%i %e\n", i, v[i]);
 
-      /*      printf("Kondition af U: %e\n",NormOne(U)*NormInf(U)); */
+    /*      printf("sigma1 = %e, sigman = %e, k2 = %e\n",
+            v[0],v[n-1],v[0]/v[n-1]); */
 
-      
-      /*      Check(A,U,l);      */
-      
-      if (l==6)
-	{ /* Get the egenvector for the 2 largest and 
-	     the 2 smallest egenvalues */
-	  
-	  for (i=0;i<n;i++)
-	    {
-/*	      j = (i>=2)?n-i+1:i; */
+    /*      printf("Kondition af U: %e\n",NormOne(U)*NormInf(U)); */
 
-	      k=0;
-	      while (v[i]!=A[k][k]) k++;
+    /*      Check(A,U,l);      */
 
-	      strcpy(filename,"vec");
-	      sprintf(num,"%i\0",i);
-	      strcat(filename,num);
-	      printf("filename = %s\n",filename);
-	      
-	      for (m=0;m<n;m++)
-		fprintf(stdout,"%i %e\n",m,U[m][k]);
-	    }
+    if (l == 6) { /* Get the egenvector for the 2 largest and
+                     the 2 smallest egenvalues */
 
-	}
+      for (i = 0; i < n; i++) {
+        /*	      j = (i>=2)?n-i+1:i; */
 
-      freeMatrix(U);
-      freeMatrix(A);
+        k = 0;
+        while (v[i] != A[k][k])
+          k++;
+
+        strcpy(filename, "vec");
+        sprintf(num, "%i\0", i);
+        strcat(filename, num);
+        printf("filename = %s\n", filename);
+
+        for (m = 0; m < n; m++)
+          fprintf(stdout, "%i %e\n", m, U[m][k]);
+      }
     }
+
+    freeMatrix(U);
+    freeMatrix(A);
+  }
   return 0;
 }
 
-void Check(Matrix A, Matrix U, int l)
-{  /* TEST SUITE */
+void Check(Matrix A, Matrix U, int l) { /* TEST SUITE */
 
-  Matrix X,T;
+  Matrix X, T;
   double a;
-  int i,j;
+  int i, j;
 
   X = newMatrix();
   T = MakeMatrix(l);
-  
 
   /* Beregn U^TXU */
-  matrixMult(X,T,U); 
-  
+  matrixMult(X, T, U);
+
   matrixTranspose(U);
-  
-  matrixMult(T,U,X); 
+
+  matrixMult(T, U, X);
 
   matrixTranspose(U);
   a = 0.0;
-  for (i=0;i<n;i++)
-    for (j=0;j<n;j++)
-      a += (A[i][j]-T[i][j])*(A[i][j]-T[i][j]);
-  
-  printf("Step: %i !! The frobenius norm of X-T is %e\n",l,sqrt(a));
-  
+  for (i = 0; i < n; i++)
+    for (j = 0; j < n; j++)
+      a += (A[i][j] - T[i][j]) * (A[i][j] - T[i][j]);
+
+  printf("Step: %i !! The frobenius norm of X-T is %e\n", l, sqrt(a));
+
   a = 0.0;
-  for (i=0;i<n;i++)
-    for (j=i+1;j<n;j++)
-      a += fabs(A[i][j]-A[j][i]);
-  
-  printf("Is A symmetric? %e\n",a);
+  for (i = 0; i < n; i++)
+    for (j = i + 1; j < n; j++)
+      a += fabs(A[i][j] - A[j][i]);
+
+  printf("Is A symmetric? %e\n", a);
 
   /*
      printMatrix(A);
-     
-     printMatrix(T);
-     
-     printMatrix(U); */
 
+     printMatrix(T);
+
+     printMatrix(U); */
 
   printf("\n\n");
   freeMatrix(X);
   freeMatrix(T);
 }
-

@@ -4,12 +4,12 @@
  *                two-layer directed, cyclic graph.
  *               Copyright (2013) Sandia Corporation
  *
- * Copyright (2013) Sandia Corporation. Under the terms of Contract 
- * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government 
+ * Copyright (2013) Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government
  * retains certain rights in this software.
  *
  * This file is part of PathFinder.
- * 
+ *
  * PathFinder is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -50,23 +50,20 @@
  * the graph for "signatures"
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
 
 #ifdef USE_OMP
 #include <omp.h>
 #endif
 
+#include "bitfield.h"
 #include "graph.h"
 #include "systemCallMap.h"
-#include "bitfield.h"
 #include "utils.h"
-
-
-
 
 /* -------------------------------------------
  * Graph Method Definitions
@@ -77,110 +74,91 @@
  * the graph pointer.
  */
 
-Graph *Graph_new()
-{
-    Graph *graph= NULL;
-    graph = malloc( sizeof( Graph ));
-    if ( graph )
-    {
-        /* The malloc worked! */
-        graph->fileName = NULL;
-        graph->totalNodes = 0;
-        graph->outerNodes = NULL;
-        graph->searchDiagram = NULL;
-    }
+Graph *Graph_new() {
+  Graph *graph = NULL;
+  graph = malloc(sizeof(Graph));
+  if (graph) {
+    /* The malloc worked! */
+    graph->fileName = NULL;
+    graph->totalNodes = 0;
+    graph->outerNodes = NULL;
+    graph->searchDiagram = NULL;
+  }
 
-    return( graph );
+  return (graph);
 }
 
 /* Destructor - erases current graph, sets singleton to NULL */
-void Graph_delete( Graph *trash )
-{
-    SearchDiagram *element;
-    if ( trash )
-    {
-        free( trash->fileName );
-        NodeList_clear( trash->outerNodes, true );
-        if ( trash->searchDiagram ) {
-            for ( element = trash->searchDiagram; element->node != NULL; ++element )
-            {
-                free( element->edgeReferenceArray );
-            }
-            free( trash->searchDiagram );
-        }
-        free( trash );
+void Graph_delete(Graph *trash) {
+  SearchDiagram *element;
+  if (trash) {
+    free(trash->fileName);
+    NodeList_clear(trash->outerNodes, true);
+    if (trash->searchDiagram) {
+      for (element = trash->searchDiagram; element->node != NULL; ++element) {
+        free(element->edgeReferenceArray);
+      }
+      free(trash->searchDiagram);
     }
+    free(trash);
+  }
 }
 
-bool Graph_addOuterNode( Graph *graph, Node *newOuterNode )
-{
-    /* a little basic error checking */
-    if ( !graph || !newOuterNode )
-        return (false);
+bool Graph_addOuterNode(Graph *graph, Node *newOuterNode) {
+  /* a little basic error checking */
+  if (!graph || !newOuterNode)
+    return (false);
 
-    /* Is this the first outer node? */
-    if ( graph->outerNodes == NULL ) /* Allocates singletonGraph if it's not there */
-        {
-        graph->outerNodes = NodeList_new();
-            if ( !graph->outerNodes )
-                return( false ); /* the malloc failed */
-            graph->outerNodes->node = newOuterNode;
-            return( true );
-        }
+  /* Is this the first outer node? */
+  if (graph->outerNodes ==
+      NULL) /* Allocates singletonGraph if it's not there */
+  {
+    graph->outerNodes = NodeList_new();
+    if (!graph->outerNodes)
+      return (false); /* the malloc failed */
+    graph->outerNodes->node = newOuterNode;
+    return (true);
+  }
 
-    /* Otherwise, insert the new node at the tail of the singleton graph */
-    return( NodeList_insertBack( graph->outerNodes, newOuterNode ));
+  /* Otherwise, insert the new node at the tail of the singleton graph */
+  return (NodeList_insertBack(graph->outerNodes, newOuterNode));
 }
 
-
-/* Finds a node within the graph. If deep is true, we check interior nodes as well.
- * If deep is false, we only check to see if the id is an outer node. This does NOT
- * find the path to the node.
+/* Finds a node within the graph. If deep is true, we check interior nodes as
+ * well. If deep is false, we only check to see if the id is an outer node. This
+ * does NOT find the path to the node.
  */
-Node *Graph_findNode( Graph *graph, int id, bool deep )
-{
-    NodeList *nodes;
-    Node *node;
+Node *Graph_findNode(Graph *graph, int id, bool deep) {
+  NodeList *nodes;
+  Node *node;
 
-    for ( nodes = graph->outerNodes; nodes != NULL; nodes = nodes->nextNode )
-    {
-        if ( nodes->node->id == id )
-            return( nodes->node );
-        /* If that wasn't the node, and we're going deep, see if it's there. */
-        if ( deep )
-        {
-            node = Graph_findContainedNode( nodes->node, id );
-            if ( node )
-                return( node );
-        }
+  for (nodes = graph->outerNodes; nodes != NULL; nodes = nodes->nextNode) {
+    if (nodes->node->id == id)
+      return (nodes->node);
+    /* If that wasn't the node, and we're going deep, see if it's there. */
+    if (deep) {
+      node = Graph_findContainedNode(nodes->node, id);
+      if (node)
+        return (node);
     }
+  }
 
-    return( NULL );
+  return (NULL);
 }
 
-
-
-
-/* Determine if a given node contains the node specified by id. If this problem extended
- * beyond two layers, this method would be recursive. Returns NULL if node is not contained.
- * This does NOT find the path to the node.
+/* Determine if a given node contains the node specified by id. If this problem
+ * extended beyond two layers, this method would be recursive. Returns NULL if
+ * node is not contained. This does NOT find the path to the node.
  */
-Node *Graph_findContainedNode( Node *node, int id )
-{
-    NodeList *nodes;
+Node *Graph_findContainedNode(Node *node, int id) {
+  NodeList *nodes;
 
-    for ( nodes = node->interiorNodes; nodes != NULL; nodes = nodes->nextNode )
-    {
-        if ( nodes->node->id == id )
-            return( nodes->node );
-    }
+  for (nodes = node->interiorNodes; nodes != NULL; nodes = nodes->nextNode) {
+    if (nodes->node->id == id)
+      return (nodes->node);
+  }
 
-    return( NULL );
+  return (NULL);
 }
-
-
-
-
-
 
 /* Search Algorithms */

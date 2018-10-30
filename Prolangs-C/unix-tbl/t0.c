@@ -2,9 +2,9 @@
 static char sccsid[] = "@(#)t0.c	4.2 8/11/83";
 #endif
 
- /* t0.c: storage allocation */
+/* t0.c: storage allocation */
 #
-# include "t..c"
+#include "t..c"
 int expflg = 0;
 int ctrflg = 0;
 int boxflg = 0;
@@ -33,7 +33,7 @@ int lefline[MAXHEAD][MAXCOL];
 char cll[MAXCOL][CLLEN];
 /*char *rpt[MAXHEAD][MAXCOL];*/
 /*char rpttx[MAXRPT];*/
-int stynum[MAXLIN+1];
+int stynum[MAXLIN + 1];
 int nslin, nclin;
 int sep[MAXCOL];
 int fullbot[MAXLIN];
@@ -45,8 +45,9 @@ int iline = 1;
 char *ifile = "Input";
 int texname = 'a';
 int texct = 0;
-char texstr[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789";
+char texstr[] =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789";
 int linstart;
 char *exstore, *exlim;
-FILE *tabin  /* = stdin */;
-FILE *tabout  /* = stdout */;
+FILE *tabin /* = stdin */;
+FILE *tabout /* = stdout */;

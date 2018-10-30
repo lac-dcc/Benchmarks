@@ -7,10 +7,10 @@
  * useful. The suite comes with no warranty, and no author or
  * distributor accepts any responsibility for the consequences of its
  * use.
- * 
+ *
  * Everyone is granted permission to copy, modify and redistribute
  * this tool set under the following conditions:
- * 
+ *
  *    Permission is granted to anyone to make or distribute copies
  *    of this source code, either as received or modified, in any
  *    medium, provided that all copyright notices, permission and
@@ -35,8 +35,8 @@
  *
  * In other words, you are welcome to use and share this source file.
  * You are forbidden to forbid anyone else to use, share and improve
- * what you give them. 
- *  
+ * what you give them.
+ *
  */
 
 /* crc32.c -- package to compute 32-bit CRC one byte at a time          */
@@ -73,76 +73,64 @@
 /*  by Avram Perez, Byte-wise CRC Calculations, IEEE Micro 3, 40 (1983).*/
 /*                                                                      */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "packet.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #define POLYNOMIAL 0x04c11db7L
 
 static unsigned long crc_table[256];
 
 /* generate the table of CRC remainders for all possible bytes */
-void 
-gen_crc_table()
-{ 
-  register int i, j;  
+void gen_crc_table() {
+  register int i, j;
   register unsigned long crc_accum;
-  
-  for (i = 0;  i < 256;  i++)
-    { 
-      crc_accum = ((unsigned long) i << 24);
-      for (j = 0;  j < 8;  j++)
-	{ 
-	  if (crc_accum & 0x80000000L)
-	    crc_accum = (crc_accum << 1) ^ POLYNOMIAL;
-	  else
-	    crc_accum = (crc_accum << 1); 
-	}
-      crc_table[i] = crc_accum; 
+
+  for (i = 0; i < 256; i++) {
+    crc_accum = ((unsigned long)i << 24);
+    for (j = 0; j < 8; j++) {
+      if (crc_accum & 0x80000000L)
+        crc_accum = (crc_accum << 1) ^ POLYNOMIAL;
+      else
+        crc_accum = (crc_accum << 1);
     }
-  return; 
+    crc_table[i] = crc_accum;
+  }
+  return;
 }
 
 /* update the CRC on the data block one byte at a time */
-unsigned long 
-update_crc(unsigned long crc_accum, 
-	   char *data_blk_ptr,
-	   int data_blk_size)
-{ 
+unsigned long update_crc(unsigned long crc_accum, char *data_blk_ptr,
+                         int data_blk_size) {
   register int i, j;
-  for (j = 0;  j < data_blk_size;  j++)
-    { 
-      i = ((int)(crc_accum >> 24) ^ *data_blk_ptr++) & 0xff;
-      crc_accum = (crc_accum << 8) ^ crc_table[i]; 
-    }
-  return crc_accum; 
+  for (j = 0; j < data_blk_size; j++) {
+    i = ((int)(crc_accum >> 24) ^ *data_blk_ptr++) & 0xff;
+    crc_accum = (crc_accum << 8) ^ crc_table[i];
+  }
+  return crc_accum;
 }
 
-int main (int argc, char **argv)
-{
+int main(int argc, char **argv) {
   unsigned long crc_accum;
   int i = 0, numpackets;
   char *packet;
-  
-  if (argc != 2)
-    {
-      fprintf (stderr, "Usage: crc #numpackets");
-      exit (0);
-    }
-  else 
-    numpackets = atoi (argv[1]);
-  
+
+  if (argc != 2) {
+    fprintf(stderr, "Usage: crc #numpackets");
+    exit(0);
+  } else
+    numpackets = atoi(argv[1]);
+
   gen_crc_table();
-  
-  while (i < numpackets)
-    {
-      packet = get_next_packet(i);
-      crc_accum = update_crc (0, packet, packet_size(i));
-      i++;
-    }
-  
-  fprintf (stdout, "CRC completed for %d packets \n", numpackets);
-  fprintf (stdout, "crc_accum is %u\n", (unsigned) crc_accum);
-  
+
+  while (i < numpackets) {
+    packet = get_next_packet(i);
+    crc_accum = update_crc(0, packet, packet_size(i));
+    i++;
+  }
+
+  fprintf(stdout, "CRC completed for %d packets \n", numpackets);
+  fprintf(stdout, "crc_accum is %u\n", (unsigned)crc_accum);
+
   return 0;
 }

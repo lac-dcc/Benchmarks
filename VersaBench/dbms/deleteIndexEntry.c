@@ -21,50 +21,50 @@
  *              Copyright 1999, Atlantic Aerospace Electronics Corp.
  */
 
-#include <assert.h>         /* for assert()                    */
-#include <stdlib.h>         /* for free() and NULL definitions */
 #include "dataManagement.h" /* for primitive type definitions  */
 #include "errorMessage.h"   /* for errorMessage() definition   */
 #include "index.h"          /* for IndexEntry definition       */
+#include <assert.h>         /* for assert()                    */
+#include <stdlib.h>         /* for free() and NULL definitions */
 
-void deleteIndexEntry( IndexEntry * entry,  /*  entry to delete */
-                       Int level )          /*  level of entry  */
-{   /*  beginning of deleteIndexEntry() */
-    static Char name[] = "deleteIndexEntry";
+void deleteIndexEntry(IndexEntry *entry, /*  entry to delete */
+                      Int level)         /*  level of entry  */
+{                                        /*  beginning of deleteIndexEntry() */
+  static Char name[] = "deleteIndexEntry";
 
-    assert( entry );
-    assert( level >= LEAF );
+  assert(entry);
+  assert(level >= LEAF);
 
-    /*
-     *  If level is greater than a leaf, then child is a node. Assert
-     *  that the child exists and then delete child.
-     */
-    if ( level > LEAF ) {
-        assert( entry->child.node );          /* assert that child exits */
-        deleteIndexNode( entry->child.node ); /* delete node child       */
-    }   /*  end of if ( level > LEAF )  */
-    /*
-     *  If level is a leaf, then child is a data object. Assert that
-     *  the child exists and then delete the child.
-     */
-    else if ( level == LEAF ) {
-        assert( entry->child.dataObject );           /* assert child exits  */
-        deleteDataObject( entry->child.dataObject ); /* delete object child */
-    }   /*  end of if ( level == LEAF ) */
-    /*
-     *  Else, don't know what child is since level is negative which is 
-     *  undefined.
-     */
-    else {
-        errorMessage( "invalid level", REPLACE );
-        errorMessage( name, PREPEND );
-    }   /*  end of else */
+  /*
+   *  If level is greater than a leaf, then child is a node. Assert
+   *  that the child exists and then delete child.
+   */
+  if (level > LEAF) {
+    assert(entry->child.node);          /* assert that child exits */
+    deleteIndexNode(entry->child.node); /* delete node child       */
+  }                                     /*  end of if ( level > LEAF )  */
+  /*
+   *  If level is a leaf, then child is a data object. Assert that
+   *  the child exists and then delete the child.
+   */
+  else if (level == LEAF) {
+    assert(entry->child.dataObject);           /* assert child exits  */
+    deleteDataObject(entry->child.dataObject); /* delete object child */
+  } /*  end of if ( level == LEAF ) */
+  /*
+   *  Else, don't know what child is since level is negative which is
+   *  undefined.
+   */
+  else {
+    errorMessage("invalid level", REPLACE);
+    errorMessage(name, PREPEND);
+  } /*  end of else */
 
-    /*
-     *  Delete entry
-     */
-    free( entry );
-    entry = NULL;
+  /*
+   *  Delete entry
+   */
+  free(entry);
+  entry = NULL;
 
-    return;
-}   /*  end of deleteIndexEntry()   */
+  return;
+} /*  end of deleteIndexEntry()   */

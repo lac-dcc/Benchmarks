@@ -6,26 +6,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 #ifdef SMALL_PROBLEM_SIZE
 #define LENGTH 30
 #else
 #define LENGTH 46
 #endif
-    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
-    int a, b, c, d, e, f, x=0;
-	
-    for (a=0; a<n; a++)
-	for (b=0; b<n; b++)
-	    for (c=0; c<n; c++)
-		for (d=0; d<n; d++)
-		    for (e=0; e<n; e++)
-			for (f=0; f<n; f++)
-			    x++;
+  int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+  int a, b, c, d, e, f, x = 0;
 
-    printf("%d\n", x);
-    return(0);
+  for (a = 0; a < n; a++)
+    for (b = 0; b < n; b++)
+      for (c = 0; c < n; c++)
+        for (d = 0; d < n; d++)
+          for (e = 0; e < n; e++)
+            for (f = 0; f < n; f++)
+              x++;
+
+  printf("%d\n", x);
+  return (0);
 }
-
-

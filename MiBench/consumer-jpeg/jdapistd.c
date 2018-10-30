@@ -18,10 +18,8 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 
-
 /* Forward declarations */
 LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
-
 
 /*
  * Decompression initialization.
@@ -35,8 +33,7 @@ LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
  */
 
 GLOBAL(boolean)
-jpeg_start_decompress (j_decompress_ptr cinfo)
-{
+jpeg_start_decompress(j_decompress_ptr cinfo) {
   if (cinfo->global_state == DSTATE_READY) {
     /* First call: initialize master control, select active modules */
     jinit_master_decompress(cinfo);
@@ -52,24 +49,24 @@ jpeg_start_decompress (j_decompress_ptr cinfo)
     if (cinfo->inputctl->has_multiple_scans) {
 #ifdef D_MULTISCAN_FILES_SUPPORTED
       for (;;) {
-	int retcode;
-	/* Call progress monitor hook if present */
-	if (cinfo->progress != NULL)
-	  (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
-	/* Absorb some more input */
-	retcode = (*cinfo->inputctl->consume_input) (cinfo);
-	if (retcode == JPEG_SUSPENDED)
-	  return FALSE;
-	if (retcode == JPEG_REACHED_EOI)
-	  break;
-	/* Advance progress counter if appropriate */
-	if (cinfo->progress != NULL &&
-	    (retcode == JPEG_ROW_COMPLETED || retcode == JPEG_REACHED_SOS)) {
-	  if (++cinfo->progress->pass_counter >= cinfo->progress->pass_limit) {
-	    /* jdmaster underestimated number of scans; ratchet up one scan */
-	    cinfo->progress->pass_limit += (long) cinfo->total_iMCU_rows;
-	  }
-	}
+        int retcode;
+        /* Call progress monitor hook if present */
+        if (cinfo->progress != NULL)
+          (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
+        /* Absorb some more input */
+        retcode = (*cinfo->inputctl->consume_input)(cinfo);
+        if (retcode == JPEG_SUSPENDED)
+          return FALSE;
+        if (retcode == JPEG_REACHED_EOI)
+          break;
+        /* Advance progress counter if appropriate */
+        if (cinfo->progress != NULL &&
+            (retcode == JPEG_ROW_COMPLETED || retcode == JPEG_REACHED_SOS)) {
+          if (++cinfo->progress->pass_counter >= cinfo->progress->pass_limit) {
+            /* jdmaster underestimated number of scans; ratchet up one scan */
+            cinfo->progress->pass_limit += (long)cinfo->total_iMCU_rows;
+          }
+        }
       }
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -82,7 +79,6 @@ jpeg_start_decompress (j_decompress_ptr cinfo)
   return output_pass_setup(cinfo);
 }
 
-
 /*
  * Set up for an output pass, and perform any dummy pass(es) needed.
  * Common subroutine for jpeg_start_decompress and jpeg_start_output.
@@ -92,11 +88,10 @@ jpeg_start_decompress (j_decompress_ptr cinfo)
  */
 
 LOCAL(boolean)
-output_pass_setup (j_decompress_ptr cinfo)
-{
+output_pass_setup(j_decompress_ptr cinfo) {
   if (cinfo->global_state != DSTATE_PRESCAN) {
     /* First call: do pass setup */
-    (*cinfo->master->prepare_for_output_pass) (cinfo);
+    (*cinfo->master->prepare_for_output_pass)(cinfo);
     cinfo->output_scanline = 0;
     cinfo->global_state = DSTATE_PRESCAN;
   }
@@ -108,20 +103,20 @@ output_pass_setup (j_decompress_ptr cinfo)
       JDIMENSION last_scanline;
       /* Call progress monitor hook if present */
       if (cinfo->progress != NULL) {
-	cinfo->progress->pass_counter = (long) cinfo->output_scanline;
-	cinfo->progress->pass_limit = (long) cinfo->output_height;
-	(*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
+        cinfo->progress->pass_counter = (long)cinfo->output_scanline;
+        cinfo->progress->pass_limit = (long)cinfo->output_height;
+        (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
       }
       /* Process some data */
       last_scanline = cinfo->output_scanline;
-      (*cinfo->main->process_data) (cinfo, (JSAMPARRAY) NULL,
-				    &cinfo->output_scanline, (JDIMENSION) 0);
+      (*cinfo->main->process_data)(cinfo, (JSAMPARRAY)NULL,
+                                   &cinfo->output_scanline, (JDIMENSION)0);
       if (cinfo->output_scanline == last_scanline)
-	return FALSE;		/* No progress made, must suspend */
+        return FALSE; /* No progress made, must suspend */
     }
     /* Finish up dummy pass, and set up for another one */
-    (*cinfo->master->finish_output_pass) (cinfo);
-    (*cinfo->master->prepare_for_output_pass) (cinfo);
+    (*cinfo->master->finish_output_pass)(cinfo);
+    (*cinfo->master->prepare_for_output_pass)(cinfo);
     cinfo->output_scanline = 0;
 #else
     ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -133,7 +128,6 @@ output_pass_setup (j_decompress_ptr cinfo)
   cinfo->global_state = cinfo->raw_data_out ? DSTATE_RAW_OK : DSTATE_SCANNING;
   return TRUE;
 }
-
 
 /*
  * Read some scanlines of data from the JPEG decompressor.
@@ -149,9 +143,8 @@ output_pass_setup (j_decompress_ptr cinfo)
  */
 
 GLOBAL(JDIMENSION)
-jpeg_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
-		     JDIMENSION max_lines)
-{
+jpeg_read_scanlines(j_decompress_ptr cinfo, JSAMPARRAY scanlines,
+                    JDIMENSION max_lines) {
   JDIMENSION row_ctr;
 
   if (cinfo->global_state != DSTATE_SCANNING)
@@ -163,18 +156,17 @@ jpeg_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
 
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL) {
-    cinfo->progress->pass_counter = (long) cinfo->output_scanline;
-    cinfo->progress->pass_limit = (long) cinfo->output_height;
-    (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
+    cinfo->progress->pass_counter = (long)cinfo->output_scanline;
+    cinfo->progress->pass_limit = (long)cinfo->output_height;
+    (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 
   /* Process some data */
   row_ctr = 0;
-  (*cinfo->main->process_data) (cinfo, scanlines, &row_ctr, max_lines);
+  (*cinfo->main->process_data)(cinfo, scanlines, &row_ctr, max_lines);
   cinfo->output_scanline += row_ctr;
   return row_ctr;
 }
-
 
 /*
  * Alternate entry point to read raw data.
@@ -182,9 +174,8 @@ jpeg_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
  */
 
 GLOBAL(JDIMENSION)
-jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
-		    JDIMENSION max_lines)
-{
+jpeg_read_raw_data(j_decompress_ptr cinfo, JSAMPIMAGE data,
+                   JDIMENSION max_lines) {
   JDIMENSION lines_per_iMCU_row;
 
   if (cinfo->global_state != DSTATE_RAW_OK)
@@ -196,9 +187,9 @@ jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
 
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL) {
-    cinfo->progress->pass_counter = (long) cinfo->output_scanline;
-    cinfo->progress->pass_limit = (long) cinfo->output_height;
-    (*cinfo->progress->progress_monitor) ((j_common_ptr) cinfo);
+    cinfo->progress->pass_counter = (long)cinfo->output_scanline;
+    cinfo->progress->pass_limit = (long)cinfo->output_height;
+    (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 
   /* Verify that at least one iMCU row can be returned. */
@@ -207,14 +198,13 @@ jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
     ERREXIT(cinfo, JERR_BUFFER_SIZE);
 
   /* Decompress directly into user's buffer. */
-  if (! (*cinfo->coef->decompress_data) (cinfo, data))
-    return 0;			/* suspension forced, can do nothing more */
+  if (!(*cinfo->coef->decompress_data)(cinfo, data))
+    return 0; /* suspension forced, can do nothing more */
 
   /* OK, we processed one iMCU row. */
   cinfo->output_scanline += lines_per_iMCU_row;
   return lines_per_iMCU_row;
 }
-
 
 /* Additional entry points for buffered-image mode. */
 
@@ -225,22 +215,19 @@ jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
  */
 
 GLOBAL(boolean)
-jpeg_start_output (j_decompress_ptr cinfo, int scan_number)
-{
+jpeg_start_output(j_decompress_ptr cinfo, int scan_number) {
   if (cinfo->global_state != DSTATE_BUFIMAGE &&
       cinfo->global_state != DSTATE_PRESCAN)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Limit scan number to valid range */
   if (scan_number <= 0)
     scan_number = 1;
-  if (cinfo->inputctl->eoi_reached &&
-      scan_number > cinfo->input_scan_number)
+  if (cinfo->inputctl->eoi_reached && scan_number > cinfo->input_scan_number)
     scan_number = cinfo->input_scan_number;
   cinfo->output_scan_number = scan_number;
   /* Perform any dummy output passes, and set up for the real pass */
   return output_pass_setup(cinfo);
 }
-
 
 /*
  * Finish up after an output pass in buffered-image mode.
@@ -250,13 +237,13 @@ jpeg_start_output (j_decompress_ptr cinfo, int scan_number)
  */
 
 GLOBAL(boolean)
-jpeg_finish_output (j_decompress_ptr cinfo)
-{
+jpeg_finish_output(j_decompress_ptr cinfo) {
   if ((cinfo->global_state == DSTATE_SCANNING ||
-       cinfo->global_state == DSTATE_RAW_OK) && cinfo->buffered_image) {
+       cinfo->global_state == DSTATE_RAW_OK) &&
+      cinfo->buffered_image) {
     /* Terminate this pass. */
     /* We do not require the whole pass to have been completed. */
-    (*cinfo->master->finish_output_pass) (cinfo);
+    (*cinfo->master->finish_output_pass)(cinfo);
     cinfo->global_state = DSTATE_BUFPOST;
   } else if (cinfo->global_state != DSTATE_BUFPOST) {
     /* BUFPOST = repeat call after a suspension, anything else is error */
@@ -264,9 +251,9 @@ jpeg_finish_output (j_decompress_ptr cinfo)
   }
   /* Read markers looking for SOS or EOI */
   while (cinfo->input_scan_number <= cinfo->output_scan_number &&
-	 ! cinfo->inputctl->eoi_reached) {
-    if ((*cinfo->inputctl->consume_input) (cinfo) == JPEG_SUSPENDED)
-      return FALSE;		/* Suspend, come back later */
+         !cinfo->inputctl->eoi_reached) {
+    if ((*cinfo->inputctl->consume_input)(cinfo) == JPEG_SUSPENDED)
+      return FALSE; /* Suspend, come back later */
   }
   cinfo->global_state = DSTATE_BUFIMAGE;
   return TRUE;

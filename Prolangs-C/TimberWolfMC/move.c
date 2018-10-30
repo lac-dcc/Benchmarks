@@ -1,124 +1,107 @@
-#include "port.h"
 #include "mt.h"
+#include "port.h"
 
-extern void MTPoint(MT *t,int *x,int *y);
+extern void MTPoint(MT *t, int *x, int *y);
 extern void MTIdentity(MT *t);
 extern void MTMY(MT *t);
 extern void MTMX(MT *t);
-extern void MTRotate(MT *t,int x,int y);
+extern void MTRotate(MT *t, int x, int y);
 
-static MT *mt = (MT *) NULL ;
+static MT *mt = (MT *)NULL;
 
+void point(int *x, int *y) {
+  int xx, yy;
 
+  if (mt == (MT *)NULL) {
 
-void point( int *x , int *y )
-{
-    int xx , yy ;
+    return;
+  }
 
-    if( mt == (MT *) NULL ) {
+  xx = *x;
+  yy = *y;
 
-        return;
-    }
+  MTPoint(mt, &xx, &yy);
 
-    xx = *x ;
-    yy = *y ;
+  *x = xx;
+  *y = yy;
 
-    MTPoint( mt , &xx , &yy ) ;
-
-    *x = xx ;
-    *y = yy ;
-
-    return ;
+  return;
 }
 
+void rect(int *l, int *b, int *r, int *t) {
 
+  int temp;
 
-void rect( int *l , int *b , int *r , int *t )
-{
+  point(l, b);
+  point(r, t);
 
-    int temp ;
+  if (*l > *r) {
 
-    point( l , b ) ;
-    point( r , t ) ;
+    temp = *l;
+    *l = *r;
+    *r = temp;
+  }
 
-    if( *l > *r ) {
+  if (*b > *t) {
 
-        temp = *l   ;
-        *l   = *r   ;
-        *r   = temp ; 
-    }
+    temp = *b;
+    *b = *t;
+    *t = temp;
+  }
 
-    if( *b > *t ) {
-
-        temp = *b   ;
-        *b   = *t   ;
-        *t   = temp ; 
-    }
-
-    return ;
+  return;
 }
 
+void move(int moveType) {
 
+  if (mt == (MT *)NULL) {
 
-void move( int moveType )
-{
+    mt = MTBegin();
+  }
 
-    if( mt == (MT *) NULL ) {
+  MTIdentity(mt);
 
-    	mt = MTBegin() ;
-    }
+  switch (moveType) {
 
-    MTIdentity( mt ) ;
+  case 0:
 
-    switch( moveType ) {
+    return;
 
-        case 0 :
+  case 1:
 
-            return ;
+    MTMY(mt);
+    return;
 
+  case 2:
 
-        case 1 :
+    MTMX(mt);
+    return;
 
-            MTMY( mt ) ; 
-    	    return     ;
+  case 3:
 
+    MTRotate(mt, -1, 0);
+    return;
 
-        case 2 :
+  case 4:
 
-            MTMX( mt ) ; 
-	    return     ;
+    MTMX(mt);
+    MTRotate(mt, 0, 1);
+    return;
 
+  case 5:
 
-        case 3 :
+    MTMX(mt);
+    MTRotate(mt, 0, -1);
+    return;
 
-            MTRotate( mt , -1 , 0 ) ; 
-	    return ; 
+  case 6:
 
+    MTRotate(mt, 0, 1);
+    return;
 
-        case 4 :
+  case 7:
 
-            MTMX( mt ) ; 
-	    MTRotate( mt , 0 , 1 ) ; 
-	    return ;
-
-
-        case 5 :
-
-            MTMX( mt ) ; 
-	    MTRotate( mt , 0 , -1 ) ; 
-	    return ;
-
-
-        case 6 :
-
-            MTRotate( mt , 0 , 1 ) ; 
-	    return ;
-
-
-        case 7 :
-
-            MTRotate( mt , 0 , -1 ) ; 
-	    return ;
-
-    }
+    MTRotate(mt, 0, -1);
+    return;
+  }
 }

@@ -1,25 +1,25 @@
-#include "pdefs.h"
 #include "pcvt.h"
+#include "pdefs.h"
 #include "precision.h"
 
 /*
  * Unsigned to Precision
  */
-precision utop(i)
-   register unsigned int i;
+precision utop(i) register unsigned int i;
 {
-   register digitPtr  uPtr;
-   register precision u = palloc(INTSIZE);
+  register digitPtr uPtr;
+  register precision u = palloc(INTSIZE);
 
-   if (u == pUndef) return pUndef;
+  if (u == pUndef)
+    return pUndef;
 
-   u->sign    = false;
-   uPtr	      = u->value;
-   do {
-      *uPtr++ = modBase(i);
-      i	      = divBase(i);
-   } while (i != 0);
+  u->sign = false;
+  uPtr = u->value;
+  do {
+    *uPtr++ = modBase(i);
+    i = divBase(i);
+  } while (i != 0);
 
-   u->size = (uPtr - u->value);
-   return presult(u);
+  u->size = (uPtr - u->value);
+  return presult(u);
 }

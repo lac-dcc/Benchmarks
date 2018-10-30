@@ -20,21 +20,22 @@ unsigned __attribute__((noinline)) ReverseBits32(unsigned n) {
          ((n & 0x0000ff00u) << 8) | ((n & 0x000000ffu) << 24);
 }
 
-unsigned long long __attribute__((noinline)) ReverseBits64(unsigned long long n) {
+unsigned long long __attribute__((noinline))
+ReverseBits64(unsigned long long n) {
   n = ((n >> 1) & 0x5555555555555555ull) | ((n & 0x5555555555555555ull) << 1);
   n = ((n >> 2) & 0x3333333333333333ull) | ((n & 0x3333333333333333ull) << 2);
   n = ((n >> 4) & 0x0F0F0F0F0F0F0F0Full) | ((n & 0x0F0F0F0F0F0F0F0Full) << 4);
   return ((n & 0xFF00000000000000ull) >> 56) |
          ((n & 0x00FF000000000000ull) >> 40) |
          ((n & 0x0000FF0000000000ull) >> 24) |
-         ((n & 0x000000FF00000000ull) >> 8)  |
+         ((n & 0x000000FF00000000ull) >> 8) |
          ((n & 0x00000000000000FFull) << 56) |
          ((n & 0x000000000000FF00ull) << 40) |
          ((n & 0x0000000000FF0000ull) << 24) |
          ((n & 0x00000000FF000000ull) << 8);
 }
 
-int main (void) {
+int main(void) {
   unsigned long long sum32 = 0, sum64 = 0;
   unsigned int rev32 = strtoll("0x12345678", NULL, 16);
   unsigned long long rev64 = strtoll("0x0123456789012345", NULL, 16);
@@ -45,7 +46,7 @@ int main (void) {
 #endif
 
 // Check for compilers that support __has_builtin but not __builtin_bitreverse*
-#if (!__has_builtin(__builtin_bitreverse32) ||\
+#if (!__has_builtin(__builtin_bitreverse32) ||                                 \
      !__has_builtin(__builtin_bitreverse64))
   printf("0x%x -> 0x%x\n", rev32, ReverseBits32(rev32));
   printf("0x%llx -> 0x%llx\n", rev64, ReverseBits64(rev64));

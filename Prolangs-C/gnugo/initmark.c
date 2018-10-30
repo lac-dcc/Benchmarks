@@ -38,10 +38,9 @@ extern unsigned char ma[19][19];
 void initmark(void)
 /* initialize all marking with zero */
 {
-int i, j;
+  int i, j;
 
   for (i = 0; i < 19; i++)
     for (j = 0; j < 19; j++)
       ma[i][j] = 0;
-}  /* end initmark */
-
+} /* end initmark */

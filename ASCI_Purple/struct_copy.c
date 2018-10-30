@@ -14,62 +14,53 @@
 
 #include "headers.h"
 
-
 /*--------------------------------------------------------------------------
  * hypre_StructCopy
  *--------------------------------------------------------------------------*/
 
-int
-hypre_StructCopy( hypre_StructVector *x,
-                  hypre_StructVector *y     )
-{
-   int ierr = 0;
+int hypre_StructCopy(hypre_StructVector *x, hypre_StructVector *y) {
+  int ierr = 0;
 
-   hypre_Box       *x_data_box;
-   hypre_Box       *y_data_box;
-                   
-   int              xi;
-   int              yi;
-                   
-   double          *xp;
-   double          *yp;
-                   
-   hypre_BoxArray  *boxes;
-   hypre_Box       *box;
-   hypre_Index      loop_size;
-   hypre_IndexRef   start;
-   hypre_Index      unit_stride;
-                   
-   int              i;
-   int              loopi, loopj, loopk;
+  hypre_Box *x_data_box;
+  hypre_Box *y_data_box;
 
-   hypre_SetIndex(unit_stride, 1, 1, 1);
+  int xi;
+  int yi;
 
-   boxes = hypre_StructGridBoxes(hypre_StructVectorGrid(y));
-   hypre_ForBoxI(i, boxes)
-      {
-         box   = hypre_BoxArrayBox(boxes, i);
-         start = hypre_BoxIMin(box);
+  double *xp;
+  double *yp;
 
-         x_data_box = hypre_BoxArrayBox(hypre_StructVectorDataSpace(x), i);
-         y_data_box = hypre_BoxArrayBox(hypre_StructVectorDataSpace(y), i);
+  hypre_BoxArray *boxes;
+  hypre_Box *box;
+  hypre_Index loop_size;
+  hypre_IndexRef start;
+  hypre_Index unit_stride;
 
-         xp = hypre_StructVectorBoxData(x, i);
-         yp = hypre_StructVectorBoxData(y, i);
+  int i;
+  int loopi, loopj, loopk;
 
-         hypre_BoxGetSize(box, loop_size);
+  hypre_SetIndex(unit_stride, 1, 1, 1);
 
-         hypre_BoxLoop2Begin(loop_size,
-                             x_data_box, start, unit_stride, xi,
-                             y_data_box, start, unit_stride, yi);
-#define HYPRE_BOX_SMP_PRIVATE loopk,loopi,loopj,xi,yi
+  boxes = hypre_StructGridBoxes(hypre_StructVectorGrid(y));
+  hypre_ForBoxI(i, boxes) {
+    box = hypre_BoxArrayBox(boxes, i);
+    start = hypre_BoxIMin(box);
+
+    x_data_box = hypre_BoxArrayBox(hypre_StructVectorDataSpace(x), i);
+    y_data_box = hypre_BoxArrayBox(hypre_StructVectorDataSpace(y), i);
+
+    xp = hypre_StructVectorBoxData(x, i);
+    yp = hypre_StructVectorBoxData(y, i);
+
+    hypre_BoxGetSize(box, loop_size);
+
+    hypre_BoxLoop2Begin(loop_size, x_data_box, start, unit_stride, xi,
+                        y_data_box, start, unit_stride, yi);
+#define HYPRE_BOX_SMP_PRIVATE loopk, loopi, loopj, xi, yi
 #include "hypre_box_smp_forloop.h"
-	 hypre_BoxLoop2For(loopi, loopj, loopk, xi, yi)
-            {
-               yp[yi] = xp[xi];
-            }
-         hypre_BoxLoop2End(xi, yi);
-      }
+    hypre_BoxLoop2For(loopi, loopj, loopk, xi, yi) { yp[yi] = xp[xi]; }
+    hypre_BoxLoop2End(xi, yi);
+  }
 
-   return ierr;
+  return ierr;
 }

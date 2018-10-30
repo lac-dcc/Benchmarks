@@ -6,14 +6,13 @@
    anyone for the consequences of using it or for whether it serves any
    particular purpose or works at all, unless he says so in writing.
    Refer to the GNU General Public License for full details.
-   
+
    Everyone is granted permission to copy, modify and redistribute plot,
    but only under the conditions described in the GNU General Public
    License.  A copy of this license is supposed to have been given to you
    along with plot so you can know your rights and responsibilities.  It
    should be in a file named COPYING.  Among other things, the copyright
    notice and this notice must be preserved on all copies.  */
-
 
 /* This file is the circle routine, which is a standard part of the plot
    library. It draws a circle given the center x,y and the radius */
@@ -25,8 +24,8 @@
 #else
 #include <string.h>
 #endif
-#include "libplot.h"
 #include "extern.h"
+#include "libplot.h"
 /*
 extern int printf();
 extern int fprintf();
@@ -36,8 +35,7 @@ extern char *sprintf();
 extern int fputs(), fputc();
 */
 
-int circle (int x, int y, int r)
-{
-  arc (x, y, x+r, y, x+r, y);
+int circle(int x, int y, int r) {
+  arc(x, y, x + r, y, x + r, y);
   return 0;
 }

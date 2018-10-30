@@ -4,8 +4,7 @@
 
 #ifdef UNIX
 
-int64 millisecs()
-{
+int64 millisecs() {
   static int64 Time = 0;
   return ++Time; /* DO NOT TIME FOR LLVM */
 }

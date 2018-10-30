@@ -7,7 +7,7 @@
  * $Revision: 21217 $
  *********************************************************************EHEADER*/
 /******************************************************************************
- * 
+ *
  *****************************************************************************/
 
 #include "headers.h"
@@ -46,182 +46,161 @@ headers.h
 @see hypre_CreateCommInfoFromStencil */
 /*--------------------------------------------------------------------------*/
 
-  int
-  hypre_CreateComputeInfo( hypre_StructGrid      *grid,
-                        hypre_StructStencil   *stencil,
-                        hypre_BoxArrayArray  **send_boxes_ptr,
-                        hypre_BoxArrayArray  **recv_boxes_ptr,
-                        int                 ***send_processes_ptr,
-                        int                 ***recv_processes_ptr,
-                        hypre_BoxArrayArray  **indt_boxes_ptr,
-                        hypre_BoxArrayArray  **dept_boxes_ptr     )
-{
-   int                      ierr = 0;
+int hypre_CreateComputeInfo(hypre_StructGrid *grid,
+                            hypre_StructStencil *stencil,
+                            hypre_BoxArrayArray **send_boxes_ptr,
+                            hypre_BoxArrayArray **recv_boxes_ptr,
+                            int ***send_processes_ptr,
+                            int ***recv_processes_ptr,
+                            hypre_BoxArrayArray **indt_boxes_ptr,
+                            hypre_BoxArrayArray **dept_boxes_ptr) {
+  int ierr = 0;
 
-   /* output variables */
-   hypre_BoxArrayArray     *send_boxes;
-   hypre_BoxArrayArray     *recv_boxes;
-   int                    **send_processes;
-   int                    **recv_processes;
-   hypre_BoxArrayArray     *indt_boxes;
-   hypre_BoxArrayArray     *dept_boxes;
+  /* output variables */
+  hypre_BoxArrayArray *send_boxes;
+  hypre_BoxArrayArray *recv_boxes;
+  int **send_processes;
+  int **recv_processes;
+  hypre_BoxArrayArray *indt_boxes;
+  hypre_BoxArrayArray *dept_boxes;
 
-   /* internal variables */
-   hypre_BoxArray          *boxes;
+  /* internal variables */
+  hypre_BoxArray *boxes;
 
-   hypre_BoxArray          *cbox_array;
-   hypre_Box               *cbox;
+  hypre_BoxArray *cbox_array;
+  hypre_Box *cbox;
 
-   int                      i;
+  int i;
 
 #ifdef HYPRE_OVERLAP_COMM_COMP
-   hypre_Box               *rembox;
-   hypre_Index             *stencil_shape;
-   int                      border[3][2] = {{0, 0}, {0, 0}, {0, 0}};
-   int                      cbox_array_size;
-   int                      s, d;
+  hypre_Box *rembox;
+  hypre_Index *stencil_shape;
+  int border[3][2] = {{0, 0}, {0, 0}, {0, 0}};
+  int cbox_array_size;
+  int s, d;
 #endif
 
-   /*------------------------------------------------------
-    * Extract needed grid info
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Extract needed grid info
+   *------------------------------------------------------*/
 
-   boxes = hypre_StructGridBoxes(grid);
+  boxes = hypre_StructGridBoxes(grid);
 
-   /*------------------------------------------------------
-    * Get communication info
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Get communication info
+   *------------------------------------------------------*/
 
-   hypre_CreateCommInfoFromStencil(grid, stencil,
-                                   &send_boxes, &recv_boxes,
-                                   &send_processes, &recv_processes);
+  hypre_CreateCommInfoFromStencil(grid, stencil, &send_boxes, &recv_boxes,
+                                  &send_processes, &recv_processes);
 
 #ifdef HYPRE_OVERLAP_COMM_COMP
 
-   /*------------------------------------------------------
-    * Compute border info
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Compute border info
+   *------------------------------------------------------*/
 
-   stencil_shape = hypre_StructStencilShape(stencil);
-   for (s = 0; s < hypre_StructStencilSize(stencil); s++)
-   {
-      for (d = 0; d < 3; d++)
-      {
-         i = hypre_IndexD(stencil_shape[s], d);
-         if (i < 0)
-         {
-            border[d][0] = hypre_max(border[d][0], -i);
-         }
-         else if (i > 0)
-         {
-            border[d][1] = hypre_max(border[d][1], i);
-         }
+  stencil_shape = hypre_StructStencilShape(stencil);
+  for (s = 0; s < hypre_StructStencilSize(stencil); s++) {
+    for (d = 0; d < 3; d++) {
+      i = hypre_IndexD(stencil_shape[s], d);
+      if (i < 0) {
+        border[d][0] = hypre_max(border[d][0], -i);
+      } else if (i > 0) {
+        border[d][1] = hypre_max(border[d][1], i);
       }
-   }
+    }
+  }
 
-   /*------------------------------------------------------
-    * Set up the dependent boxes
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Set up the dependent boxes
+   *------------------------------------------------------*/
 
-   dept_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
+  dept_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
 
-   rembox = hypre_BoxCreate();
-   hypre_ForBoxI(i, boxes)
-      {
-         cbox_array = hypre_BoxArrayArrayBoxArray(dept_boxes, i);
-         hypre_BoxArraySetSize(cbox_array, 6);
+  rembox = hypre_BoxCreate();
+  hypre_ForBoxI(i, boxes) {
+    cbox_array = hypre_BoxArrayArrayBoxArray(dept_boxes, i);
+    hypre_BoxArraySetSize(cbox_array, 6);
 
-         hypre_CopyBox(hypre_BoxArrayBox(boxes, i), rembox);
-         cbox_array_size = 0;
-         for (d = 0; d < 3; d++)
-         {
-            if ( (hypre_BoxVolume(rembox)) && (border[d][0]) )
-            {
-               cbox = hypre_BoxArrayBox(cbox_array, cbox_array_size);
-               hypre_CopyBox(rembox, cbox);
-               hypre_BoxIMaxD(cbox, d) =
-                  hypre_BoxIMinD(cbox, d) + border[d][0] - 1;
-               hypre_BoxIMinD(rembox, d) =
-                  hypre_BoxIMinD(cbox, d) + border[d][0];
-               cbox_array_size++;
-            }
-            if ( (hypre_BoxVolume(rembox)) && (border[d][1]) )
-            {
-               cbox = hypre_BoxArrayBox(cbox_array, cbox_array_size);
-               hypre_CopyBox(rembox, cbox);
-               hypre_BoxIMinD(cbox, d) =
-                  hypre_BoxIMaxD(cbox, d) - border[d][1] + 1;
-               hypre_BoxIMaxD(rembox, d) =
-                  hypre_BoxIMaxD(cbox, d) - border[d][1];
-               cbox_array_size++;
-            }
-         }
-         hypre_BoxArraySetSize(cbox_array, cbox_array_size);
+    hypre_CopyBox(hypre_BoxArrayBox(boxes, i), rembox);
+    cbox_array_size = 0;
+    for (d = 0; d < 3; d++) {
+      if ((hypre_BoxVolume(rembox)) && (border[d][0])) {
+        cbox = hypre_BoxArrayBox(cbox_array, cbox_array_size);
+        hypre_CopyBox(rembox, cbox);
+        hypre_BoxIMaxD(cbox, d) = hypre_BoxIMinD(cbox, d) + border[d][0] - 1;
+        hypre_BoxIMinD(rembox, d) = hypre_BoxIMinD(cbox, d) + border[d][0];
+        cbox_array_size++;
       }
-   hypre_BoxDestroy(rembox);
-
-   /*------------------------------------------------------
-    * Set up the independent boxes
-    *------------------------------------------------------*/
-
-   indt_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
-
-   hypre_ForBoxI(i, boxes)
-      {
-         cbox_array = hypre_BoxArrayArrayBoxArray(indt_boxes, i);
-         hypre_BoxArraySetSize(cbox_array, 1);
-         cbox = hypre_BoxArrayBox(cbox_array, 0);
-         hypre_CopyBox(hypre_BoxArrayBox(boxes, i), cbox);
-
-         for (d = 0; d < 3; d++)
-         {
-            if ( (border[d][0]) )
-            {
-               hypre_BoxIMinD(cbox, d) += border[d][0];
-            }
-            if ( (border[d][1]) )
-            {
-               hypre_BoxIMaxD(cbox, d) -= border[d][1];
-            }
-         }
+      if ((hypre_BoxVolume(rembox)) && (border[d][1])) {
+        cbox = hypre_BoxArrayBox(cbox_array, cbox_array_size);
+        hypre_CopyBox(rembox, cbox);
+        hypre_BoxIMinD(cbox, d) = hypre_BoxIMaxD(cbox, d) - border[d][1] + 1;
+        hypre_BoxIMaxD(rembox, d) = hypre_BoxIMaxD(cbox, d) - border[d][1];
+        cbox_array_size++;
       }
+    }
+    hypre_BoxArraySetSize(cbox_array, cbox_array_size);
+  }
+  hypre_BoxDestroy(rembox);
+
+  /*------------------------------------------------------
+   * Set up the independent boxes
+   *------------------------------------------------------*/
+
+  indt_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
+
+  hypre_ForBoxI(i, boxes) {
+    cbox_array = hypre_BoxArrayArrayBoxArray(indt_boxes, i);
+    hypre_BoxArraySetSize(cbox_array, 1);
+    cbox = hypre_BoxArrayBox(cbox_array, 0);
+    hypre_CopyBox(hypre_BoxArrayBox(boxes, i), cbox);
+
+    for (d = 0; d < 3; d++) {
+      if ((border[d][0])) {
+        hypre_BoxIMinD(cbox, d) += border[d][0];
+      }
+      if ((border[d][1])) {
+        hypre_BoxIMaxD(cbox, d) -= border[d][1];
+      }
+    }
+  }
 
 #else
 
-   /*------------------------------------------------------
-    * Set up the independent boxes
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Set up the independent boxes
+   *------------------------------------------------------*/
 
-   indt_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
+  indt_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
 
-   /*------------------------------------------------------
-    * Set up the dependent boxes
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Set up the dependent boxes
+   *------------------------------------------------------*/
 
-   dept_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
+  dept_boxes = hypre_BoxArrayArrayCreate(hypre_BoxArraySize(boxes));
 
-   hypre_ForBoxI(i, boxes)
-      {
-         cbox_array = hypre_BoxArrayArrayBoxArray(dept_boxes, i);
-         hypre_BoxArraySetSize(cbox_array, 1);
-         cbox = hypre_BoxArrayBox(cbox_array, 0);
-         hypre_CopyBox(hypre_BoxArrayBox(boxes, i), cbox);
-      }
+  hypre_ForBoxI(i, boxes) {
+    cbox_array = hypre_BoxArrayArrayBoxArray(dept_boxes, i);
+    hypre_BoxArraySetSize(cbox_array, 1);
+    cbox = hypre_BoxArrayBox(cbox_array, 0);
+    hypre_CopyBox(hypre_BoxArrayBox(boxes, i), cbox);
+  }
 
 #endif
 
-   /*------------------------------------------------------
-    * Return
-    *------------------------------------------------------*/
+  /*------------------------------------------------------
+   * Return
+   *------------------------------------------------------*/
 
-   *send_boxes_ptr = send_boxes;
-   *recv_boxes_ptr = recv_boxes;
-   *send_processes_ptr = send_processes;
-   *recv_processes_ptr = recv_processes;
-   *indt_boxes_ptr = indt_boxes;
-   *dept_boxes_ptr = dept_boxes;
+  *send_boxes_ptr = send_boxes;
+  *recv_boxes_ptr = recv_boxes;
+  *send_processes_ptr = send_processes;
+  *recv_processes_ptr = recv_processes;
+  *indt_boxes_ptr = indt_boxes;
+  *dept_boxes_ptr = dept_boxes;
 
-   return ierr;
+  return ierr;
 }
 
 /*==========================================================================*/
@@ -267,45 +246,35 @@ headers.h
 @see hypre_CommPkgCreate, hypre_ComputePkgDestroy */
 /*--------------------------------------------------------------------------*/
 
-  int
-  hypre_ComputePkgCreate( hypre_BoxArrayArray   *send_boxes,
-                          hypre_BoxArrayArray   *recv_boxes,
-                          hypre_Index            send_stride,
-                          hypre_Index            recv_stride,
-                          int                  **send_processes,
-                          int                  **recv_processes,
-                          hypre_BoxArrayArray   *indt_boxes,
-                          hypre_BoxArrayArray   *dept_boxes,
-                          hypre_Index            stride,
-                          hypre_StructGrid      *grid,
-                          hypre_BoxArray        *data_space,
-                          int                    num_values,
-                          hypre_ComputePkg     **compute_pkg_ptr )
-{
-   int                ierr = 0;
-   hypre_ComputePkg  *compute_pkg;
+int hypre_ComputePkgCreate(hypre_BoxArrayArray *send_boxes,
+                           hypre_BoxArrayArray *recv_boxes,
+                           hypre_Index send_stride, hypre_Index recv_stride,
+                           int **send_processes, int **recv_processes,
+                           hypre_BoxArrayArray *indt_boxes,
+                           hypre_BoxArrayArray *dept_boxes, hypre_Index stride,
+                           hypre_StructGrid *grid, hypre_BoxArray *data_space,
+                           int num_values, hypre_ComputePkg **compute_pkg_ptr) {
+  int ierr = 0;
+  hypre_ComputePkg *compute_pkg;
 
-   compute_pkg = hypre_CTAlloc(hypre_ComputePkg, 1);
+  compute_pkg = hypre_CTAlloc(hypre_ComputePkg, 1);
 
-   hypre_ComputePkgCommPkg(compute_pkg)     =
-      hypre_CommPkgCreate(send_boxes, recv_boxes,
-                          send_stride, recv_stride,
-                          data_space, data_space,
-                          send_processes, recv_processes,
-                          num_values, hypre_StructGridComm(grid),
-                          hypre_StructGridPeriodic(grid));
+  hypre_ComputePkgCommPkg(compute_pkg) = hypre_CommPkgCreate(
+      send_boxes, recv_boxes, send_stride, recv_stride, data_space, data_space,
+      send_processes, recv_processes, num_values, hypre_StructGridComm(grid),
+      hypre_StructGridPeriodic(grid));
 
-   hypre_ComputePkgIndtBoxes(compute_pkg)   = indt_boxes;
-   hypre_ComputePkgDeptBoxes(compute_pkg)   = dept_boxes;
-   hypre_CopyIndex(stride, hypre_ComputePkgStride(compute_pkg));
+  hypre_ComputePkgIndtBoxes(compute_pkg) = indt_boxes;
+  hypre_ComputePkgDeptBoxes(compute_pkg) = dept_boxes;
+  hypre_CopyIndex(stride, hypre_ComputePkgStride(compute_pkg));
 
-   hypre_StructGridRef(grid, &hypre_ComputePkgGrid(compute_pkg));
-   hypre_ComputePkgDataSpace(compute_pkg)   = data_space;
-   hypre_ComputePkgNumValues(compute_pkg)   = num_values;
+  hypre_StructGridRef(grid, &hypre_ComputePkgGrid(compute_pkg));
+  hypre_ComputePkgDataSpace(compute_pkg) = data_space;
+  hypre_ComputePkgNumValues(compute_pkg) = num_values;
 
-   *compute_pkg_ptr = compute_pkg;
+  *compute_pkg_ptr = compute_pkg;
 
-   return ierr;
+  return ierr;
 }
 
 /*==========================================================================*/
@@ -323,24 +292,21 @@ headers.h
 @see hypre_ComputePkgCreate */
 /*--------------------------------------------------------------------------*/
 
-int
-hypre_ComputePkgDestroy( hypre_ComputePkg *compute_pkg )
-{
-   int ierr = 0;
+int hypre_ComputePkgDestroy(hypre_ComputePkg *compute_pkg) {
+  int ierr = 0;
 
-   if (compute_pkg)
-   {
-      hypre_CommPkgDestroy(hypre_ComputePkgCommPkg(compute_pkg));
+  if (compute_pkg) {
+    hypre_CommPkgDestroy(hypre_ComputePkgCommPkg(compute_pkg));
 
-      hypre_BoxArrayArrayDestroy(hypre_ComputePkgIndtBoxes(compute_pkg));
-      hypre_BoxArrayArrayDestroy(hypre_ComputePkgDeptBoxes(compute_pkg));
+    hypre_BoxArrayArrayDestroy(hypre_ComputePkgIndtBoxes(compute_pkg));
+    hypre_BoxArrayArrayDestroy(hypre_ComputePkgDeptBoxes(compute_pkg));
 
-      hypre_StructGridDestroy(hypre_ComputePkgGrid(compute_pkg));
+    hypre_StructGridDestroy(hypre_ComputePkgGrid(compute_pkg));
 
-      hypre_TFree(compute_pkg);
-   }
+    hypre_TFree(compute_pkg);
+  }
 
-   return ierr;
+  return ierr;
 }
 
 /*==========================================================================*/
@@ -365,17 +331,15 @@ headers.h
 hypre_InitializeCommunication */
 /*--------------------------------------------------------------------------*/
 
-int
-hypre_InitializeIndtComputations( hypre_ComputePkg  *compute_pkg,
-                                  double            *data,
-                                  hypre_CommHandle **comm_handle_ptr )
-{
-   int            ierr = 0;
-   hypre_CommPkg *comm_pkg = hypre_ComputePkgCommPkg(compute_pkg);
+int hypre_InitializeIndtComputations(hypre_ComputePkg *compute_pkg,
+                                     double *data,
+                                     hypre_CommHandle **comm_handle_ptr) {
+  int ierr = 0;
+  hypre_CommPkg *comm_pkg = hypre_ComputePkgCommPkg(compute_pkg);
 
-   ierr = hypre_InitializeCommunication(comm_pkg, data, data, comm_handle_ptr);
+  ierr = hypre_InitializeCommunication(comm_pkg, data, data, comm_handle_ptr);
 
-   return ierr;
+  return ierr;
 }
 
 /*==========================================================================*/
@@ -394,12 +358,10 @@ headers.h
 @see hypre_InitializeIndtComputations, hypre_FinalizeCommunication */
 /*--------------------------------------------------------------------------*/
 
-int
-hypre_FinalizeIndtComputations( hypre_CommHandle *comm_handle )
-{
-   int ierr = 0;
+int hypre_FinalizeIndtComputations(hypre_CommHandle *comm_handle) {
+  int ierr = 0;
 
-   ierr = hypre_FinalizeCommunication(comm_handle);
+  ierr = hypre_FinalizeCommunication(comm_handle);
 
-   return ierr;
+  return ierr;
 }

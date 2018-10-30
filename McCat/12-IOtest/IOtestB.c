@@ -10,38 +10,33 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ****/
 
-#include <stdio.h>
 #include "IOtest.h"
+#include <stdio.h>
 
 /* slow version */
 
-void initminB(char_t *res)
-{
+void initminB(char_t *res) {
   setac(0);
-  *res=255;
+  *res = 255;
 }
 
-void initmaxB(char_t *res)
-{
+void initmaxB(char_t *res) {
   setac(0);
-  *res=0;
+  *res = 0;
 }
 
-void initaddB(char_t *res)
-{
+void initaddB(char_t *res) {
   setac(0);
-  *res=0;
+  *res = 0;
 }
 
-void initmultB(char_t *res)
-{
+void initmultB(char_t *res) {
   setac(0);
-  *res=1;
+  *res = 1;
 }
-
 
 void stepminB(char_t *res)
 /* {{{  */
@@ -49,9 +44,9 @@ void stepminB(char_t *res)
 {
   register char_t t;
   unsigned long i;
-  t=array(getac());
-  *res=min(*res,t);
-  i=getac()+1;
+  t = array(getac());
+  *res = min(*res, t);
+  i = getac() + 1;
   setac(i);
 }
 
@@ -62,9 +57,9 @@ void stepmaxB(char_t *res)
 {
   register char_t t;
   unsigned long i;
-  t=array(getac());
-  *res=max(*res,t);
-  i=getac()+1 ;
+  t = array(getac());
+  *res = max(*res, t);
+  i = getac() + 1;
   setac(i);
 }
 /* }}} */
@@ -74,9 +69,9 @@ void stepaddB(char_t *res)
 {
   register char_t t;
   unsigned long i;
-  t=array(getac());
-  *res=add(*res,t);
-  i=getac()+1;
+  t = array(getac());
+  *res = add(*res, t);
+  i = getac() + 1;
   setac(i);
 }
 /* }}} */
@@ -87,29 +82,31 @@ void stepmultB(char_t *res)
 {
   register char_t t;
   unsigned long i;
-  t=array(getac());
-  *res=mult(*res,t);
-  i=getac()+1;
+  t = array(getac());
+  *res = mult(*res, t);
+  i = getac() + 1;
   setac(i);
 }
 
 /* }}} */
 
-
-void testB()
-{
+void testB() {
   struct global_result res;
 
   initarray();
 
-  loop((void (*)(void *))&initminB,(void (*)(void *))&stepminB,&(res.min));
+  loop((void (*)(void *)) & initminB, (void (*)(void *)) & stepminB,
+       &(res.min));
 
-  loop((void (*)(void *))&initmaxB,(void (*)(void *))&stepmaxB,&(res.max));
+  loop((void (*)(void *)) & initmaxB, (void (*)(void *)) & stepmaxB,
+       &(res.max));
 
-  loop((void (*)(void *))&initaddB,(void (*)(void *))&stepaddB,&(res.add));
+  loop((void (*)(void *)) & initaddB, (void (*)(void *)) & stepaddB,
+       &(res.add));
 
-  loop((void (*)(void *))&initmultB,(void (*)(void *))&stepmultB,&(res.mult));
+  loop((void (*)(void *)) & initmultB, (void (*)(void *)) & stepmultB,
+       &(res.mult));
 
-  printf("B %d min %d max %d add %d mult \n",res.min,res.max,res.add,res.mult);
-
+  printf("B %d min %d max %d add %d mult \n", res.min, res.max, res.add,
+         res.mult);
 }
