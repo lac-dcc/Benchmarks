@@ -1,6 +1,6 @@
+#include "precision.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "precision.h"
 
 /*
  * Fatal error (user substitutable)
@@ -14,15 +14,14 @@
  *   POVERFLOW	- overflow
  *       itop:    too big
  */
-precision errorp(errnum, routine, message)
-   int errnum;
-   char *routine;
-   char *message;
+precision errorp(errnum, routine, message) int errnum;
+char *routine;
+char *message;
 {
-   fputs(routine, stderr);
-   fputs(": ", stderr);
-   fputs(message, stderr);
-   fputs("\n", stderr);
-   abort();			/* remove this line if you want */
-   return pUndef;
+  fputs(routine, stderr);
+  fputs(": ", stderr);
+  fputs(message, stderr);
+  fputs("\n", stderr);
+  abort(); /* remove this line if you want */
+  return pUndef;
 }

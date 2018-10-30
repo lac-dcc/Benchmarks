@@ -39,7 +39,7 @@ e-mail address: manli@cs.uh.edu         (Internet)
 #define  IBM  8086
 */
 
-#define  SUN  68000
+#define SUN 68000
 
 #include <stdio.h>
 
@@ -64,7 +64,6 @@ void seed(int *i)
 }  /* end seed */
 #endif
 
-
 #ifdef SUN
 
 void seed(int *i)
@@ -83,8 +82,8 @@ void seed(int *i)
 
 void seed(int *i)
 /* start seed of random number generator for LLVM test-suite */
-  {
-   *i = 281701264; /* This number was chosen purely arbitrarily. */
-}  /* end seed */
+{
+  *i = 281701264; /* This number was chosen purely arbitrarily. */
+} /* end seed */
 
 #endif

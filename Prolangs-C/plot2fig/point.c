@@ -6,7 +6,7 @@
    anyone for the consequences of using it or for whether it serves any
    particular purpose or works at all, unless he says so in writing.
    Refer to the GNU General Public License for full details.
-   
+
    Everyone is granted permission to copy, modify and redistribute plot,
    but only under the conditions described in the GNU General Public
    License.  A copy of this license is supposed to have been given to you
@@ -17,12 +17,11 @@
 /* This file is the point routine, which is a standard part of the plot
    library.  It draws a point at the coordinate x,y. */
 
-#include "libplot.h"
 #include "extern.h"
+#include "libplot.h"
 
-int point(int x, int y)
-{
-  move_nasko (x, y);
-  cont (x, y);
+int point(int x, int y) {
+  move_nasko(x, y);
+  cont(x, y);
   return 0;
 }

@@ -11,15 +11,14 @@
   1995/09/06  mc@fivebats.com           created
 
 */
+#include "util.h"
+#include <assert.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <assert.h>
-#include "util.h"
 #ifdef HAVEGTK
 #include "gtkanal.h"
 #endif
-
 
 /*
   Layer3 bit reservoir:
@@ -27,7 +26,7 @@
 */
 
 static int ResvSize = 0; /* in bits */
-static int ResvMax  = 0; /* in bits */
+static int ResvMax = 0;  /* in bits */
 
 /*
   ResvFrameBegin:
@@ -35,99 +34,90 @@ static int ResvMax  = 0; /* in bits */
   size of the reservoir, and checks to make sure main_data_begin
   was set properly by the formatter
 */
-int
-ResvFrameBegin(lame_global_flags *gfp,III_side_info_t *l3_side, int mean_bits, int frameLength )
-{
-    int fullFrameBits;
-    int resvLimit;
+int ResvFrameBegin(lame_global_flags *gfp, III_side_info_t *l3_side,
+                   int mean_bits, int frameLength) {
+  int fullFrameBits;
+  int resvLimit;
 
-    if (gfp->frameNum==0) {
-      ResvSize=0;
-    }
+  if (gfp->frameNum == 0) {
+    ResvSize = 0;
+  }
 
+  if (gfp->version == 1) {
+    resvLimit = 4088; /* main_data_begin has 9 bits in MPEG 1 */
+  } else {
+    resvLimit = 2040; /* main_data_begin has 8 bits in MPEG 2 */
+  }
 
-    if ( gfp->version == 1 )
-    {
-	resvLimit = 4088; /* main_data_begin has 9 bits in MPEG 1 */
-    }
-    else
-    {
-	resvLimit = 2040; /* main_data_begin has 8 bits in MPEG 2 */
-    }
-
-    /*
-      main_data_begin was set by the formatter to the
-      expected value for the next call -- this should
-      agree with our reservoir size
-    */
+  /*
+    main_data_begin was set by the formatter to the
+    expected value for the next call -- this should
+    agree with our reservoir size
+  */
 
 #ifdef DEBUG
-    fprintf( stderr, ">>> ResvSize = %d\n", ResvSize );
+  fprintf(stderr, ">>> ResvSize = %d\n", ResvSize);
 #endif
-    /* check expected resvsize */
-    assert( (l3_side->main_data_begin * 8) == ResvSize );
-    fullFrameBits = mean_bits * gfp->mode_gr + ResvSize;
+  /* check expected resvsize */
+  assert((l3_side->main_data_begin * 8) == ResvSize);
+  fullFrameBits = mean_bits * gfp->mode_gr + ResvSize;
 
-    /*
-      determine maximum size of reservoir:
-      ResvMax + frameLength <= 7680;
+  /*
+    determine maximum size of reservoir:
+    ResvMax + frameLength <= 7680;
+  */
+  if (frameLength > 7680)
+    ResvMax = 0;
+  else
+    ResvMax = 7680 - frameLength;
+  if (gfp->disable_reservoir)
+    ResvMax = 0;
+
+  /*
+    limit max size to resvLimit bits because
+    main_data_begin cannot indicate a
+    larger value
     */
-    if ( frameLength > 7680 )
-	ResvMax = 0;
-    else
-	ResvMax = 7680 - frameLength;
-    if (gfp->disable_reservoir) ResvMax=0;
-
-
-    /*
-      limit max size to resvLimit bits because
-      main_data_begin cannot indicate a
-      larger value
-      */
-    if ( ResvMax > resvLimit )
-	ResvMax = resvLimit;
+  if (ResvMax > resvLimit)
+    ResvMax = resvLimit;
 
 #ifdef HAVEGTK
-  if (gfp->gtkflag){
-    pinfo->mean_bits=mean_bits/2;  /* expected bits per channel per granule */
-    pinfo->resvsize=ResvSize;
+  if (gfp->gtkflag) {
+    pinfo->mean_bits =
+        mean_bits / 2; /* expected bits per channel per granule */
+    pinfo->resvsize = ResvSize;
   }
 #endif
 
-    return fullFrameBits;
+  return fullFrameBits;
 }
-
 
 /*
   ResvMaxBits2:
-  As above, but now it *really* is bits per granule (both channels).  
+  As above, but now it *really* is bits per granule (both channels).
   Mark Taylor 4/99
 */
-void ResvMaxBits(int mean_bits, int *targ_bits, int *extra_bits, int gr)
-{
+void ResvMaxBits(int mean_bits, int *targ_bits, int *extra_bits, int gr) {
   int add_bits;
-  *targ_bits = mean_bits ;
+  *targ_bits = mean_bits;
   /* extra bits if the reservoir is almost full */
   if (ResvSize > ((ResvMax * 9) / 10)) {
-    add_bits= ResvSize-((ResvMax * 9) / 10);
+    add_bits = ResvSize - ((ResvMax * 9) / 10);
     *targ_bits += add_bits;
-  }else {
-    add_bits =0 ;
+  } else {
+    add_bits = 0;
     /* build up reservoir.  this builds the reservoir a little slower
      * than FhG.  It could simple be mean_bits/15, but this was rigged
      * to always produce 100 (the old value) at 128kbs */
-    *targ_bits -= (int) (mean_bits/15.2);
+    *targ_bits -= (int)(mean_bits / 15.2);
   }
 
-  
   /* amount from the reservoir we are allowed to use. ISO says 6/10 */
-  *extra_bits =    
-    (ResvSize  < (ResvMax*6)/10  ? ResvSize : (ResvMax*6)/10);
+  *extra_bits = (ResvSize < (ResvMax * 6) / 10 ? ResvSize : (ResvMax * 6) / 10);
   *extra_bits -= add_bits;
-  
-  if (*extra_bits < 0) *extra_bits=0;
 
-  
+  if (*extra_bits < 0)
+    *extra_bits = 0;
 }
 
 /*
@@ -135,12 +125,10 @@ void ResvMaxBits(int mean_bits, int *targ_bits, int *extra_bits, int gr)
   Called after a granule's bit allocation. Readjusts the size of
   the reservoir to reflect the granule's usage.
 */
-void
-ResvAdjust(lame_global_flags *gfp,gr_info *gi, III_side_info_t *l3_side, int mean_bits )
-{
-    ResvSize += (mean_bits / gfp->stereo) - gi->part2_3_length;
+void ResvAdjust(lame_global_flags *gfp, gr_info *gi, III_side_info_t *l3_side,
+                int mean_bits) {
+  ResvSize += (mean_bits / gfp->stereo) - gi->part2_3_length;
 }
-
 
 /*
   ResvFrameEnd:
@@ -150,34 +138,28 @@ ResvAdjust(lame_global_flags *gfp,gr_info *gi, III_side_info_t *l3_side, int mea
   part2_3_length. The bitstream formatter will detect this and write the
   appropriate stuffing bits to the bitstream.
 */
-void
-ResvFrameEnd(lame_global_flags *gfp,III_side_info_t *l3_side, int mean_bits)
-{
-    int stuffingBits;
-    int over_bits;
+void ResvFrameEnd(lame_global_flags *gfp, III_side_info_t *l3_side,
+                  int mean_bits) {
+  int stuffingBits;
+  int over_bits;
 
-    /* just in case mean_bits is odd, this is necessary... */
-    if ( gfp->stereo == 2 && mean_bits & 1)
-	ResvSize += 1;
+  /* just in case mean_bits is odd, this is necessary... */
+  if (gfp->stereo == 2 && mean_bits & 1)
+    ResvSize += 1;
 
-    over_bits = ResvSize - ResvMax;
-    if ( over_bits < 0 )
-	over_bits = 0;
-    
+  over_bits = ResvSize - ResvMax;
+  if (over_bits < 0)
+    over_bits = 0;
+
+  ResvSize -= over_bits;
+  stuffingBits = over_bits;
+
+  /* we must be byte aligned */
+  if ((over_bits = ResvSize % 8)) {
+    stuffingBits += over_bits;
     ResvSize -= over_bits;
-    stuffingBits = over_bits;
+  }
 
-    /* we must be byte aligned */
-    if ( (over_bits = ResvSize % 8) )
-    {
-	stuffingBits += over_bits;
-	ResvSize -= over_bits;
-    }
-
-
-    l3_side->resvDrain = stuffingBits;
-    return;
-
+  l3_side->resvDrain = stuffingBits;
+  return;
 }
-
-

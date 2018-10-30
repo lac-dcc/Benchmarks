@@ -18,23 +18,22 @@ notice and this notice must be preserved on all copies.
  You are forbidden to forbid anyone else to use, share and improve
  what you give them.   Help stamp out software-hoarding!  */
 
+#include "files.h"
 #include <stdio.h>
 #include <string.h>
-#include "files.h"
 
 int verboseflag;
 int definesflag;
 int debugflag;
 int nolinesflag;
-extern int fixed_outfiles;/* JF */
+extern int fixed_outfiles; /* JF */
 
 extern void fatal(char *s);
 #ifndef __sun__
-extern int getopt(int argc,char **argv,char *optstring);
+extern int getopt(int argc, char **argv, char *optstring);
 #endif
 
-void getargs(int argc,char *argv[])
-{
+void getargs(int argc, char *argv[]) {
   register int c;
   char *p = argv[0];
   char *lastcomponent;
@@ -50,42 +49,40 @@ void getargs(int argc,char *argv[])
   /* See if the program was invoked as "yacc".  */
 
   lastcomponent = p;
-  while (*p)
-    {
-      if (*p == '/')
-	lastcomponent = p + 1;
-      p++;
-    }
-  if (! strcmp (lastcomponent, "yacc"))
+  while (*p) {
+    if (*p == '/')
+      lastcomponent = p + 1;
+    p++;
+  }
+  if (!strcmp(lastcomponent, "yacc"))
     /* If so, pretend we have "-y" as argument.  */
     fixed_outfiles = 1;
 
-  while ((c = getopt (argc, argv, "yvdlto:")) != EOF)
-    switch (c)
-      {
-      case 'y':
-	fixed_outfiles = 1;
-	break;
+  while ((c = getopt(argc, argv, "yvdlto:")) != EOF)
+    switch (c) {
+    case 'y':
+      fixed_outfiles = 1;
+      break;
 
-      case 'v':
-	verboseflag = 1;
-	break;
+    case 'v':
+      verboseflag = 1;
+      break;
 
-      case 'd':
-	definesflag = 1;
-	break;
+    case 'd':
+      definesflag = 1;
+      break;
 
-      case 'l':
-	nolinesflag = 1;
-	break;
+    case 'l':
+      nolinesflag = 1;
+      break;
 
-      case 't':
-	debugflag = 1;
-	break;
+    case 't':
+      debugflag = 1;
+      break;
 
-      case 'o':
-	spec_outfile = optarg;
-      }
+    case 'o':
+      spec_outfile = optarg;
+    }
 
   if (optind == argc)
     fatal("grammar file not specified");

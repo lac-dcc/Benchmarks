@@ -17,45 +17,44 @@
 
 #define BENCHMARK
 
-#include <stdio.h>
-#include <string.h>
 #include "compress.h"
 #include "uncompress.h"
+#include <stdio.h>
+#include <string.h>
 
-int main(int argc, char *argv[])
-{
-#ifndef BENCHMARK 
-  const char* argv0;
+int main(int argc, char *argv[]) {
+#ifndef BENCHMARK
+  const char *argv0;
 #else
   char filename[1000];
-#endif  
+#endif
 
-#ifdef BENCHMARK  
-  fprintf(stderr,"Compile date: %s\n", COMPDATE);
-  fprintf(stderr,"Compiler switches: %s\n", CFLAGS);
-  compress(argc,argv); /* Compress four times to make it take some time... */
-  compress(argc,argv);
-  compress(argc,argv); 
-  compress(argc,argv);
-  strcpy(filename,argv[1]);
-  strcat(filename,".compr"); /* add the suffix '.compr' */
-  argv[1]=filename;
-  uncompress(argc,argv); /* Uncompress the stuff */
+#ifdef BENCHMARK
+  fprintf(stderr, "Compile date: %s\n", COMPDATE);
+  fprintf(stderr, "Compiler switches: %s\n", CFLAGS);
+  compress(argc, argv); /* Compress four times to make it take some time... */
+  compress(argc, argv);
+  compress(argc, argv);
+  compress(argc, argv);
+  strcpy(filename, argv[1]);
+  strcat(filename, ".compr"); /* add the suffix '.compr' */
+  argv[1] = filename;
+  uncompress(argc, argv); /* Uncompress the stuff */
   remove(filename);
 #else
-  if((argv0 = strrchr(argv[0], '/')) == NULL)
-        argv0 = argv[0];
-    else
-        argv0 += 1;
+  if ((argv0 = strrchr(argv[0], '/')) == NULL)
+    argv0 = argv[0];
+  else
+    argv0 += 1;
 
-  if (!strcmp(argv0,"pcompress2")) {
-    compress(argc,argv);
-  } else if (!strcmp(argv0,"puncompress2")) {
-    uncompress(argc,argv);
+  if (!strcmp(argv0, "pcompress2")) {
+    compress(argc, argv);
+  } else if (!strcmp(argv0, "puncompress2")) {
+    uncompress(argc, argv);
   } else {
-    printf("Call pCompress as 'pcompress2' or 'puncompress2', NOT %s\n",argv[0]);
+    printf("Call pCompress as 'pcompress2' or 'puncompress2', NOT %s\n",
+           argv[0]);
   }
 #endif
   return 0;
 }
-

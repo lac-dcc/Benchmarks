@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   int n = atoi(argv[1]);
-  int* v = (int*)malloc(sizeof(int)*n);
+  int *v = (int *)malloc(sizeof(int) * n);
 
   for (int i = 0; i < n; i++) {
     v[i] = i;
@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     int a = *(v + i);
     v[i] = a + i;
   }
-  
+
   for (int i = 0; i < n; i++) {
     printf("[%d] = %d\n", i, v[i]);
   }

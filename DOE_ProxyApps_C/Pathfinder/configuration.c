@@ -4,12 +4,12 @@
  *                two-layer directed, cyclic graph.
  *               Copyright (2013) Sandia Corporation
  *
- * Copyright (2013) Sandia Corporation. Under the terms of Contract 
- * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government 
+ * Copyright (2013) Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government
  * retains certain rights in this software.
  *
  * This file is part of PathFinder.
- * 
+ *
  * PathFinder is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -34,36 +34,35 @@
  *      Author: Brian "Rig" Rigdon
  */
 
+#include "configuration.h"
 #include <stdio.h>
- #include "configuration.h"
 
- SearchOptions* SearchOptions_new()
- {
-    SearchOptions *options = malloc(sizeof(SearchOptions));
-    if ( !options )
-        return(NULL);
-    options->searchType = treeSearch;
-    options->multiThreaded = false;
-    options->doStatistics = false;
-    options->writeOutputFile = false;
-    options->outputFile = NULL;
-    options->buildType = endNodesOnly;
-    return(options);
- }
+SearchOptions *SearchOptions_new() {
+  SearchOptions *options = malloc(sizeof(SearchOptions));
+  if (!options)
+    return (NULL);
+  options->searchType = treeSearch;
+  options->multiThreaded = false;
+  options->doStatistics = false;
+  options->writeOutputFile = false;
+  options->outputFile = NULL;
+  options->buildType = endNodesOnly;
+  return (options);
+}
 
- Configuration* Configuration_new()
- {
-    Configuration *new = malloc(sizeof(Configuration));
-    SearchOptions *options = SearchOptions_new();
-    if ( !new || !options )
-    {
-        if ( new ) free(new);
-        if ( options ) free(options);
-        return(NULL);
-    }
-    new->graphs = NULL;
-    new->signatures = NULL;
-    new->searchOptions = options;
-    new->qThreadCount = 0;
-    return(new);
- }
+Configuration *Configuration_new() {
+  Configuration *new = malloc(sizeof(Configuration));
+  SearchOptions *options = SearchOptions_new();
+  if (!new || !options) {
+    if (new)
+      free(new);
+    if (options)
+      free(options);
+    return (NULL);
+  }
+  new->graphs = NULL;
+  new->signatures = NULL;
+  new->searchOptions = options;
+  new->qThreadCount = 0;
+  return (new);
+}

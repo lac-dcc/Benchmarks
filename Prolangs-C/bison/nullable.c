@@ -18,19 +18,17 @@ notice and this notice must be preserved on all copies.
  You are forbidden to forbid anyone else to use, share and improve
  what you give them.   Help stamp out software-hoarding!  */
 
-/* set up nullable, a vector saying which nonterminals can expand into the null string.
-   nullable[i - ntokens] is nonzero if symbol i can do so.  */
+/* set up nullable, a vector saying which nonterminals can expand into the null
+   string. nullable[i - ntokens] is nonzero if symbol i can do so.  */
 
-#include <stdio.h>
-#include "types.h"
 #include "gram.h"
 #include "new.h"
-
+#include "types.h"
+#include <stdio.h>
 
 char *nullable;
 
-void set_nullable(void)
-{
+void set_nullable(void) {
   register short *r;
   register short *s1;
   register short *s2;
@@ -45,7 +43,7 @@ void set_nullable(void)
   char any_tokens;
   short *r1;
 
-#ifdef	TRACE
+#ifdef TRACE
   fprintf(stderr, "Entering set_nullable");
 #endif
 
@@ -60,61 +58,49 @@ void set_nullable(void)
   p = relts;
 
   r = ritem;
-  while (*r)
-    {
-      if (*r < 0)
-	{
-	  symbol = rlhs[-(*r++)];
-	  if (!nullable[symbol])
-	    {
-	      nullable[symbol] = 1;
-	      *s2++ = symbol;
-	    }
-	}
-      else
-	{
-	  r1 = r;
-	  any_tokens = 0;
-	  for (symbol = *r++; symbol > 0; symbol = *r++)
-	    {
-	      if (ISTOKEN(symbol))
-		any_tokens = 1;
-	    }
+  while (*r) {
+    if (*r < 0) {
+      symbol = rlhs[-(*r++)];
+      if (!nullable[symbol]) {
+        nullable[symbol] = 1;
+        *s2++ = symbol;
+      }
+    } else {
+      r1 = r;
+      any_tokens = 0;
+      for (symbol = *r++; symbol > 0; symbol = *r++) {
+        if (ISTOKEN(symbol))
+          any_tokens = 1;
+      }
 
-	  if (!any_tokens)
-	    {
-	      ruleno = -symbol;
-	      r = r1;
-	      for (symbol = *r++; symbol > 0; symbol = *r++)
-		{
-		  rcount[ruleno]++;
-		  p->next = rsets[symbol];
-		  p->value = ruleno;
-		  rsets[symbol] = p;
-		  p++;
-		}
-	    }
-	}
+      if (!any_tokens) {
+        ruleno = -symbol;
+        r = r1;
+        for (symbol = *r++; symbol > 0; symbol = *r++) {
+          rcount[ruleno]++;
+          p->next = rsets[symbol];
+          p->value = ruleno;
+          rsets[symbol] = p;
+          p++;
+        }
+      }
     }
+  }
 
-  while (s1 < s2)
-    {
-      p = rsets[*s1++];
-      while (p)
-	{
-	  ruleno = p->value;
-	  p = p->next;
-	  if (--rcount[ruleno] == 0)
-	    {
-	      symbol = rlhs[ruleno];
-	      if (!nullable[symbol])
-		{
-		  nullable[symbol] = 1;
-		  *s2++ = symbol;
-		}
-	    }
-	}
+  while (s1 < s2) {
+    p = rsets[*s1++];
+    while (p) {
+      ruleno = p->value;
+      p = p->next;
+      if (--rcount[ruleno] == 0) {
+        symbol = rlhs[ruleno];
+        if (!nullable[symbol]) {
+          nullable[symbol] = 1;
+          *s2++ = symbol;
+        }
+      }
     }
+  }
 
   FREE(squeue);
   FREE(rcount);
@@ -122,7 +108,4 @@ void set_nullable(void)
   FREE(relts);
 }
 
-void free_nullable(void)
-{
-  FREE(nullable + ntokens);
-}
+void free_nullable(void) { FREE(nullable + ntokens); }

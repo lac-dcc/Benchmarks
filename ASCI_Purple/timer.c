@@ -26,22 +26,12 @@
 #include "mpi.h"
 #endif
 
-double time_getWallclockSeconds(void)
-{
-   return(0.0);
+double time_getWallclockSeconds(void) { return (0.0); }
+
+double time_getCPUSeconds(void) { return (0.0); }
+
+double time_get_wallclock_seconds_(void) {
+  return (time_getWallclockSeconds());
 }
 
-double time_getCPUSeconds(void)
-{
-   return(0.0);
-}
-
-double time_get_wallclock_seconds_(void)
-{
-   return(time_getWallclockSeconds());
-}
-
-double time_get_cpu_seconds_(void)
-{
-   return(time_getCPUSeconds());
-}
+double time_get_cpu_seconds_(void) { return (time_getCPUSeconds()); }

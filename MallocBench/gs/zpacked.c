@@ -19,8 +19,8 @@ copies.  */
 
 /* zpacked.c */
 /* Packed array operators for Ghostscript */
-#include "ghost.h"
 #include "errors.h"
+#include "ghost.h"
 #include "oper.h"
 #include "store.h"
 #include <stdint.h>
@@ -40,11 +40,11 @@ bits of the first 16-bit subelement distinguish the 2 forms.  The 'size'
 of a packed array is the number of bytes it occupies, not the number of
 elements.  A plausible encoding:
 
-	00iiiiii iiiiiiii	executable name
-	01iiiiii iiiiiiii	literal name
-	100jjjjj jjjjjjjj	(executable) operator (for bind)
-	101svvvv vvvvvvvv	2's complement integer
-	11s000wr ttttttxe	full 8-byte object
+        00iiiiii iiiiiiii	executable name
+        01iiiiii iiiiiiii	literal name
+        100jjjjj jjjjjjjj	(executable) operator (for bind)
+        101svvvv vvvvvvvv	2's complement integer
+        11s000wr ttttttxe	full 8-byte object
 
 It would be very nice to have a code that says "embedded packed array
 follows", but this would create a lot of extra complexity for both the
@@ -58,46 +58,42 @@ dynamically as a 2-level array of (say) 256-element arrays.
  */
 
 /* currentpacking */
-int
-zcurrentpacking(register ref *op)
-{	push(1);
-	make_bool(op, array_packing);
-	return 0;
+int zcurrentpacking(register ref *op) {
+  push(1);
+  make_bool(op, array_packing);
+  return 0;
 }
 
 /* packedarray */
-int
-zpackedarray(register ref *op)
-{	int code = make_array(op, t_packedarray, a_read+a_execute, "packedarray");
-	if ( code < 0 ) return code;
-	   {	/* Fill the array from the stack. */
-		uintptr_t size = op->size;
-		if ( size > op - osbot ) return e_stackunderflow;
-		refcpy(op->value.refs, op - size, size);
-		op[-size] = *op;
-		pop(size);
-	   }
-	return 0;
+int zpackedarray(register ref *op) {
+  int code = make_array(op, t_packedarray, a_read + a_execute, "packedarray");
+  if (code < 0)
+    return code;
+  { /* Fill the array from the stack. */
+    uintptr_t size = op->size;
+    if (size > op - osbot)
+      return e_stackunderflow;
+    refcpy(op->value.refs, op - size, size);
+    op[-size] = *op;
+    pop(size);
+  }
+  return 0;
 }
 
 /* setpacking */
-int
-zsetpacking(register ref *op)
-{	check_type(*op, t_boolean);
-	array_packing = op->value.index;
-	pop(1);
-	return 0;
+int zsetpacking(register ref *op) {
+  check_type(*op, t_boolean);
+  array_packing = op->value.index;
+  pop(1);
+  return 0;
 }
 
 /* ------ Initialization procedure ------ */
 
-void
-zpacked_op_init()
-{	static op_def my_defs[] = {
-		{"0currentpacking", zcurrentpacking},
-		{"1packedarray", zpackedarray},
-		{"1setpacking", zsetpacking},
-		op_def_end
-	};
-	z_op_init(my_defs);
+void zpacked_op_init() {
+  static op_def my_defs[] = {{"0currentpacking", zcurrentpacking},
+                             {"1packedarray", zpackedarray},
+                             {"1setpacking", zsetpacking},
+                             op_def_end};
+  z_op_init(my_defs);
 }

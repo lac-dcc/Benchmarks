@@ -4,12 +4,12 @@
  *                two-layer directed, cyclic graph.
  *               Copyright (2013) Sandia Corporation
  *
- * Copyright (2013) Sandia Corporation. Under the terms of Contract 
- * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government 
+ * Copyright (2013) Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government
  * retains certain rights in this software.
  *
  * This file is part of PathFinder.
- * 
+ *
  * PathFinder is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -26,18 +26,16 @@
  * Questions? Contact J. Brian Rigdon (jbrigdo@sandia.gov)
  *
  */
- 
+
 #include <sys/time.h>
 #ifdef USE_OMP
 #include <omp.h>
 #endif
 
-extern double currentTime()
-{
+extern double currentTime() {
 #ifdef USE_OMP
-    return omp_get_wtime();
+  return omp_get_wtime();
 #else
-    return 0;
+  return 0;
 #endif
 }
-

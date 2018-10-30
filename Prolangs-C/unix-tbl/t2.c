@@ -2,8 +2,8 @@
 static char sccsid[] = "@(#)t2.c	4.2 8/11/83";
 #endif
 
- /* t2.c:  subroutine sequencing for one table */
-# include "t..c"
+/* t2.c:  subroutine sequencing for one table */
+#include "t..c"
 
 extern void saveline(void);
 extern void savefill(void);
@@ -22,22 +22,21 @@ extern void rstofill(void);
 extern void endoff(void);
 extern void restline(void);
 
-void tableput(void)
-{
-saveline();
-savefill();
-ifdivert();
-cleanfc();
-getcomm();
-getspec();
-gettbl();
-getstop();
-checkuse();
-choochar();
-maktab();
-runout();
-release();
-rstofill();
-endoff();
-restline();
+void tableput(void) {
+  saveline();
+  savefill();
+  ifdivert();
+  cleanfc();
+  getcomm();
+  getspec();
+  gettbl();
+  getstop();
+  checkuse();
+  choochar();
+  maktab();
+  runout();
+  release();
+  rstofill();
+  endoff();
+  restline();
 }

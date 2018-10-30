@@ -6,7 +6,7 @@
    anyone for the consequences of using it or for whether it serves any
    particular purpose or works at all, unless he says so in writing.
    Refer to the GNU General Public License for full details.
-   
+
    Everyone is granted permission to copy, modify and redistribute plot,
    but only under the conditions described in the GNU General Public
    License.  A copy of this license is supposed to have been given to you
@@ -16,12 +16,11 @@
 
 /* This file is the line routine, which is a standard part of the plot
    library.  It draws a line from coordinate x0,y0 to x1,y1 */
-#include "libplot.h"
 #include "extern.h"
+#include "libplot.h"
 
-int line (int x0, int y0, int x1, int y1)
-{
-  move_nasko (x0,y0);
-  cont (x1,y1);
+int line(int x0, int y0, int x1, int y1) {
+  move_nasko(x0, y0);
+  cont(x1, y1);
   return 0;
 }

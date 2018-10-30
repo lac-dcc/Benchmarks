@@ -6,19 +6,16 @@
 
 /* $Header$ */
 
-#include	"toast.h"
+#include "toast.h"
 
 /*  toast_linear.c -- read and write 16 bit linear sound in host byte order.
  */
 
-extern FILE	*in, *out;
+extern FILE *in, *out;
 
-int linear_input (buf) gsm_signal * buf;
-{
-	return fread( (char *)buf, sizeof(*buf), 160, in );
-}
+int linear_input(buf) gsm_signal *buf;
+{ return fread((char *)buf, sizeof(*buf), 160, in); }
 
-int linear_output P1((buf), gsm_signal * buf) 
-{
-	return -( fwrite( (char *)buf, sizeof(*buf), 160, out ) != 160 );
+int linear_output P1((buf), gsm_signal *buf) {
+  return -(fwrite((char *)buf, sizeof(*buf), 160, out) != 160);
 }

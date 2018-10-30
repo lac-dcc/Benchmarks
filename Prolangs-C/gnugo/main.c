@@ -50,134 +50,127 @@ extern void endgame(void);
 unsigned char p[19][19], l[19][19], ma[19][19], ml[19][19];
 int mymove, umove;
 int rd, lib, play, pass;
-int mik, mjk, uik, ujk, mk, uk;  /* piece captured */
-int opn[9];  /* opening pattern flag */
+int mik, mjk, uik, ujk, mk, uk; /* piece captured */
+int opn[9];                     /* opening pattern flag */
 
-int main(void)
+int main(void) {
+  FILE *fp;
+  int i, j;
+  char move[10], ans[5];
+  int cont = 0;
+
+  /* show instruction */
+  showinst();
+
+  if ((fp = fopen("gnugo.dat", "r")) != NULL) /* continue old game */
   {
-   FILE *fp;
-   int i, j;
-   char move[10], ans[5];
-   int cont = 0;
+    cont = 1;
 
-/* show instruction */
-   showinst();
+    /* read board configuration */
+    for (i = 0; i < 19; i++)
+      for (j = 0; j < 19; j++)
+        fscanf(fp, "%c", &p[i][j]);
 
-   if ((fp = fopen("gnugo.dat", "r")) != NULL)  /* continue old game */
-     {
-      cont = 1;
+    /* read my color, pieces captured */
+    fscanf(fp, "%d %d %d ", &mymove, &mk, &uk);
+    /* read opening pattern flags */
+    for (i = 0; i < 9; i++)
+      fscanf(fp, "%d ", &opn[i]);
 
-/* read board configuration */
-      for (i = 0; i < 19; i++)
-        for (j = 0; j < 19; j++)
-          fscanf(fp, "%c", &p[i][j]);
+    fclose(fp);
+    umove = 3 - mymove;
 
-/* read my color, pieces captured */
-      fscanf(fp, "%d %d %d ", &mymove, &mk, &uk);
-/* read opening pattern flags */
-      for (i = 0; i < 9; i++)
-        fscanf(fp, "%d ", &opn[i]);
+    /* delete file */
+    unlink("gnugo.dat");
+  } else {
+    /* init opening pattern numbers to search */
+    for (i = 0; i < 9; i++)
+      opn[i] = 1;
+    opn[4] = 0;
 
-      fclose(fp);
-      umove = 3 - mymove;
-
-/* delete file */
-      unlink("gnugo.dat");
-    }
-   else
-     {
-/* init opening pattern numbers to search */
-      for (i = 0; i < 9; i++)
-        opn[i] = 1;
-      opn[4] = 0;
-
-/* init board */
-      for (i = 0; i < 19; i++)
-        for (j = 0; j < 19; j++)
-          p[i][j] = EMPTY;
-/* init global variables */
-      mk = 0;  uk = 0;
-    }
-
-/* init global variables */
-   play = 1;
-   pass = 0;
-   mik = -1; mjk = -1;
-   uik = -1; ujk = -1;
-   seed(&rd);	/* start random number seed */
-
-   if (!cont)  /* new game */
-     {
-/* ask for handicap */
-      printf("Number of handicap for black (0 to 17)? ");
-      scanf("%d", &i);
-      getchar();
-      sethand(i);
-
-/* display game board */
-      showboard();
-
-/* choose color */
-      printf("\nChoose side(b or w)? ");
-      scanf("%c",ans);
-      if (ans[0] == 'b')
-        {
-         mymove = 1;   /* computer white */
-         umove = 2;   /* human black */
-         if (i)
-	   {
-            genmove(&i, &j);   /* computer move */
-            p[i][j] = mymove;
-          }
-       }
-      else
-        {
-         mymove = 2;   /* computer black */
-         umove = 1;   /* human white */
-         if (i == 0)
-	   {
-            genmove(&i, &j);   /* computer move */
-            p[i][j] = mymove;
-          }
-       }
-    }
-
-   showboard();
-
-/* main loop */
-   while (play > 0)
-     {
-      printf("your move? ");
-      scanf("%s", move);
-      getmove(move, &i, &j);   /* read human move */
-      if (play > 0)
-	{
-	 if (i >= 0)   /* not pass */
-	   {
-	    p[i][j] = umove;
-	    examboard(mymove);	 /* remove my dead pieces */
-	  }
-	 if (pass != 2)
-	   {
-	    genmove(&i, &j);   /* computer move */
-	    if (i >= 0)   /* not pass */
-	      {
-	       p[i][j] = mymove;
-	       examboard(umove);   /* remove your dead pieces */
-	     }
-	  }
-	 showboard();
-       }
-      if (pass == 2) play = 0;	/* both pass then stop game */
-    }
-
- if (play == 0)
-   {
-/* finish game and count pieces */
-    getchar(); 
-    printf("Do you want to count score (y or n)? ");
-    scanf("%c",ans);
-    if (ans[0] == 'y') endgame();
+    /* init board */
+    for (i = 0; i < 19; i++)
+      for (j = 0; j < 19; j++)
+        p[i][j] = EMPTY;
+    /* init global variables */
+    mk = 0;
+    uk = 0;
   }
-  return 0; 
- }  /* end main */
+
+  /* init global variables */
+  play = 1;
+  pass = 0;
+  mik = -1;
+  mjk = -1;
+  uik = -1;
+  ujk = -1;
+  seed(&rd); /* start random number seed */
+
+  if (!cont) /* new game */
+  {
+    /* ask for handicap */
+    printf("Number of handicap for black (0 to 17)? ");
+    scanf("%d", &i);
+    getchar();
+    sethand(i);
+
+    /* display game board */
+    showboard();
+
+    /* choose color */
+    printf("\nChoose side(b or w)? ");
+    scanf("%c", ans);
+    if (ans[0] == 'b') {
+      mymove = 1; /* computer white */
+      umove = 2;  /* human black */
+      if (i) {
+        genmove(&i, &j); /* computer move */
+        p[i][j] = mymove;
+      }
+    } else {
+      mymove = 2; /* computer black */
+      umove = 1;  /* human white */
+      if (i == 0) {
+        genmove(&i, &j); /* computer move */
+        p[i][j] = mymove;
+      }
+    }
+  }
+
+  showboard();
+
+  /* main loop */
+  while (play > 0) {
+    printf("your move? ");
+    scanf("%s", move);
+    getmove(move, &i, &j); /* read human move */
+    if (play > 0) {
+      if (i >= 0) /* not pass */
+      {
+        p[i][j] = umove;
+        examboard(mymove); /* remove my dead pieces */
+      }
+      if (pass != 2) {
+        genmove(&i, &j); /* computer move */
+        if (i >= 0)      /* not pass */
+        {
+          p[i][j] = mymove;
+          examboard(umove); /* remove your dead pieces */
+        }
+      }
+      showboard();
+    }
+    if (pass == 2)
+      play = 0; /* both pass then stop game */
+  }
+
+  if (play == 0) {
+    /* finish game and count pieces */
+    getchar();
+    printf("Do you want to count score (y or n)? ");
+    scanf("%c", ans);
+    if (ans[0] == 'y')
+      endgame();
+  }
+  return 0;
+} /* end main */

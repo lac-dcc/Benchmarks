@@ -127,7 +127,7 @@ abide by the terms of this License Agreement.
 /* The Matrix Multiply computation.
 
    Creates and  multiplies two matrices and sums up all the elements
-   of the resulting matrices. 
+   of the resulting matrices.
 
    October 31, 1995
    Shail Aditya.
@@ -145,79 +145,71 @@ float c[SIZE][SIZE] = {0};
 
 int NUM, BLOCK;
 
-
-
 /* Use Linear congruential PRNG */
-unsigned my_rand_r(unsigned *seedp)
-{
+unsigned my_rand_r(unsigned *seedp) {
   /* Knuth & Lewis */
   unsigned x = *seedp * 1664525u + 1013904223u;
   *seedp = x;
   return (x >> 16) & 0x7fff;
 }
 
-
 void init() {
-  int   i,j;
+  int i, j;
   unsigned random_seed = 1;
-  for (i=0 ; i < SIZE ; i++) {
-    for (j=0 ; j < SIZE; j++) {
-      a[i][j] = (my_rand_r(&random_seed) >> ((j-i) & 31)) & 0xF;
-      b[i][j] = (my_rand_r(&random_seed) << ((i+j) & 31)) & 0xF;
+  for (i = 0; i < SIZE; i++) {
+    for (j = 0; j < SIZE; j++) {
+      a[i][j] = (my_rand_r(&random_seed) >> ((j - i) & 31)) & 0xF;
+      b[i][j] = (my_rand_r(&random_seed) << ((i + j) & 31)) & 0xF;
     }
   }
 }
 
-void mm_inner(int I, int J, int K)
-{
-  int i,j,k;
-  
-  for (i=I ; i < I+BLOCK ; i++) 
-    for (j=J ; j < J+BLOCK ; j++)
-      for (k=K ; k < K+BLOCK ; k++)
-	  c[i][j] += a[i][k]*b[k][j];
+void mm_inner(int I, int J, int K) {
+  int i, j, k;
+
+  for (i = I; i < I + BLOCK; i++)
+    for (j = J; j < J + BLOCK; j++)
+      for (k = K; k < K + BLOCK; k++)
+        c[i][j] += a[i][k] * b[k][j];
 }
 
 void matmult() {
-  int i,j,k;
+  int i, j, k;
   float s1;
 
-  for (i=0 ; i < NUM ; i += BLOCK) 
-    for (j=0 ; j < NUM ; j += BLOCK)
-      for (k=0; k < NUM ; k += BLOCK) {
-	  mm_inner(i,j,k);
-	  //printf("ACC:blocks a(%d,%d)*b(%d,%d), c[%d][%d] = %f\n",
-	  //       i,k,k,j,i,j,c[i][j]);
-	}
+  for (i = 0; i < NUM; i += BLOCK)
+    for (j = 0; j < NUM; j += BLOCK)
+      for (k = 0; k < NUM; k += BLOCK) {
+        mm_inner(i, j, k);
+        // printf("ACC:blocks a(%d,%d)*b(%d,%d), c[%d][%d] = %f\n",
+        //       i,k,k,j,i,j,c[i][j]);
+      }
 }
 
-float mm_sum(int I, int J)
-{
-  int i,j;
+float mm_sum(int I, int J) {
+  int i, j;
   float s = 0.0;
-  
-  for (i=I ; i < I+BLOCK ; i++) 
-    for (j=J ; j < J+BLOCK ; j++)
+
+  for (i = I; i < I + BLOCK; i++)
+    for (j = J; j < J + BLOCK; j++)
       s += c[i][j];
   return (s);
 }
 
-float sumup() 
-{
-  int i,j;
+float sumup() {
+  int i, j;
   float s = 0.0;
 
-  for (i=0 ; i < NUM ; i += BLOCK)
-    for (j=0 ; j < NUM ; j += BLOCK) {
-      s += mm_sum(i,j);
-      //printf("SUM:block c(%d,%d) = %f\n",i,j,s);
+  for (i = 0; i < NUM; i += BLOCK)
+    for (j = 0; j < NUM; j += BLOCK) {
+      s += mm_sum(i, j);
+      // printf("SUM:block c(%d,%d) = %f\n",i,j,s);
     }
   return s;
 }
 
-int main (int argc, char* argv[])
-{
-  int i,j,k;
+int main(int argc, char *argv[]) {
+  int i, j, k;
   float s;
 
   if (argc != 3) {
@@ -227,7 +219,7 @@ int main (int argc, char* argv[])
   NUM = atoi(argv[1]);
   BLOCK = atoi(argv[2]);
 
-  if (((unsigned) NUM > 1024) | ((unsigned) BLOCK > (unsigned) NUM)) {
+  if (((unsigned)NUM > 1024) | ((unsigned)BLOCK > (unsigned)NUM)) {
     printf("size must be in [0, 1024]; block must be <= than size\n");
     exit(1);
   }
@@ -235,7 +227,7 @@ int main (int argc, char* argv[])
   init();
 
   /*** VERSABENCH START ***/
-  
+
   matmult();
 
   /*** VERSABENCH END ***/
@@ -243,4 +235,3 @@ int main (int argc, char* argv[])
   printf("final sum = %f\n", s);
   exit(0);
 }
-

@@ -2,32 +2,31 @@
 
 #include "global.h"
 
-void emit(int t, int tval, float rval)   /*  generates output */
+void emit(int t, int tval, float rval) /*  generates output */
 {
   if (ErrorFlag)
     return;
 
   ++NumberC;
-  if (NumberC >= 8)
-   {
-     printf("\n");
-     NumberC = 0;
-   }          /* end if NumberC */
+  if (NumberC >= 8) {
+    printf("\n");
+    NumberC = 0;
+  } /* end if NumberC */
 
-  switch(t) {
-  case RADD: 
+  switch (t) {
+  case RADD:
     printf("RADD, ");
     break;
   case ADD:
     printf("ADD, ");
     break;
-  case RSUB: 
+  case RSUB:
     printf("RSUB, ");
     break;
   case SUB:
     printf("SUB, ");
     break;
-  case RMUL: 
+  case RMUL:
     printf("RMUL, ");
     break;
   case MUL:
@@ -56,7 +55,7 @@ void emit(int t, int tval, float rval)   /*  generates output */
     break;
   case STORE:
     printf("ST, ");
-    break;    
+    break;
   case IST:
     printf("IST, ");
     break;
@@ -70,7 +69,7 @@ void emit(int t, int tval, float rval)   /*  generates output */
     printf("VALB, ");
     break;
   case PUSH_GLO_VAR_VALUE:
-    printf("@%s#0, ",GlobalTable[tval].lexptr);
+    printf("@%s#0, ", GlobalTable[tval].lexptr);
     break;
   case PUSH_LOC_VAR_VALUE:
     printf(">%s#%d, ", LocalTable[tval].lexptr, Scope);
@@ -80,11 +79,11 @@ void emit(int t, int tval, float rval)   /*  generates output */
     break;
   case NUM:
     printf("%d, ", tval);
-  break;
+    break;
   case RNUM:
-    printf("%16.4e, ", rval); 
-  break;
-  case GLO_DECL:  /* here tval is a subscript to the symbol table */
+    printf("%16.4e, ", rval);
+    break;
+  case GLO_DECL: /* here tval is a subscript to the symbol table */
     printf("%s#0 = %d, ", GlobalTable[tval].lexptr, DecCount);
     break;
   case LOC_DECL:
@@ -97,13 +96,13 @@ void emit(int t, int tval, float rval)   /*  generates output */
     printf("RNEG, ");
     break;
   case INT:
-    printf("FIX, "); 
+    printf("FIX, ");
     break;
   case FLOAT:
-    printf("FLOAT, "); 
+    printf("FLOAT, ");
     break;
   case POP:
-    printf("POP, "); 
+    printf("POP, ");
     break;
   case LABEL_CODE:
     printf("$%d: ", tval);
@@ -122,7 +121,7 @@ void emit(int t, int tval, float rval)   /*  generates output */
     break;
   case BNE:
     printf("BNE, ");
-    break; 
+    break;
   case B:
     printf("B, ");
     break;
@@ -163,7 +162,7 @@ void emit(int t, int tval, float rval)   /*  generates output */
     printf("\n$2: STOP, $3: ->START.\n");
     break;
   case NOTDEC:
-    printf("\n Function %s called but not parsed.\n",GlobalTable[tval].lexptr);
+    printf("\n Function %s called but not parsed.\n", GlobalTable[tval].lexptr);
     break;
   default:
     printf("token %d, tval %d, rval %f\n", t, tval, rval);

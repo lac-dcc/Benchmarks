@@ -38,47 +38,49 @@ e-mail address: manli@cs.uh.edu         (Internet)
 extern unsigned char p[19][19];
 extern int mymove;
 
-int fioe(int i, int j)
-{
-/* check top edge */
- if (i == 0)
-   {
-    if ((j == 0) && ((p[1][0] == mymove) && (p[0][1] == mymove))) return 1;
-    if ((j == 18) && ((p[1][18] == mymove) && (p[0][17] == mymove))) return 1;
+int fioe(int i, int j) {
+  /* check top edge */
+  if (i == 0) {
+    if ((j == 0) && ((p[1][0] == mymove) && (p[0][1] == mymove)))
+      return 1;
+    if ((j == 18) && ((p[1][18] == mymove) && (p[0][17] == mymove)))
+      return 1;
     if ((p[1][j] == mymove) &&
-	((p[0][j - 1] == mymove) && (p[0][j + 1] == mymove))) return 1;
+        ((p[0][j - 1] == mymove) && (p[0][j + 1] == mymove)))
+      return 1;
     else
-       return 0;
+      return 0;
   }
-/* check bottom edge */
- if (i == 18)
-   {
-    if ((j == 0) && ((p[17][0] == mymove) && (p[18][1] == mymove))) return 1;
-    if ((j == 18) && ((p[17][18] == mymove) && (p[18][17] == mymove))) return 1;
+  /* check bottom edge */
+  if (i == 18) {
+    if ((j == 0) && ((p[17][0] == mymove) && (p[18][1] == mymove)))
+      return 1;
+    if ((j == 18) && ((p[17][18] == mymove) && (p[18][17] == mymove)))
+      return 1;
     if ((p[17][j] == mymove) &&
-	((p[18][j - 1] == mymove) && (p[18][j + 1] == mymove)))
-       return 1;
+        ((p[18][j - 1] == mymove) && (p[18][j + 1] == mymove)))
+      return 1;
     else
-       return 0;
+      return 0;
   }
-/* check left edge */
- if (j == 0)
+  /* check left edge */
+  if (j == 0)
     if ((p[i][1] == mymove) &&
-	((p[i - 1] [0] == mymove) && (p[i + 1][0] == mymove)))
-       return 1;
+        ((p[i - 1][0] == mymove) && (p[i + 1][0] == mymove)))
+      return 1;
     else
-       return 0;
-/* check right edge */
- if (j == 18)
+      return 0;
+  /* check right edge */
+  if (j == 18)
     if ((p[i][17] == mymove) &&
-	((p[i - 1] [18] == mymove) && (p[i + 1][18] == mymove)))
-       return 1;
+        ((p[i - 1][18] == mymove) && (p[i + 1][18] == mymove)))
+      return 1;
     else
-       return 0;
-/* check center pieces */
- if (((p[i][j - 1] == mymove) && (p[i][j + 1] == mymove)) &&
-     ((p[i - 1][j] == mymove) && (p[i + 1][j] == mymove)))
+      return 0;
+  /* check center pieces */
+  if (((p[i][j - 1] == mymove) && (p[i][j + 1] == mymove)) &&
+      ((p[i - 1][j] == mymove) && (p[i + 1][j] == mymove)))
     return 1;
- else
+  else
     return 0;
-}  /* fioe */
+} /* fioe */

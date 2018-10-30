@@ -20,76 +20,63 @@
 
 ============================================================================*/
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "fourier.h"
 
-#define TRUE  1
+#define TRUE 1
 #define FALSE 0
 
-#define BITS_PER_WORD   (sizeof(unsigned) * 8)
+#define BITS_PER_WORD (sizeof(unsigned) * 8)
 
+int IsPowerOfTwo(unsigned x) {
+  if (x < 2)
+    return FALSE;
 
-int IsPowerOfTwo ( unsigned x )
-{
-    if ( x < 2 )
-        return FALSE;
+  if (x & (x - 1)) // Thanks to 'byang' for this cute trick!
+    return FALSE;
 
-    if ( x & (x-1) )        // Thanks to 'byang' for this cute trick!
-        return FALSE;
-
-    return TRUE;
+  return TRUE;
 }
 
+unsigned NumberOfBitsNeeded(unsigned PowerOfTwo) {
+  unsigned i;
 
-unsigned NumberOfBitsNeeded ( unsigned PowerOfTwo )
-{
-    unsigned i;
+  if (PowerOfTwo < 2) {
+    fprintf(stderr,
+            ">>> Error in fftmisc.c: argument %d to NumberOfBitsNeeded is too "
+            "small.\n",
+            PowerOfTwo);
 
-    if ( PowerOfTwo < 2 )
-    {
-        fprintf (
-            stderr,
-            ">>> Error in fftmisc.c: argument %d to NumberOfBitsNeeded is too small.\n",
-            PowerOfTwo );
+    exit(1);
+  }
 
-        exit(1);
-    }
-
-    for ( i=0; ; i++ )
-    {
-        if ( PowerOfTwo & (1 << i) )
-            return i;
-    }
+  for (i = 0;; i++) {
+    if (PowerOfTwo & (1 << i))
+      return i;
+  }
 }
 
+unsigned ReverseBits(unsigned index, unsigned NumBits) {
+  unsigned i, rev;
 
+  for (i = rev = 0; i < NumBits; i++) {
+    rev = (rev << 1) | (index & 1);
+    index >>= 1;
+  }
 
-unsigned ReverseBits ( unsigned index, unsigned NumBits )
-{
-    unsigned i, rev;
-
-    for ( i=rev=0; i < NumBits; i++ )
-    {
-        rev = (rev << 1) | (index & 1);
-        index >>= 1;
-    }
-
-    return rev;
+  return rev;
 }
 
+double Index_to_frequency(unsigned NumSamples, unsigned Index) {
+  if (Index >= NumSamples)
+    return 0.0;
+  else if (Index <= NumSamples / 2)
+    return (double)Index / (double)NumSamples;
 
-double Index_to_frequency ( unsigned NumSamples, unsigned Index )
-{
-    if ( Index >= NumSamples )
-        return 0.0;
-    else if ( Index <= NumSamples/2 )
-        return (double)Index / (double)NumSamples;
-
-    return -(double)(NumSamples-Index) / (double)NumSamples;
+  return -(double)(NumSamples - Index) / (double)NumSamples;
 }
-
 
 /*--- end of file fftmisc.c---*/

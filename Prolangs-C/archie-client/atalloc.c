@@ -12,11 +12,11 @@
 #include <pfs.h>
 #include <pmachine.h> /* for correct definition of ZERO */
 
-static PATTRIB	lfree = NULL;
-int		pattrib_count = 0;
-int		pattrib_max = 0;
+static PATTRIB lfree = NULL;
+int pattrib_count = 0;
+int pattrib_max = 0;
 
-extern void bzero(char *b,int length);
+extern void bzero(char *b, int length);
 
 /*
  * atalloc - allocate and initialize vlink structure
@@ -26,28 +26,27 @@ extern void bzero(char *b,int length);
  *    returns NULL.
  */
 
-PATTRIB atalloc(void)
-    {
-	PATTRIB	at;
-	if(lfree) {
-	    at = lfree;
-	    lfree = lfree->next;
-	}
-	else {
-	    at = (PATTRIB) malloc(sizeof(PATTRIB_ST));
-	    if (!at) return(NULL);
-	    pattrib_max++;
-	}
+PATTRIB atalloc(void) {
+  PATTRIB at;
+  if (lfree) {
+    at = lfree;
+    lfree = lfree->next;
+  } else {
+    at = (PATTRIB)malloc(sizeof(PATTRIB_ST));
+    if (!at)
+      return (NULL);
+    pattrib_max++;
+  }
 
-	pattrib_count++;
+  pattrib_count++;
 
-	ZERO(at);
-	/* Initialize and fill in default values; all items are
-	   0 [or NULL] save precedence */
-	at->precedence = ATR_PREC_OBJECT;
+  ZERO(at);
+  /* Initialize and fill in default values; all items are
+     0 [or NULL] save precedence */
+  at->precedence = ATR_PREC_OBJECT;
 
-	return(at);
-    }
+  return (at);
+}
 
 /*
  * atfree - free a PATTRIB structure
@@ -56,22 +55,23 @@ PATTRIB atalloc(void)
  *    the free list for later reuse.
  */
 
-void atfree(PATTRIB at)
-    {
-	if(at->aname) stfree(at->aname);
+void atfree(PATTRIB at) {
+  if (at->aname)
+    stfree(at->aname);
 
-	if((strcmp(at->avtype,"ASCII") == 0) && at->value.ascii) 
-	    stfree(at->value.ascii);
-	if((strcmp(at->avtype,"LINK") == 0) && at->value.link) 
-	    vlfree(at->value.link);
-	
-	if(at->avtype) stfree(at->avtype);
+  if ((strcmp(at->avtype, "ASCII") == 0) && at->value.ascii)
+    stfree(at->value.ascii);
+  if ((strcmp(at->avtype, "LINK") == 0) && at->value.link)
+    vlfree(at->value.link);
 
-	at->next = lfree;
-	at->previous = NULL;
-	lfree = at;
-	pattrib_count--;
-    }
+  if (at->avtype)
+    stfree(at->avtype);
+
+  at->next = lfree;
+  at->previous = NULL;
+  lfree = at;
+  pattrib_count--;
+}
 
 /*
  * atlfree - free a PATTRIB structure
@@ -81,13 +81,12 @@ void atfree(PATTRIB at)
  *    structures.
  */
 
-void atlfree(PATTRIB at)
-    {
-	PATTRIB	nxt;
+void atlfree(PATTRIB at) {
+  PATTRIB nxt;
 
-	while(at != NULL) {
-	    nxt = at->next;
-	    atfree(at);
-	    at = nxt;
-	}
-    }
+  while (at != NULL) {
+    nxt = at->next;
+    atfree(at);
+    at = nxt;
+  }
+}

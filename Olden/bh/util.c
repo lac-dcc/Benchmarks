@@ -9,22 +9,20 @@
 #include "stdinc.h"
 #include <errno.h>
 
-#define A	16807.0
-#define M	2147483647.0
+#define A 16807.0
+#define M 2147483647.0
 
 void exit(int);
 
 /* random:
  * return a random number, which is also the next seed.
  */
-double my_rand(double seed)
-{
-    double	t = A*seed  + 1; 
-    double floor();
+double my_rand(double seed) {
+  double t = A * seed + 1;
+  double floor();
 
-
-    seed = t - (M * floor(t / M));
-    return seed;
+  seed = t - (M * floor(t / M));
+  return seed;
 
 } /* end of random */
 
@@ -32,27 +30,20 @@ double my_rand(double seed)
  * XRAND: generate floating-point random number.
  */
 
-double xrand(double xl, double xh, double r)
-{   double res;
+double xrand(double xl, double xh, double r) {
+  double res;
 
-    res = xl + (xh-xl)*r/2147483647.0;
-    return (res);
+  res = xl + (xh - xl) * r / 2147483647.0;
+  return (res);
 }
-
-
-
 
 /*
  * ERROR: scream and die quickly.
  */
 
-error(char *msg)
-{
-    fprintf(stderr, msg);
-    if (errno != 0)
-        perror("Error");
-    exit(0);
+error(char *msg) {
+  fprintf(stderr, msg);
+  if (errno != 0)
+    perror("Error");
+  exit(0);
 }
-
-
-

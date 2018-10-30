@@ -22,7 +22,7 @@ copies.  */
 /* We don't really need the definition of gx_device, because we only */
 /* declare pointers to devices, but some compilers seem to want it.... */
 #include "gs.h"
-#include "gsmatrix.h"			/* for gxdevice.h */
+#include "gsmatrix.h" /* for gxdevice.h */
 #include "gxbitmap.h"
 #include "gxdevice.h"
 
@@ -44,11 +44,8 @@ gx_device *gx_device_list[] = {
 #define d(dev) &dev,
 #include "gdevs.h"
 #undef d
-	0
-};
+    0};
 
 /* Some C compilers insist on having executable code in every file, so: */
-private void
-gdevs_dummy()
-{
-}
+private
+void gdevs_dummy() {}
