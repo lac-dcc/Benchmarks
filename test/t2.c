@@ -1,3 +1,5 @@
+// After mem2reg, no store should be produced by this benchmark
+
 #include <stdio.h>
 
 int c = 0;
