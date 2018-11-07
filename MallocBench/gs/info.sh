@@ -1,10 +1,6 @@
-bnc_name="gs" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="gs"
 
-PROJ_SRC_DIR="$(pwd)" ;
+PROJ_SRC_DIR="$(pwd)"
 
 source_files=("gsmain.c" "gs.c" "gp_unix.c" "utrace.c" \
            "ialloc.c" "idebug.c" "idict.c" "iinit.c" "iname.c" \
@@ -20,12 +16,12 @@ source_files=("gsmain.c" "gs.c" "gp_unix.c" "utrace.c" \
           "gspaint.c" "gspath.c" "gspath2.c" "gsstate.c" "gstype1.c" \
           "gxcache.c" "gxcolor.c" "gxdither.c" "gxdraw.c" "gxfill.c" \
           "gxht.c" "gxpath.c" "gxpath2.c" "gxstroke.c" \
-          "gdevmem.c" "gdevs.c") ;
+          "gdevmem.c" "gdevs.c")
 
-CXXFLAGS=" -lm -DNOMEMOPT \
-           -DGS_LIB_DEFAULT=\\\"${PROJ_SRC_DIR}:${PROJ_SRC_DIR}/fonts\\\"" ;
+COMPILE_FLAGS=" -lm -DNOMEMOPT \
+           -DGS_LIB_DEFAULT=\\\"${PROJ_SRC_DIR}:${PROJ_SRC_DIR}/fonts\\\""
 
-RUN_OPTIONS="-DNODISPLAY $PROJ_SRC_DIR/INPUT/large.ps" ;
+RUN_OPTIONS="-DNODISPLAY $PROJ_SRC_DIR/INPUT/large.ps"
 
 
 

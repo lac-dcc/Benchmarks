@@ -1,9 +1,5 @@
-bnc_name="test" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="test"
 
 source_files=( "t11.c" )
-CXXFLAGS=" " ;
-RUN_OPTIONS="10" ;
+COMPILE_FLAGS=" "
+RUN_OPTIONS="10"

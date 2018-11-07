@@ -1,9 +1,5 @@
-bnc_name="telecomm-FFT" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="telecomm-FFT"
 
 source_files=( "fftmisc.c" "fourierf.c" "main.c" )
-CXXFLAGS=" -lm " ;
-RUN_OPTIONS=" 8 32768 -i " ;
+COMPILE_FLAGS=" -lm "
+RUN_OPTIONS=" 8 32768 -i "

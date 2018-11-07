@@ -1,9 +1,5 @@
-bnc_name="09-vor" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="09-vor"
 
 source_files=( "ch.c" "intersec.c" "pointlis.c" "splay.c" "splay2.c" "vor.c" )
-CXXFLAGS=" -lm " ;
+COMPILE_FLAGS=" -lm "
 STDIN="vor.in3"

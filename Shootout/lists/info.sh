@@ -1,9 +1,5 @@
-bnc_name="lists" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="lists"
 
 source_files=( "lists.c" )
-CXXFLAGS=" -lm " ;
-RUN_OPTIONS=" " ;
+COMPILE_FLAGS=" -lm "
+RUN_OPTIONS=" "

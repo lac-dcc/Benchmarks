@@ -1,9 +1,5 @@
-bnc_name="cdecl" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="cdecl"
 
 source_files=( "cdecl.c" )
-CXXFLAGS="-std=gnu89" ;
-STDIN="testset" ;
+COMPILE_FLAGS="-std=gnu89"
+STDIN="testset"

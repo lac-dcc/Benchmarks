@@ -1,10 +1,6 @@
-bnc_name="mvt" ;
-lnk_name="$bnc_name.rbc"
-prf_name="$bnc_name.ibc"
-obj_name="$bnc_name.o"
-exe_name="$bnc_name.exe"
+bench_name="mvt"
 
 source_files=($(ls *.c))
 
-CXXFLAGS=" -I. " ;
-RUN_OPTIONS=" " ;
+COMPILE_FLAGS=" -I. "
+RUN_OPTIONS=" "

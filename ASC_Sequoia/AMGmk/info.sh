@@ -1,8 +1,4 @@
-bnc_name="AMGmk" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="AMGmk"
 
 source_files=( "csr_matrix.c" "csr_matvec.c" "hypre_error.c" "hypre_memory.c" "laplace.c" "main.c" "relax.c" "vector.c" )
-CXXFLAGS=" -lm " ;
+COMPILE_FLAGS=" -lm "
