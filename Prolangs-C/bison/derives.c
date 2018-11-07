@@ -18,20 +18,20 @@ notice and this notice must be preserved on all copies.
  You are forbidden to forbid anyone else to use, share and improve
  what you give them.   Help stamp out software-hoarding!  */
 
-/* set_derives finds, for each variable (nonterminal), which rules can derive
-   it. It sets up the value of derives so that
-   derives[i - ntokens] points to a vector of rule numbers, terminated with a
-   zero.  */
+/* set_derives finds, for each variable (nonterminal), which rules can derive it.
+   It sets up the value of derives so that
+   derives[i - ntokens] points to a vector of rule numbers, terminated with a zero.  */
 
-#include "gram.h"
-#include "new.h"
-#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "new.h"
+#include "types.h"
+#include "gram.h"
 
 short **derives;
 
-void set_derives(void) {
+void set_derives(void)
+{
   register int i;
   register int lhs;
   register shorts *p;
@@ -43,28 +43,31 @@ void set_derives(void) {
   delts = NEW2(nrules + 1, shorts);
 
   p = delts;
-  for (i = nrules; i > 0; i--) {
-    lhs = rlhs[i];
-    p->next = dset[lhs];
-    p->value = i;
-    dset[lhs] = p;
-    p++;
-  }
+  for (i = nrules; i > 0; i--)
+    {
+      lhs = rlhs[i];
+      p->next = dset[lhs];
+      p->value = i;
+      dset[lhs] = p;
+      p++;
+    }
 
   derives = NEW2(nvars, short *) - ntokens;
   q = NEW2(nvars + nrules, short);
 
-  for (i = ntokens; i < nsyms; i++) {
-    derives[i] = q;
-    p = dset[i];
-    while (p) {
-      *q++ = p->value;
-      p = p->next;
+  for (i = ntokens; i < nsyms; i++)
+    {
+      derives[i] = q;
+      p = dset[i];
+      while (p)
+	{
+	  *q++ = p->value;
+	  p = p->next;
+	}
+      *q++ = -1;
     }
-    *q++ = -1;
-  }
 
-#ifdef DEBUG
+#ifdef	DEBUG
   print_derives();
 #endif
 
@@ -72,14 +75,19 @@ void set_derives(void) {
   FREE(delts);
 }
 
-void free_derives(void) {
+
+void free_derives(void)
+{
   FREE(derives[ntokens]);
   FREE(derives + ntokens);
 }
 
-#ifdef DEBUG
 
-void print_derives(void) {
+
+#ifdef	DEBUG
+
+void print_derives(void)
+{
   register int i;
   register short *sp;
 
@@ -87,13 +95,15 @@ void print_derives(void) {
 
   printf("\n\n\nDERIVES\n\n");
 
-  for (i = ntokens; i < nsyms; i++) {
-    printf("%s derives", tags[i]);
-    for (sp = derives[i]; *sp > 0; sp++) {
-      printf("  %d", *sp);
+  for (i = ntokens; i < nsyms; i++)
+    {
+      printf("%s derives", tags[i]);
+      for (sp = derives[i]; *sp > 0; sp++)
+	{
+	  printf("  %d", *sp);
+	}
+      putchar('\n');
     }
-    putchar('\n');
-  }
 
   putchar('\n');
 }

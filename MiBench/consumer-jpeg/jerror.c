@@ -14,14 +14,15 @@
  */
 
 /* this is not a core library module, so it doesn't define JPEG_INTERNALS */
-#include "jerror.h"
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jversion.h"
+#include "jerror.h"
 
-#ifndef EXIT_FAILURE /* define exit() codes if not provided */
-#define EXIT_FAILURE 1
+#ifndef EXIT_FAILURE		/* define exit() codes if not provided */
+#define EXIT_FAILURE  1
 #endif
+
 
 /*
  * Create the message string table.
@@ -32,14 +33,16 @@
  */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_message_table jMsgTable
+#define jpeg_std_message_table	jMsgTable
 #endif
 
-#define JMESSAGE(code, string) string,
+#define JMESSAGE(code,string)	string ,
 
-const char *const jpeg_std_message_table[] = {
+const char * const jpeg_std_message_table[] = {
 #include "jerror.h"
-    NULL};
+  NULL
+};
+
 
 /*
  * Error exit handler: must not return to caller.
@@ -55,15 +58,17 @@ const char *const jpeg_std_message_table[] = {
  */
 
 METHODDEF(void)
-error_exit(j_common_ptr cinfo) {
+error_exit (j_common_ptr cinfo)
+{
   /* Always display the message */
-  (*cinfo->err->output_message)(cinfo);
+  (*cinfo->err->output_message) (cinfo);
 
   /* Let the memory manager delete any temp files before we die */
   jpeg_destroy(cinfo);
 
   exit(EXIT_FAILURE);
 }
+
 
 /*
  * Actual output of an error or trace message.
@@ -72,15 +77,17 @@ error_exit(j_common_ptr cinfo) {
  */
 
 METHODDEF(void)
-output_message(j_common_ptr cinfo) {
+output_message (j_common_ptr cinfo)
+{
   char buffer[JMSG_LENGTH_MAX];
 
   /* Create the message */
-  (*cinfo->err->format_message)(cinfo, buffer);
+  (*cinfo->err->format_message) (cinfo, buffer);
 
   /* Send it to stderr, adding a newline */
   fprintf(stderr, "%s\n", buffer);
 }
+
 
 /*
  * Decide whether to emit a trace or warning message.
@@ -94,8 +101,9 @@ output_message(j_common_ptr cinfo) {
  */
 
 METHODDEF(void)
-emit_message(j_common_ptr cinfo, int msg_level) {
-  struct jpeg_error_mgr *err = cinfo->err;
+emit_message (j_common_ptr cinfo, int msg_level)
+{
+  struct jpeg_error_mgr * err = cinfo->err;
 
   if (msg_level < 0) {
     /* It's a warning message.  Since corrupt files may generate many warnings,
@@ -103,15 +111,16 @@ emit_message(j_common_ptr cinfo, int msg_level) {
      * unless trace_level >= 3.
      */
     if (err->num_warnings == 0 || err->trace_level >= 3)
-      (*err->output_message)(cinfo);
+      (*err->output_message) (cinfo);
     /* Always count warnings in num_warnings. */
     err->num_warnings++;
   } else {
     /* It's a trace message.  Show it if trace_level >= msg_level. */
     if (err->trace_level >= msg_level)
-      (*err->output_message)(cinfo);
+      (*err->output_message) (cinfo);
   }
 }
+
 
 /*
  * Format a message string for the most recent JPEG error or message.
@@ -121,11 +130,12 @@ emit_message(j_common_ptr cinfo, int msg_level) {
  */
 
 METHODDEF(void)
-format_message(j_common_ptr cinfo, char *buffer) {
-  struct jpeg_error_mgr *err = cinfo->err;
+format_message (j_common_ptr cinfo, char * buffer)
+{
+  struct jpeg_error_mgr * err = cinfo->err;
   int msg_code = err->msg_code;
-  const char *msgtext = NULL;
-  const char *msgptr;
+  const char * msgtext = NULL;
+  const char * msgptr;
   char ch;
   boolean isstring;
 
@@ -133,8 +143,8 @@ format_message(j_common_ptr cinfo, char *buffer) {
   if (msg_code > 0 && msg_code <= err->last_jpeg_message) {
     msgtext = err->jpeg_message_table[msg_code];
   } else if (err->addon_message_table != NULL &&
-             msg_code >= err->first_addon_message &&
-             msg_code <= err->last_addon_message) {
+	     msg_code >= err->first_addon_message &&
+	     msg_code <= err->last_addon_message) {
     msgtext = err->addon_message_table[msg_code - err->first_addon_message];
   }
 
@@ -149,8 +159,7 @@ format_message(j_common_ptr cinfo, char *buffer) {
   msgptr = msgtext;
   while ((ch = *msgptr++) != '\0') {
     if (ch == '%') {
-      if (*msgptr == 's')
-        isstring = TRUE;
+      if (*msgptr == 's') isstring = TRUE;
       break;
     }
   }
@@ -159,10 +168,13 @@ format_message(j_common_ptr cinfo, char *buffer) {
   if (isstring)
     sprintf(buffer, msgtext, err->msg_parm.s);
   else
-    sprintf(buffer, msgtext, err->msg_parm.i[0], err->msg_parm.i[1],
-            err->msg_parm.i[2], err->msg_parm.i[3], err->msg_parm.i[4],
-            err->msg_parm.i[5], err->msg_parm.i[6], err->msg_parm.i[7]);
+    sprintf(buffer, msgtext,
+	    err->msg_parm.i[0], err->msg_parm.i[1],
+	    err->msg_parm.i[2], err->msg_parm.i[3],
+	    err->msg_parm.i[4], err->msg_parm.i[5],
+	    err->msg_parm.i[6], err->msg_parm.i[7]);
 }
+
 
 /*
  * Reset error state variables at start of a new image.
@@ -173,11 +185,13 @@ format_message(j_common_ptr cinfo, char *buffer) {
  */
 
 METHODDEF(void)
-reset_error_mgr(j_common_ptr cinfo) {
+reset_error_mgr (j_common_ptr cinfo)
+{
   cinfo->err->num_warnings = 0;
   /* trace_level is not reset since it is an application-supplied parameter */
-  cinfo->err->msg_code = 0; /* may be useful as a flag for "no error" */
+  cinfo->err->msg_code = 0;	/* may be useful as a flag for "no error" */
 }
+
 
 /*
  * Fill in the standard error-handling methods in a jpeg_error_mgr object.
@@ -190,23 +204,24 @@ reset_error_mgr(j_common_ptr cinfo) {
  */
 
 GLOBAL(struct jpeg_error_mgr *)
-jpeg_std_error(struct jpeg_error_mgr *err) {
+jpeg_std_error (struct jpeg_error_mgr * err)
+{
   err->error_exit = error_exit;
   err->emit_message = emit_message;
   err->output_message = output_message;
   err->format_message = format_message;
   err->reset_error_mgr = reset_error_mgr;
 
-  err->trace_level = 0;  /* default = no tracing */
-  err->num_warnings = 0; /* no warnings emitted yet */
-  err->msg_code = 0;     /* may be useful as a flag for "no error" */
+  err->trace_level = 0;		/* default = no tracing */
+  err->num_warnings = 0;	/* no warnings emitted yet */
+  err->msg_code = 0;		/* may be useful as a flag for "no error" */
 
   /* Initialize message table pointers */
   err->jpeg_message_table = jpeg_std_message_table;
-  err->last_jpeg_message = (int)JMSG_LASTMSGCODE - 1;
+  err->last_jpeg_message = (int) JMSG_LASTMSGCODE - 1;
 
   err->addon_message_table = NULL;
-  err->first_addon_message = 0; /* for safety */
+  err->first_addon_message = 0;	/* for safety */
   err->last_addon_message = 0;
 
   return err;

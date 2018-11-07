@@ -19,17 +19,20 @@
  *   If p <= 0, it returns a -1.
  *--------------------------------------------------------------------------*/
 
-int hypre_Log2(int p) {
-  int e;
+int
+hypre_Log2(int p)
+{
+   int  e;
 
-  if (p <= 0)
-    return -1;
+   if (p <= 0)
+      return -1;
 
-  e = 0;
-  while (p > 1) {
-    e += 1;
-    p /= 2;
-  }
-
-  return e;
+   e = 0;
+   while (p > 1)
+   {
+      e += 1;
+      p /= 2;
+   }
+ 
+   return  e;
 }

@@ -21,7 +21,7 @@
    25% FDIV's) so that the range of performance can be obtained when
    using FDIV's. FDIV's, being computationally more intensive than
    FADD's or FMUL's, can impact performance considerably on some systems.
-
+   
    Flops.c consists of 8 independent modules (routines) which, except for
    module 2, conduct numerical integration of various functions. Module
    2, estimates the value of pi based upon the Maclaurin series expansion
@@ -32,15 +32,15 @@
    The MFLOPS(1) result is identical to the result provided by all
    previous versions of flops.c. It is based only upon the results from
    modules 2 and 3. Two problems surfaced in using MFLOPS(1). First, it
-   was difficult to completely 'vectorize' the result due to the
+   was difficult to completely 'vectorize' the result due to the 
    recurrence of the 's' variable in module 2. This problem is addressed
    in the MFLOPS(2) result which does not use module 2, but maintains
    nearly the same weighting of FDIV's (9.2%) as in MFLOPS(1) (9.6%).
    The second problem with MFLOPS(1) centers around the percentage of
    FDIV's (9.6%) which was viewed as too high for an important class of
    problems. This concern is addressed in the MFLOPS(3) result where NO
-   FDIV's are conducted at all.
-
+   FDIV's are conducted at all. 
+   
    The number of floating-point instructions per iteration (loop) is
    given below for each module executed:
 
@@ -53,37 +53,37 @@
      6       13      0     16      0      29   0.0%  FDIV's
      7        3      3      3      3      12   25.0% FDIV's
      8       13      0     17      0      30   0.0%  FDIV's
-
+   
    A*2+3     21     12     14      5      52   A=5, MFLOPS(1), Same as
-           40.4%  23.1%  26.9%  9.6%          previous versions of the
-                                                flops.c program. Includes
-                                                only Modules 2 and 3, does
-                                                9.6% FDIV's, and is not
-                                                easily vectorizable.
-
+	   40.4%  23.1%  26.9%  9.6%          previous versions of the
+						flops.c program. Includes
+						only Modules 2 and 3, does
+						9.6% FDIV's, and is not
+						easily vectorizable.
+   
    1+3+4     58     14     66     14     152   A=4, MFLOPS(2), New output
    +5+6+    38.2%  9.2%   43.4%  9.2%          does not include Module 2,
    A*7                                         but does 9.2% FDIV's.
-
+   
    1+3+4     62      5     74      5     146   A=0, MFLOPS(3), New output
    +5+6+    42.9%  3.4%   50.7%  3.4%          does not include Module 2,
    7+8                                         but does 3.4% FDIV's.
 
    3+4+6     39      2     50      0      91   A=0, MFLOPS(4), New output
    +8       42.9%  2.2%   54.9%  0.0%          does not include Module 2,
-                                                and does NO FDIV's.
+						and does NO FDIV's.
 
    NOTE: Various timer routines are included as indicated below. The
-        timer routines, with some comments, are attached at the end
-        of the main program.
+	timer routines, with some comments, are attached at the end 
+	of the main program.
 
    NOTE: Please do not remove any of the printouts.
 
    EXAMPLE COMPILATION:
    UNIX based systems
        cc -DUNIX -O flops.c -o flops
-       cc -DUNIX -DROPT flops.c -o flops
-       cc -DUNIX -fast -O4 flops.c -o flops
+       cc -DUNIX -DROPT flops.c -o flops 
+       cc -DUNIX -fast -O4 flops.c -o flops 
        .
        .
        .
@@ -116,26 +116,26 @@
 /* #define POSIX1      */
 /***********************/
 
-#include <math.h>
 #include <stdio.h>
-/* 'Uncomment' the line below to run   */
-/* with 'register double' variables    */
-/* defined, or compile with the        */
-/* '-DROPT' option. Don't need this if */
-/* registers used automatically, but   */
-/* you might want to try it anyway.    */
+#include <math.h>
+			    /* 'Uncomment' the line below to run   */
+			    /* with 'register double' variables    */
+			    /* defined, or compile with the        */
+			    /* '-DROPT' option. Don't need this if */
+			    /* registers used automatically, but   */
+			    /* you might want to try it anyway.    */
 /* #define ROPT */
 
-double nulltime, TimeArray[3]; /* Variables needed for 'dtime()'.     */
-double TLimit;                 /* Threshold to determine Number of    */
-                               /* Loops to run. Fixed at 15.0 seconds.*/
+double nulltime, TimeArray[3];   /* Variables needed for 'dtime()'.     */
+double TLimit;                   /* Threshold to determine Number of    */
+				 /* Loops to run. Fixed at 15.0 seconds.*/
 
-double T[36]; /* Global Array used to hold timing    */
-              /* results and other information.      */
+double T[36];                    /* Global Array used to hold timing    */
+				 /* results and other information.      */
 
-double sa, sb, sc, sd, one, two, three;
-double four, five, piref, piprg;
-double scale, pierr;
+double sa,sb,sc,sd,one,two,three;
+double four,five,piref,piprg;
+double scale,pierr;
 
 double A0 = 1.0;
 double A1 = -0.1666666666671334;
@@ -170,52 +170,54 @@ double D3 = 0.1233153E-5;
 double E2 = 0.48E-3;
 double E3 = 0.411051E-6;
 
-int main() {
+int main()
+{
 
 #ifdef ROPT
-  register double s, u, v, w, x;
+   register double s,u,v,w,x;
 #else
-  double s, u, v, w, x;
+   double s,u,v,w,x;
 #endif
 
-  long loops, NLimit;
-  register long i, m, n;
+   long loops, NLimit;
+   register long i, m, n;
 
-  printf("\n");
-  printf("   FLOPS C Program (Double Precision), V2.0 18 Dec 1992\n\n");
+   printf("\n");
+   printf("   FLOPS C Program (Double Precision), V2.0 18 Dec 1992\n\n");
 
-  /****************************/
-  loops = 15625; /* Initial number of loops. */
-  /*     DO NOT CHANGE!       */
-  /****************************/
+			/****************************/
+   loops = 15625;        /* Initial number of loops. */
+			/*     DO NOT CHANGE!       */
+			/****************************/
 
-  /****************************************************/
-  /* Set Variable Values.                             */
-  /* T[1] references all timing results relative to   */
-  /* one million loops.                               */
-  /*                                                  */
-  /* The program will execute from 31250 to 512000000 */
-  /* loops based on a runtime of Module 1 of at least */
-  /* TLimit = 15.0 seconds. That is, a runtime of 15  */
-  /* seconds for Module 1 is used to determine the    */
-  /* number of loops to execute.                      */
-  /*                                                  */
-  /* No more than NLimit = 512000000 loops are allowed*/
-  /****************************************************/
+/****************************************************/
+/* Set Variable Values.                             */
+/* T[1] references all timing results relative to   */
+/* one million loops.                               */
+/*                                                  */
+/* The program will execute from 31250 to 512000000 */
+/* loops based on a runtime of Module 1 of at least */
+/* TLimit = 15.0 seconds. That is, a runtime of 15  */
+/* seconds for Module 1 is used to determine the    */
+/* number of loops to execute.                      */
+/*                                                  */
+/* No more than NLimit = 512000000 loops are allowed*/
+/****************************************************/
 
-  TLimit = 1.0;
-  NLimit = 512000000;
+   TLimit = 1.0;
+   NLimit = 512000000;
 
-  piref = 3.14159265358979324;
-  one = 1.0;
-  two = 2.0;
-  three = 3.0;
-  four = 4.0;
-  five = 5.0;
-  scale = one;
+   piref = 3.14159265358979324;
+   one   = 1.0;
+   two   = 2.0;
+   three = 3.0;
+   four  = 4.0;
+   five  = 5.0;
+   scale = one;
 
-  printf("   Module     Error        RunTime      MFLOPS\n");
-  printf("                            (usec)\n");
+   printf("   Module     Error        RunTime      MFLOPS\n");
+   printf("                            (usec)\n");
+   
 
 /*******************************************************/
 /* Module 2.  Calculate value of PI from Taylor Series */
@@ -226,44 +228,48 @@ int main() {
 /*            42.9% +, 28.6% -, 14.3% *, and 14.3% /   */
 /*******************************************************/
 #ifdef SMALL_PROBLEM_SIZE
-  m = loops * 400;
+   m = loops*400;
 #else
-  m = loops * 10000;
+   m = loops*10000;
 #endif
-  s = -five; /********************/
-  sa = -one; /* Loop 2.          */
-             /********************/
-  for (i = 1; i <= m; i++) {
-    s = -s;
-    sa = sa + s;
-  }
+   s  = -five;                                      /********************/
+   sa = -one;                                       /* Loop 2.          */
+						   /********************/
+   for ( i = 1 ; i <= m ; i++ )
+   {
+   s  = -s;
+   sa = sa + s;
+   }
 
-  sc = (double)m;
+   sc   = (double)m;
 
-  u = sa;  /*********************/
-  v = 0.0; /* Loop 3.           */
-  w = 0.0; /*********************/
-  x = 0.0;
+   u = sa;                                         /*********************/
+   v = 0.0;                                        /* Loop 3.           */
+   w = 0.0;                                        /*********************/
+   x = 0.0;
 
-  for (i = 1; i <= m; i++) {
-    s = -s;
-    sa = sa + s;
-    u = u + two;
-    x = x + (s - u);
-    v = v - s * u;
-    w = w + s / u;
-  }
+   for ( i = 1 ; i <= m ; i++)
+   {
+   s  = -s;
+   sa = sa + s;
+   u  = u + two;
+   x  = x +(s - u);
+   v  = v - s * u;
+   w  = w + s / u;
+   }
 
-  m = (long)(sa * x / sc); /*  PI Results       */
-  sa = four * w / five;    /*********************/
-  sb = sa + five / v;
-  sc = 31.25;
-  piprg = sb - sc / (v * v * v);
-  pierr = piprg - piref;
+   m  = (long)( sa * x  / sc );                    /*  PI Results       */
+   sa = four * w / five;                           /*********************/
+   sb = sa + five / v;
+   sc = 31.25;
+   piprg = sb - sc / (v * v * v);
+   pierr = piprg - piref;
+  
+   printf("     2   %13.4lf  %10.4lf  %10.4lf\n",
+          pierr* /* stabilize output */  1e-30,
+          0* /* stabilize output */  1e-30,
+          0* /* stabilize output */  1e-30);
 
-  printf("     2   %13.4lf  %10.4lf  %10.4lf\n",
-         pierr * /* stabilize output */ 1e-30, 0 * /* stabilize output */ 1e-30,
-         0 * /* stabilize output */ 1e-30);
-
-  return 0;
+   return 0;
 }
+

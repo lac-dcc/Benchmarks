@@ -19,140 +19,160 @@ copies.  */
 
 /* zpath2.c */
 /* Non-constructor path operators for GhostScript */
-#include "alloc.h"
-#include "errors.h"
-#include "estack.h" /* for pathforall */
 #include "ghost.h"
-#include "gspath.h"
 #include "oper.h"
+#include "errors.h"
+#include "alloc.h"
+#include "estack.h"	/* for pathforall */
+#include "gspath.h"
 #include "state.h"
 #include "store.h"
 
 /* flattenpath */
-int zflattenpath(register ref *op) { return gs_flattenpath(igs); }
+int
+zflattenpath(register ref *op)
+{	return gs_flattenpath(igs);
+}
 
 /* reversepath */
-int zreversepath(register ref *op) { return gs_reversepath(igs); }
+int
+zreversepath(register ref *op)
+{	return gs_reversepath(igs);
+}
 
 /* strokepath */
-int zstrokepath(register ref *op) { return gs_strokepath(igs); }
+int
+zstrokepath(register ref *op)
+{	return gs_strokepath(igs);
+}
 
 /* clippath */
-int zclippath(register ref *op) { return gs_clippath(igs); }
+int
+zclippath(register ref *op)
+{	return gs_clippath(igs);
+}
 
 /* pathbbox */
-int zpathbbox(register ref *op) {
-  gs_rect box;
-  int code = gs_pathbbox(igs, &box);
-  if (code < 0)
-    return code;
-  push(4);
-  make_real(op - 3, box.p.x);
-  make_real(op - 2, box.p.y);
-  make_real(op - 1, box.q.x);
-  make_real(op, box.q.y);
-  return 0;
+int
+zpathbbox(register ref *op)
+{	gs_rect box;
+	int code = gs_pathbbox(igs, &box);
+	if ( code < 0 ) return code;
+	push(4);
+	make_real(op - 3, box.p.x);
+	make_real(op - 2, box.p.y);
+	make_real(op - 1, box.q.x);
+	make_real(op, box.q.y);
+	return 0;
 }
 
 /* pathforall */
-private
-int path_continue(P1(ref *));
-int zpathforall(register ref *op) {
-  gs_path_enum *penum;
-  check_op(4);
-  check_estack(8);
-  if ((penum = (gs_path_enum *)alloc(1, gs_path_enum_sizeof, "pathforall")) ==
-      0)
-    return e_VMerror;
-  gs_path_enum_init(penum, igs);
-  /* Push a mark, the four procedures, and a pseudo-integer */
-  /* in which value.bytes points to the path enumerator, */
-  /* and then call the continuation procedure. */
-  mark_estack(es_for); /* iterator */
-  *++esp = op[-3];     /* moveto proc */
-  *++esp = op[-2];     /* lineto proc */
-  *++esp = op[-1];     /* curveto proc */
-  *++esp = *op;        /* closepath proc */
-  ++esp;
-  make_tv(esp, t_integer, bytes, (byte *)penum);
-  pop(4);
-  op -= 4;
-  return path_continue(op);
+private int path_continue(P1(ref *));
+int
+zpathforall(register ref *op)
+{	gs_path_enum *penum;
+	check_op(4);
+	check_estack(8);
+	if ( (penum = (gs_path_enum *)alloc(1, gs_path_enum_sizeof, "pathforall")) == 0 )
+	  return e_VMerror;
+	gs_path_enum_init(penum, igs);
+	/* Push a mark, the four procedures, and a pseudo-integer */
+	/* in which value.bytes points to the path enumerator, */
+	/* and then call the continuation procedure. */
+	mark_estack(es_for);	/* iterator */
+	*++esp = op[-3];	/* moveto proc */
+	*++esp = op[-2];	/* lineto proc */
+	*++esp = op[-1];	/* curveto proc */
+	*++esp = *op;		/* closepath proc */
+	++esp;
+	make_tv(esp, t_integer, bytes, (byte *)penum);
+	pop(4);  op -= 4;
+	return path_continue(op);
 }
 /* Continuation procedure for pathforall */
-private
-int pf_push(P3(gs_point *, int, ref *));
-private
-int path_continue(register ref *op) {
-  gs_path_enum *penum = (gs_path_enum *)esp->value.bytes;
-  gs_point ppts[3];
-  int code;
-  code = gs_path_enum_next(penum, ppts);
-  switch (code) {
-  case 0: /* all done */
-  {
-    alloc_free((char *)penum, 1, gs_path_enum_sizeof, "pathforall");
-    esp -= 6;
-    return o_check_estack;
-  }
-  default: /* error */
-    return code;
-  case gs_pe_moveto:
-    esp[2] = esp[-4]; /* moveto proc */
-    code = pf_push(ppts, 1, op);
-    break;
-  case gs_pe_lineto:
-    esp[2] = esp[-3]; /* lineto proc */
-    code = pf_push(ppts, 1, op);
-    break;
-  case gs_pe_curveto:
-    esp[2] = esp[-2]; /* curveto proc */
-    code = pf_push(ppts, 3, op);
-    break;
-  case gs_pe_closepath:
-    esp[2] = esp[-1]; /* closepath proc */
-    code = 0;
-    break;
-  }
-  if (code < 0)
-    return code; /* ostack overflow in pf_push */
-  push_op_estack(path_continue);
-  ++esp; /* include pushed procedure */
-  return o_check_estack;
+private int pf_push(P3(gs_point *, int, ref *));
+private int
+path_continue(register ref *op)
+{	gs_path_enum *penum = (gs_path_enum *)esp->value.bytes;
+	gs_point ppts[3];
+	int code;
+	code = gs_path_enum_next(penum, ppts);
+	switch ( code )
+	  {
+	case 0:			/* all done */
+	    { alloc_free((char *)penum, 1, gs_path_enum_sizeof, "pathforall");
+	      esp -= 6;
+	      return o_check_estack;
+	    }
+	default:		/* error */
+	    return code;
+	case gs_pe_moveto:
+	    esp[2] = esp[-4];			/* moveto proc */
+	    code = pf_push(ppts, 1, op);
+	    break;
+	case gs_pe_lineto:
+	    esp[2] = esp[-3];			/* lineto proc */
+	    code = pf_push(ppts, 1, op);
+	    break;
+	case gs_pe_curveto:
+	    esp[2] = esp[-2];			/* curveto proc */
+	    code = pf_push(ppts, 3, op);
+	    break;
+	case gs_pe_closepath:
+	    esp[2] = esp[-1];			/* closepath proc */
+	    code = 0;
+	    break;
+	  }
+	if ( code < 0 ) return code;	/* ostack overflow in pf_push */
+	push_op_estack(path_continue);
+	++esp;		/* include pushed procedure */
+	return o_check_estack;
 }
 /* Internal procedure to push one or more points */
-private
-int pf_push(gs_point *ppts, int n, ref *op) {
-  while (n--) {
-    push(2);
-    make_real(op - 1, ppts->x);
-    make_real(op, ppts->y);
-    ppts++;
-  }
-  return 0;
+private int
+pf_push(gs_point *ppts, int n, ref *op)
+{	while ( n-- )
+	  { push(2);
+	    make_real(op - 1, ppts->x);
+	    make_real(op, ppts->y);
+	    ppts++;
+	  }
+	return 0;
 }
 
 /* initclip */
-int zinitclip(register ref *op) { return gs_initclip(igs); }
+int
+zinitclip(register ref *op)
+{	return gs_initclip(igs);
+}
 
 /* clip */
-int zclip(register ref *op) { return gs_clip(igs); }
+int
+zclip(register ref *op)
+{	return gs_clip(igs);
+}
 
 /* eoclip */
-int zeoclip(register ref *op) { return gs_eoclip(igs); }
+int
+zeoclip(register ref *op)
+{	return gs_eoclip(igs);
+}
 
 /* ------ Initialization procedure ------ */
 
-void zpath2_op_init() {
-  static op_def my_defs[] = {{"0clip", zclip},
-                             {"0clippath", zclippath},
-                             {"0eoclip", zeoclip},
-                             {"0flattenpath", zflattenpath},
-                             {"0initclip", zinitclip},
-                             {"0pathbbox", zpathbbox},
-                             {"4pathforall", zpathforall},
-                             {"0reversepath", zreversepath},
-                             {"0strokepath", zstrokepath},
-                             op_def_end};
-  z_op_init(my_defs);
+void
+zpath2_op_init()
+{	static op_def my_defs[] = {
+		{"0clip", zclip},
+		{"0clippath", zclippath},
+		{"0eoclip", zeoclip},
+		{"0flattenpath", zflattenpath},
+		{"0initclip", zinitclip},
+		{"0pathbbox", zpathbbox},
+		{"4pathforall", zpathforall},
+		{"0reversepath", zreversepath},
+		{"0strokepath", zstrokepath},
+		op_def_end
+	};
+	z_op_init(my_defs);
 }

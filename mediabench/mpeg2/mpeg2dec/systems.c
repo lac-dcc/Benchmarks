@@ -36,44 +36,51 @@
 /* initialize buffer, call once before first getbits or showbits */
 
 /* parse system layer, ignore everything we don't need */
-void Next_Packet() {
+void Next_Packet()
+{
   unsigned int code;
   int l;
 
-  for (;;) {
+  for(;;)
+  {
     code = Get_Long();
 
     /* remove system layer byte stuffing */
     while ((code & 0xffffff00) != 0x100)
-      code = (code << 8) | Get_Byte();
+      code = (code<<8) | Get_Byte();
 
-    switch (code) {
+    switch(code)
+    {
     case PACK_START_CODE: /* pack header */
       /* skip pack header (system_clock_reference and mux_rate) */
       ld->Rdptr += 8;
       break;
-    case VIDEO_ELEMENTARY_STREAM:
-      code = Get_Word(); /* packet_length */
+    case VIDEO_ELEMENTARY_STREAM:   
+      code = Get_Word();             /* packet_length */
       ld->Rdmax = ld->Rdptr + code;
 
       code = Get_Byte();
 
-      if ((code >> 6) == 0x02) {
+      if((code>>6)==0x02)
+      {
         ld->Rdptr++;
-        code = Get_Byte(); /* parse PES_header_data_length */
-        ld->Rdptr += code; /* advance pointer by PES_header_data_length */
+        code=Get_Byte();  /* parse PES_header_data_length */
+        ld->Rdptr+=code;    /* advance pointer by PES_header_data_length */
         printf("MPEG-2 PES packet\n");
         return;
-      } else if (code == 0xff) {
-        /* parse MPEG-1 packet header */
-        while ((code = Get_Byte()) == 0xFF)
-          ;
       }
-
+      else if(code==0xff)
+      {
+        /* parse MPEG-1 packet header */
+        while((code=Get_Byte())== 0xFF);
+      }
+       
       /* stuffing bytes */
-      if (code >= 0x40) {
-        if (code >= 0x80) {
-          fprintf(stderr, "Error in packet header\n");
+      if(code>=0x40)
+      {
+        if(code>=0x80)
+        {
+          fprintf(stderr,"Error in packet header\n");
           exit(1);
         }
         /* skip STD_buffer_scale */
@@ -81,40 +88,50 @@ void Next_Packet() {
         code = Get_Byte();
       }
 
-      if (code >= 0x30) {
-        if (code >= 0x40) {
-          fprintf(stderr, "Error in packet header\n");
+      if(code>=0x30)
+      {
+        if(code>=0x40)
+        {
+          fprintf(stderr,"Error in packet header\n");
           exit(1);
         }
         /* skip presentation and decoding time stamps */
         ld->Rdptr += 9;
-      } else if (code >= 0x20) {
+      }
+      else if(code>=0x20)
+      {
         /* skip presentation time stamps */
         ld->Rdptr += 4;
-      } else if (code != 0x0f) {
-        fprintf(stderr, "Error in packet header\n");
+      }
+      else if(code!=0x0f)
+      {
+        fprintf(stderr,"Error in packet header\n");
         exit(1);
       }
       return;
     case ISO_END_CODE: /* end */
       /* simulate a buffer full of sequence end codes */
       l = 0;
-      while (l < 2048) {
-        ld->Rdbfr[l++] = SEQUENCE_END_CODE >> 24;
-        ld->Rdbfr[l++] = SEQUENCE_END_CODE >> 16;
-        ld->Rdbfr[l++] = SEQUENCE_END_CODE >> 8;
-        ld->Rdbfr[l++] = SEQUENCE_END_CODE & 0xff;
+      while (l<2048)
+      {
+        ld->Rdbfr[l++] = SEQUENCE_END_CODE>>24;
+        ld->Rdbfr[l++] = SEQUENCE_END_CODE>>16;
+        ld->Rdbfr[l++] = SEQUENCE_END_CODE>>8;
+        ld->Rdbfr[l++] = SEQUENCE_END_CODE&0xff;
       }
       ld->Rdptr = ld->Rdbfr;
       ld->Rdmax = ld->Rdbfr + 2048;
       return;
     default:
-      if (code >= SYSTEM_START_CODE) {
+      if(code>=SYSTEM_START_CODE)
+      {
         /* skip system headers and non-video packets*/
         code = Get_Word();
         ld->Rdptr += code;
-      } else {
-        fprintf(stderr, "Unexpected startcode %08x in system layer\n", code);
+      }
+      else
+      {
+        fprintf(stderr,"Unexpected startcode %08x in system layer\n",code);
         exit(1);
       }
       break;
@@ -122,7 +139,10 @@ void Next_Packet() {
   }
 }
 
-void Flush_Buffer32() {
+
+
+void Flush_Buffer32()
+{
   int Incnt;
 
   ld->Bfr = 0;
@@ -130,16 +150,21 @@ void Flush_Buffer32() {
   Incnt = ld->Incnt;
   Incnt -= 32;
 
-  if (System_Stream_Flag && (ld->Rdptr >= ld->Rdmax - 4)) {
-    while (Incnt <= 24) {
+  if (System_Stream_Flag && (ld->Rdptr >= ld->Rdmax-4))
+  {
+    while (Incnt <= 24)
+    {
       if (ld->Rdptr >= ld->Rdmax)
         Next_Packet();
       ld->Bfr |= Get_Byte() << (24 - Incnt);
       Incnt += 8;
     }
-  } else {
-    while (Incnt <= 24) {
-      if (ld->Rdptr >= ld->Rdbfr + 2048)
+  }
+  else
+  {
+    while (Incnt <= 24)
+    {
+      if (ld->Rdptr >= ld->Rdbfr+2048)
         Fill_Buffer();
       ld->Bfr |= *ld->Rdptr++ << (24 - Incnt);
       Incnt += 8;
@@ -147,12 +172,14 @@ void Flush_Buffer32() {
   }
   ld->Incnt = Incnt;
 
-#ifdef VERIFY
+#ifdef VERIFY 
   ld->Bitcnt += 32;
 #endif /* VERIFY */
 }
 
-unsigned int Get_Bits32() {
+
+unsigned int Get_Bits32()
+{
   unsigned int l;
 
   l = Show_Bits(32);
@@ -161,9 +188,13 @@ unsigned int Get_Bits32() {
   return l;
 }
 
-int Get_Long() {
+
+int Get_Long()
+{
   int i;
 
   i = Get_Word();
-  return (i << 16) | Get_Word();
+  return (i<<16) | Get_Word();
 }
+
+

@@ -15,8 +15,7 @@
  *    * require this specific rand implementation in order to pass verification
  *     * tests.
  *      *
- *       * For more information, see:
- * http://www.mathstat.dal.ca/~selinger/random/
+ *       * For more information, see: http://www.mathstat.dal.ca/~selinger/random/
  *        **/
 
 #define TABLE_SIZE 344

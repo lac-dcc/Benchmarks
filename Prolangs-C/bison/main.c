@@ -18,17 +18,17 @@ notice and this notice must be preserved on all copies.
  You are forbidden to forbid anyone else to use, share and improve
  what you give them.   Help stamp out software-hoarding!  */
 
-#include "machine.h" /* JF for MAXSHORT */
 #include <stdio.h>
 #include <stdlib.h>
+#include "machine.h"	/* JF for MAXSHORT */
 
-extern int lineno;
-extern int verboseflag;
+extern	int lineno;
+extern	int verboseflag;
 
 /* Nonzero means failure has been detected; don't write a parser file.  */
 int failure;
 
-extern void getargs(int argc, char *argv[]);
+extern void getargs(int argc,char *argv[]);
 extern void openfiles(void);
 extern void reader(void);
 extern void set_derives(void);
@@ -41,15 +41,16 @@ extern void terse(void);
 extern void output(void);
 extern void done(int k);
 
-int main(int argc, char *argv[]) {
+int main(int argc,char *argv[])
+{
   failure = 0;
   lineno = 0;
   getargs(argc, argv);
   openfiles();
 
-  /* read the input.  Copy some parts of it to fguard, faction, ftable and
-     fattrs. In file reader. The other parts are recorded in the grammar; see
-     gram.h.  */
+  /* read the input.  Copy some parts of it to fguard, faction, ftable and fattrs.
+     In file reader.
+     The other parts are recorded in the grammar; see gram.h.  */
   reader();
 
   /* record other info about the grammar.  In files derives and nullable.  */
@@ -83,7 +84,8 @@ int main(int argc, char *argv[]) {
 
 /* functions to report errors which prevent a parser from being generated */
 
-void fatal(char *s) {
+void fatal(char *s)
+{
   extern char *infile;
 
   if (infile == 0)
@@ -93,27 +95,32 @@ void fatal(char *s) {
   done(1);
 }
 
+
 /* JF changed to accept/deal with variable args.  Is a real kludge since
    we don't support _doprnt calls */
 /*VARARGS1*/
 
-void fatals(char *fmt, int x1, int x2, int x3, int x4, int x5, int x6, int x7,
-            int x8) {
+void fatals(char *fmt,int x1,int x2,int x3,int x4,int x5,int x6,int x7,int x8)
+{
   char buffer[200];
 
-  sprintf(buffer, fmt, x1, x2, x3, x4, x5, x6, x7, x8);
+  sprintf(buffer, fmt, x1,x2,x3,x4,x5,x6,x7,x8);
   fatal(buffer);
 }
 
-void toomany(char *s) {
+
+
+void toomany(char *s)
+{
   char buffer[200];
 
-  /* JF new msg */
+	/* JF new msg */
   sprintf(buffer, "limit of %d exceeded, too many %s", MAXSHORT, s);
   fatal(buffer);
 }
 
-void berror(char *s) {
+void berror(char *s)
+{
   fprintf(stderr, "internal error, %s\n", s);
   abort();
 }

@@ -9,24 +9,24 @@
  */
 
 #include <copyright.h>
-#include <pmachine.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pmachine.h>
 
 #ifdef NEED_STRING_H
-#include <string.h>
+# include <string.h>
 #else
-#include <strings.h>
+# include <strings.h>
 #endif
 
 #if defined(MSDOS)
-#include <stdlib.h>
+# include <stdlib.h>
 #endif
 
-char *stcopyr();
+char	*stcopyr();
 
-int string_count = 0;
-int string_max = 0;
+int	string_count = 0;
+int	string_max = 0;
 
 /*
  * stcopy - allocate space for and copy a string
@@ -36,14 +36,13 @@ int string_max = 0;
  *     and returns a pointer to the copy.
  */
 
-char *stcopy(char *st) {
-  if (!st)
-    return (NULL);
-  if (string_max < ++string_count)
-    string_max = string_count;
+char *stcopy(char *st)
+    {
+      if (!st) return(NULL);
+      if (string_max < ++string_count) string_max = string_count;
 
-  return strcpy((char *)malloc(strlen(st) + 1), st);
-}
+      return strcpy((char *)malloc(strlen(st) + 1), st);
+    }
 
 /*
  * stcopyr - copy a string allocating space if necessary
@@ -58,43 +57,47 @@ char *stcopy(char *st) {
  *     or a NULL pointer.
  */
 
-char *stcopyr(char *s, char *r) {
-  int sl;
+char *stcopyr(char *s,char *r)
+    {
+	int	sl;
 
-  if (!s && r) {
-    free(r);
-    string_count--;
-    return (NULL);
-  } else if (!s)
-    return (NULL);
+	if(!s && r) {
+	    free(r);
+	    string_count--;
+	    return(NULL);
+	}
+	else if (!s) return(NULL);
 
-  sl = strlen(s) + 1;
+	sl = strlen(s) + 1;
 
-  if (r) {
-    if ((strlen(r) + 1) < sl) {
-      free(r);
-      r = (char *)malloc(sl);
+	if(r) {
+	    if ((strlen(r) + 1) < sl) {
+		free(r);
+		r = (char *) malloc(sl);
+	    }
+	}
+	else {
+	    r = (char *) malloc(sl);
+	    string_count++;
+	    if(string_max < string_count) string_max = string_count;
+	}
+	    
+	return strcpy(r,s);
     }
-  } else {
-    r = (char *)malloc(sl);
-    string_count++;
-    if (string_max < string_count)
-      string_max = string_count;
-  }
-
-  return strcpy(r, s);
-}
 
 /*
  * stfree - free space allocated by stcopy or stalloc
  *
- *     STFREE takes a string that was returned by stcopy or stalloc
+ *     STFREE takes a string that was returned by stcopy or stalloc 
  *     and frees the space that was allocated for the string.
  */
 
-void stfree(char *st) {
-  if (st) {
-    free(st);
-    string_count--;
-  }
-}
+void stfree(char *st)
+    {
+	if(st) {
+	    free(st);
+	    string_count--;
+	}
+    }
+
+

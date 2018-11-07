@@ -19,30 +19,31 @@ preserved on all copies.  */
    plot will be scaled so that these coners fit the largest renderable area on
    the page.  */
 
-#include "extern.h"
-#include "libplot.h"
 #include <math.h>
+#include "libplot.h"
+#include "extern.h"
 
-double x_input_min = 0.; /* minimum input x coordinate */
-double y_input_min = 0.; /* minimum input y coordinate */
+double x_input_min = 0.;    /* minimum input x coordinate */
+double y_input_min = 0.;    /* minimum input y coordinate */
 /* Latex has troubles with plots larger than 6 inches (480). */
 /* The range (60,660) to (540,180) centers the plot in the fig window. */
-double x_output_min = 60.;  /* minimum output x coordinate */
-double y_output_min = 660.; /* minimum output y coordinate */
+double x_output_min = 60.;   /* minimum output x coordinate */
+double y_output_min = 660.;   /* minimum output y coordinate */
 double x_output_max = 540.; /* maximum output x coordinate */
 double y_output_max = 180.; /* maximum output y coordinate */
 double scaleup = 1.;        /* maximum input to output scaleing of x and y */
 double x_scale = 1.;        /* input to output scaleing for x */
 double y_scale = 1.;        /* input to output scaleing for y */
 
-int space(int x0, int y0, int x1, int y1) {
+int space (int x0, int y0, int x1, int y1)
+{
   x_input_min = x0;
   y_input_min = y0;
-  x_scale = (x1 - x0) / (x_output_max - x_output_min);
-  y_scale = (y1 - y0) / (y_output_max - y_output_min);
+  x_scale = (x1 - x0)/(x_output_max - x_output_min);
+  y_scale = (y1 - y0)/(y_output_max - y_output_min);
   if (fabs(x_scale) > fabs(y_scale))
-    scaleup = fabs(x_scale);
+    scaleup = fabs (x_scale);
   else
-    scaleup = fabs(y_scale);
+    scaleup = fabs (y_scale);
   return 0;
 }

@@ -19,9 +19,9 @@ copies.  */
 
 /* zarith.c */
 /* Arithmetic operators for GhostScript */
-#include "errors.h"
-#include "ghost.h"
 #include "math_.h"
+#include "ghost.h"
+#include "errors.h"
 #include "oper.h"
 #include "store.h"
 
@@ -29,226 +29,232 @@ copies.  */
 /****** currently check for floating exceptions ******/
 
 /* Macro for accessing next-to-top stack element */
-#define opm1 (op - 1)
+#define opm1 (op-1)
 /* Macros for generating non-integer cases for arithmetic operations. */
 /* 'frob' is one of the arithmetic operators, +, -, or *. */
-#define non_int_cases(frob, frob_equals)                                       \
-  switch (r_type(op)) {                                                        \
-  default:                                                                     \
-    return e_typecheck;                                                        \
-  case t_real:                                                                 \
-    switch (r_type(opm1)) {                                                    \
-    default:                                                                   \
-      return e_typecheck;                                                      \
-    case t_real:                                                               \
-      opm1->value.realval frob_equals op->value.realval;                       \
-      break;                                                                   \
-    case t_integer:                                                            \
-      make_real(opm1, opm1->value.intval frob op->value.realval);              \
-    }                                                                          \
-    break;                                                                     \
-  case t_integer:                                                              \
-    switch (r_type(opm1)) {                                                    \
-    default:                                                                   \
-      return e_typecheck;                                                      \
-    case t_real:                                                               \
-      opm1->value.realval frob_equals op->value.intval;                        \
-      break;                                                                   \
-    case t_integer:
-#define end_cases()                                                            \
-  }                                                                            \
-  }
+#define non_int_cases(frob,frob_equals)\
+ switch ( r_type(op) ) {\
+  default: return e_typecheck;\
+  case t_real: switch ( r_type(opm1) ) {\
+   default: return e_typecheck;\
+   case t_real: opm1->value.realval frob_equals op->value.realval; break;\
+   case t_integer: make_real(opm1, opm1->value.intval frob op->value.realval);\
+  } break;\
+  case t_integer: switch ( r_type(opm1) ) {\
+   default: return e_typecheck;\
+   case t_real: opm1->value.realval frob_equals op->value.intval; break;\
+   case t_integer:
+#define end_cases()\
+  } }
 
 /* add */
-int zadd(register ref *op) {
-  non_int_cases(+, +=) {
-    long int2 = op->value.intval;
-    if (((opm1->value.intval += int2) ^ int2) < 0 &&
-        ((opm1->value.intval - int2) ^ int2) >=
-            0) { /* Overflow, convert to real */
-      make_real(opm1, (float)opm1->value.intval - int2);
-    }
-  }
-  end_cases() pop(1);
-  return 0;
+int
+zadd(register ref *op)
+{	non_int_cases(+, +=)
+	   {	long int2 = op->value.intval;
+		if ( ((opm1->value.intval += int2) ^ int2) < 0 &&
+		     ((opm1->value.intval - int2) ^ int2) >= 0
+		   )
+		   {	/* Overflow, convert to real */
+			make_real(opm1, (float)opm1->value.intval - int2);
+		   }
+	   }
+	end_cases()
+	pop(1);
+	return 0;
 }
 
 /* div */
-int zdiv(register ref *op) {
-  register ref *op1 = op - 1;
-  /* We can't use the non_int_cases macro, */
-  /* because we have to check explicitly for op == 0. */
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    if (op->value.realval == 0)
-      return e_undefinedresult;
-    switch (r_type(op1)) {
-    default:
-      return e_typecheck;
-    case t_real:
-      op1->value.realval /= op->value.realval;
-      break;
-    case t_integer:
-      make_real(op1, op1->value.intval / op->value.realval);
-    }
-    break;
-  case t_integer:
-    if (op->value.intval == 0)
-      return e_undefinedresult;
-    switch (r_type(op1)) {
-    default:
-      return e_typecheck;
-    case t_real:
-      op1->value.realval /= op->value.intval;
-      break;
-    case t_integer:
-      make_real(op1, (float)op1->value.intval / op->value.intval);
-    }
-  }
-  pop(1);
-  return 0;
+int
+zdiv(register ref *op)
+{	register ref *op1 = op - 1;
+	/* We can't use the non_int_cases macro, */
+	/* because we have to check explicitly for op == 0. */
+	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real:
+		if ( op->value.realval == 0 ) return e_undefinedresult;
+		switch ( r_type(op1) )
+		   {
+		default: return e_typecheck;
+		case t_real: op1->value.realval /= op->value.realval; break;
+		case t_integer: make_real(op1, op1->value.intval / op->value.realval);
+		   }
+		break;
+	case t_integer:
+		if ( op->value.intval == 0 ) return e_undefinedresult;
+		switch ( r_type(op1) )
+		   {
+		default: return e_typecheck;
+		case t_real: op1->value.realval /= op->value.intval; break;
+		case t_integer: make_real(op1, (float)op1->value.intval / op->value.intval);
+		   }
+	   }
+	pop(1);
+	return 0;
 }
 
 /* mul */
-int zmul(register ref *op) {
-  non_int_cases(*, *=) {
-    long int1 = opm1->value.intval;
-    long int2 = op->value.intval;
-    long abs1 = (int1 >= 0 ? int1 : -int1);
-    long abs2 = (int2 >= 0 ? int2 : -int2);
-    float fprod;
-    if ((abs1 > 0x7fff || abs2 > 0x7fff) &&
-        /* At least one of the operands is very large. */
-        /* Check for integer overflow. */
-        abs1 != 0 && abs2 > 0x7fffffffL / abs1 &&
-        /* Check for the boundary case */
-        (fprod = (float)int1 * int2,
-         (int1 * int2 != -0x80000000L || fprod != (float)-0x80000000L)))
-      make_real(opm1, fprod);
-    else
-      opm1->value.intval = int1 * int2;
-  }
-  end_cases() pop(1);
-  return 0;
+int
+zmul(register ref *op)
+{	non_int_cases(*, *=)
+	   {	long int1 = opm1->value.intval;
+		long int2 = op->value.intval;
+		long abs1 = (int1 >= 0 ? int1 : - int1);
+		long abs2 = (int2 >= 0 ? int2 : - int2);
+		float fprod;
+		if (	(abs1 > 0x7fff || abs2 > 0x7fff) &&
+			/* At least one of the operands is very large. */
+			/* Check for integer overflow. */
+			abs1 != 0 &&
+			abs2 > 0x7fffffffL / abs1 &&
+			/* Check for the boundary case */
+			(fprod = (float)int1 * int2,
+			 (int1 * int2 != -0x80000000L ||
+			 fprod != (float)-0x80000000L))
+		   )
+			make_real(opm1, fprod);
+		else
+			opm1->value.intval = int1 * int2;
+	   }
+	end_cases()
+	pop(1);
+	return 0;
 }
 
 /* sub */
-int zsub(register ref *op) {
-  non_int_cases(-, -=) {
-    long int1 = opm1->value.intval;
-    if ((int1 ^ (opm1->value.intval = int1 - op->value.intval)) < 0 &&
-        (int1 ^ op->value.intval) < 0) { /* Overflow, convert to real */
-      make_real(opm1, (float)int1 - op->value.intval);
-    }
-  }
-  end_cases() pop(1);
-  return 0;
+int
+zsub(register ref *op)
+{	non_int_cases(-, -=)
+	   {	long int1 = opm1->value.intval;
+		if ( (int1 ^ (opm1->value.intval = int1 - op->value.intval)) < 0 &&
+		     (int1 ^ op->value.intval) < 0
+		   )
+		   {	/* Overflow, convert to real */
+			make_real(opm1, (float)int1 - op->value.intval);
+		   }
+	   }
+	end_cases()
+	pop(1);
+	return 0;
 }
 
 /* idiv */
-int zidiv(
-    register ref *op) { /* The Red Book says this only works on integers, */
-  /* but implementations also accept reals. */
-  ref save_num;
-  int code;
-  save_num = op[-1];
-  code = zdiv(op);
-  if (code < 0)
-    return code; /* division failed */
-  code = zcvi(op - 1);
-  if (code < 0) { /* cvi failed, restore numerator */
-    op[-1] = save_num;
-    osp = op; /* restore osp as well */
-  }
-  return code;
+int
+zidiv(register ref *op)
+{	/* The Red Book says this only works on integers, */
+	/* but implementations also accept reals. */
+	ref save_num;
+	int code;
+	save_num = op[-1];
+	code = zdiv(op);
+	if ( code < 0 ) return code;	/* division failed */
+	code = zcvi(op - 1);
+	if ( code < 0 )
+	   {	/* cvi failed, restore numerator */
+		op[-1] = save_num;
+		osp = op;		/* restore osp as well */
+	   }
+	return code;
 }
 
 /* mod */
-int zmod(register ref *op) {
-  check_type(op[-1], t_integer);
-  check_type(*op, t_integer);
-  if (op->value.intval == 0)
-    return e_undefinedresult;
-  op[-1].value.intval %= op->value.intval;
-  pop(1);
-  return 0;
+int
+zmod(register ref *op)
+{	check_type(op[-1], t_integer);
+	check_type(*op, t_integer);
+	if ( op->value.intval == 0 ) return e_undefinedresult;
+	op[-1].value.intval %= op->value.intval;
+	pop(1);
+	return 0;
 }
 
 /* neg */
-int zneg(register ref *op) {
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    op->value.realval = -op->value.realval;
-    break;
-  case t_integer:
-    if (op->value.intval == -0x80000000L) /* min integer */
-      make_real(op, -(float)-0x80000000L);
-    else
-      op->value.intval = -op->value.intval;
-  }
-  return 0;
+int
+zneg(register ref *op)
+{	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real: op->value.realval = -op->value.realval; break;
+	case t_integer:
+		if ( op->value.intval == -0x80000000L )	/* min integer */
+			make_real(op, -(float)-0x80000000L);
+		else
+			op->value.intval = -op->value.intval;
+	   }
+	return 0;
 }
 
 /* ceiling */
-int zceiling(register ref *op) {
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    op->value.realval = ceil(op->value.realval);
-  case t_integer:;
-  }
-  return 0;
+int
+zceiling(register ref *op)
+{	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real: op->value.realval = ceil(op->value.realval);
+	case t_integer: ;
+	   }
+	return 0;
 }
 
 /* floor */
-int zfloor(register ref *op) {
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    op->value.realval = floor(op->value.realval);
-  case t_integer:;
-  }
-  return 0;
+int
+zfloor(register ref *op)
+{	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real: op->value.realval = floor(op->value.realval);
+	case t_integer: ;
+	   }
+	return 0;
 }
 
 /* round */
-int zround(register ref *op) {
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    op->value.realval = floor(op->value.realval + 0.5);
-  case t_integer:;
-  }
-  return 0;
+int
+zround(register ref *op)
+{	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real: op->value.realval = floor(op->value.realval + 0.5);
+	case t_integer: ;
+	   }
+	return 0;
 }
 
 /* truncate */
-int ztruncate(register ref *op) {
-  switch (r_type(op)) {
-  default:
-    return e_typecheck;
-  case t_real:
-    op->value.realval = (op->value.realval < 0.0 ? ceil(op->value.realval)
-                                                 : floor(op->value.realval));
-  case t_integer:;
-  }
-  return 0;
+int
+ztruncate(register ref *op)
+{	switch ( r_type(op) )
+	   {
+	default: return e_typecheck;
+	case t_real:
+		op->value.realval =
+			(op->value.realval < 0.0 ?
+				ceil(op->value.realval) :
+				floor(op->value.realval));
+	case t_integer: ;
+	   }
+	return 0;
 }
 
 /* ------ Initialization procedure ------ */
 
-void zarith_op_init() {
-  static op_def my_defs[] = {
-      {"2add", zadd},   {"1ceiling", zceiling},   {"2div", zdiv},
-      {"2idiv", zidiv}, {"1floor", zfloor},       {"2mod", zmod},
-      {"2mul", zmul},   {"1neg", zneg},           {"1round", zround},
-      {"2sub", zsub},   {"1truncate", ztruncate}, op_def_end};
-  z_op_init(my_defs);
+void
+zarith_op_init()
+{	static op_def my_defs[] = {
+		{"2add", zadd},
+		{"1ceiling", zceiling},
+		{"2div", zdiv},
+		{"2idiv", zidiv},
+		{"1floor", zfloor},
+		{"2mod", zmod},
+		{"2mul", zmul},
+		{"1neg", zneg},
+		{"1round", zround},
+		{"2sub", zsub},
+		{"1truncate", ztruncate},
+		op_def_end
+	};
+	z_op_init(my_defs);
 }

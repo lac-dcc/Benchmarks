@@ -1,23 +1,19 @@
 #include <stdio.h>
 
-#define p(x) fprintf(stderr, x);
+#define p(x) fprintf(stderr,x);
 
-void show_help(char *prog_name) {
-  fprintf(stderr, "Help/Manual for Dependency Analyzer");
-  p("\nThis program is written by Peter Rundberg, Chalmers University of "
-    "Technology\n") p("Questions about this software should be directed to "
-                      "biff@ce.chalmers.se\n\n")
-      p("To determine the data hazards between loop iterations this program "
-        "analyzes\n") p("trace data from a run of the program examined. The "
-                        "program also analyzes the\n")
-          p("potential speedup obtainable from running the loop iterations in "
-            "parallel.\n\n") p("The program requires a number of settings to "
-                               "be done either on the\n")
-              p("command line or in the settings file.\n\n")
-                  p("Available flags. Many of these can be set in the settings "
-                    "file.\n");
-  p("-c #      : CPU limit. Only effective with 'realistic restart'. "
-    "0==unlimited.\n");
+void show_help(char *prog_name)
+{
+  fprintf(stderr,"Help/Manual for Dependency Analyzer");
+  p("\nThis program is written by Peter Rundberg, Chalmers University of Technology\n")
+  p("Questions about this software should be directed to biff@ce.chalmers.se\n\n")
+  p("To determine the data hazards between loop iterations this program analyzes\n")
+  p("trace data from a run of the program examined. The program also analyzes the\n")
+  p("potential speedup obtainable from running the loop iterations in parallel.\n\n")  
+  p("The program requires a number of settings to be done either on the\n")
+  p("command line or in the settings file.\n\n") 
+  p("Available flags. Many of these can be set in the settings file.\n");
+  p("-c #      : CPU limit. Only effective with 'realistic restart'. 0==unlimited.\n");
   p("-C #      : CPU limit for run through several configurations.\n");
   p("-d        : Check for DATA dependencies (RAW)\n");
   p("-e #      : Epoch length (number of loop iterations per epoch).\n");
@@ -31,8 +27,7 @@ void show_help(char *prog_name) {
   p("            1 - Optimum restart. 2 - Realistic restart. 3 - Both\n");
   p("-l #      : Max length of hazard top-list. -- NOT IMPLEMENTED --\n");
   p("-m        : Analyze instruction mix\n");
-  p("-n        : Check for NAME dependencies (WAR & WAW) -- NOT IMPLEMENTED "
-    "--\n");
+  p("-n        : Check for NAME dependencies (WAR & WAW) -- NOT IMPLEMENTED --\n");
   p("-o <FILE> : Output graphing data to FILE\n");
   p("-p #      : Specify load penalty\n");
   p("-P #      : Specify store penalty\n");

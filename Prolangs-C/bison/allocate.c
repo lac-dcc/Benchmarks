@@ -23,14 +23,16 @@ notice and this notice must be preserved on all copies.
 
 extern void done(int k);
 
-char *mallocate(register unsigned n) {
+char *mallocate(register unsigned n)
+{
   register char *block;
 
-  block = calloc(n, 1);
-  if (block == NULL) {
-    fprintf(stderr, "bison: memory exhausted\n");
-    done(1);
-  }
+  block = calloc(n,1);
+  if (block == NULL)
+    {
+      fprintf(stderr, "bison: memory exhausted\n");
+      done(1);
+    }
 
   return (block);
 }

@@ -2,22 +2,22 @@
 
 /* t..c : external declarations */
 
-#include "ctype.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
+# include "stdio.h"
+# include "stdlib.h"
+# include "string.h"
+# include "ctype.h"
 
 #ifdef MY_MACROS
 #define getc(x) fgetc(x)
 #endif
 
-#define MAXLIN 200
-#define MAXHEAD 100
-#define MAXCOL 20
-#define MAXCHS 2000
-#define MAXRPT 100
-#define CLLEN 10
-#define SHORTLINE 4
+# define MAXLIN 200
+# define MAXHEAD 100
+# define MAXCOL 20
+# define MAXCHS 2000
+# define MAXRPT 100
+# define CLLEN 10
+# define SHORTLINE 4
 extern int nlin, ncol, iline, nclin, nslin;
 extern int style[MAXHEAD][MAXCOL];
 extern int ctop[MAXHEAD][MAXCOL];
@@ -44,9 +44,7 @@ extern int allflg;
 extern int textflg;
 extern int left1flg;
 extern int rightl;
-struct colstr {
-  char *col, *rcol;
-};
+struct colstr {char *col, *rcol;};
 extern struct colstr *table[];
 extern char *cspace, *cstore;
 extern char *chspace();
@@ -61,21 +59,22 @@ extern int texct, texmax;
 extern char texstr[];
 extern int linstart;
 
+
 extern FILE *tabin, *tabout;
-#define CRIGHT 80
-#define CLEFT 40
-#define CMID 60
-#define S1 31
-#define S2 32
-#define TMP 38
-#define SF 35
-#define SL 34
-#define LSIZE 33
-#define SIND 37
-#define SVS 36
+# define CRIGHT 80
+# define CLEFT 40
+# define CMID 60
+# define S1 31
+# define S2 32
+# define TMP 38
+# define SF 35
+# define SL 34
+# define LSIZE 33
+# define SIND 37
+# define SVS 36
 /* this refers to the relative position of lines */
-#define LEFT 1
-#define RIGHT 2
-#define THRU 3
-#define TOP 1
-#define BOT 2
+# define LEFT 1
+# define RIGHT 2
+# define THRU 3
+# define TOP 1
+# define BOT 2

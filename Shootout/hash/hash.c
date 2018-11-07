@@ -3,10 +3,10 @@
  * http://www.bagley.org/~doug/shootout/
  */
 
-#include "simple_hash.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "simple_hash.h"
 
 int main(int argc, char *argv[]) {
 #ifdef SMALL_PROBLEM_SIZE
@@ -14,24 +14,23 @@ int main(int argc, char *argv[]) {
 #else
 #define LENGTH 3500000
 #endif
-  int i, c = 0, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
-  char buf[32];
+    int i, c=0, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    char buf[32];
+	
+    struct ht_ht *ht = ht_create(n);
+    
+    for (i=1; i<=n; i++) {
+	sprintf(buf, "%x", i);
+	(ht_find_new(ht, buf))->val = i;
+    }
 
-  struct ht_ht *ht = ht_create(n);
+    for (i=n; i>0; i--) {
+	sprintf(buf, "%d", i);
+	if (ht_find(ht, buf)) c++;
+    }
 
-  for (i = 1; i <= n; i++) {
-    sprintf(buf, "%x", i);
-    (ht_find_new(ht, buf))->val = i;
-  }
+    ht_destroy(ht);
 
-  for (i = n; i > 0; i--) {
-    sprintf(buf, "%d", i);
-    if (ht_find(ht, buf))
-      c++;
-  }
-
-  ht_destroy(ht);
-
-  printf("%d\n", c);
-  return (0);
+    printf("%d\n", c);
+    return(0);
 }

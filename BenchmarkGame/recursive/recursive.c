@@ -37,18 +37,17 @@ int tak(int x, int y, int z) {
 }
 
 double takFP(double x, double y, double z) {
-  if (y < x)
-    return takFP(takFP(x - 1.0, y, z), takFP(y - 1.0, z, x),
-                 takFP(z - 1.0, x, y));
-  return z;
+    if (y < x)
+        return takFP( takFP(x-1.0, y, z), takFP(y-1.0, z, x), takFP(z-1.0, x, y) );
+    return z;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char ** argv) {
   int n = 10;
 
-  printf("Ack(3,%d): %d\n", n + 1, ack(3, n + 1));
-  printf("Fib(%.1f): %.1f\n", 28.0 + n, fibFP(28.0 + n));
-  printf("Tak(%d,%d,%d): %d\n", 3 * n, 2 * n, n, tak(3 * n, 2 * n, n));
+  printf("Ack(3,%d): %d\n", n + 1, ack(3, n+1));
+  printf("Fib(%.1f): %.1f\n", 28.0 + n, fibFP(28.0+n));
+  printf("Tak(%d,%d,%d): %d\n", 3 * n, 2 * n, n, tak(3*n, 2*n, n));
   printf("Fib(3): %d\n", fib(3));
   printf("Tak(3.0,2.0,1.0): %.1f\n", takFP(3.0, 2.0, 1.0));
 

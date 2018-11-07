@@ -29,21 +29,24 @@ char gs_debug[128];
 
 /* Versions of malloc and free compatible with GhostScript's */
 /* model of memory management. */
-char *gs_malloc(uint num_elts, uint elt_size, char *client_name) {
+char *
+gs_malloc(uint num_elts, uint elt_size, char *client_name)
+{
 #ifdef BWGC
-  extern char *gc_malloc();
-  char *ptr = gc_malloc(num_elts * elt_size);
-#else
-  char *ptr = malloc(num_elts * elt_size);
+    	extern char *gc_malloc();
+	char *ptr = gc_malloc(num_elts * elt_size);
+#else	
+	char *ptr = malloc(num_elts * elt_size);
 #endif
 
-  if (ptr == 0)
-    dprintf1("%s: malloc failed\n", client_name);
-  return ptr;
+	if ( ptr == 0 ) dprintf1("%s: malloc failed\n", client_name);
+	return ptr;
 }
-void gs_free(char *ptr, uint num_elts, uint elt_size, char *client_name) {
+void
+gs_free(char *ptr, uint num_elts, uint elt_size, char *client_name)
+{
 #ifdef IGNOREFREE
-#else
-  free(ptr);
-#endif
+#else    
+    free(ptr);
+#endif    
 }

@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void solve(int *a, int *b, int *c, int *d, int n) {
-  for (int i = 0; i < n; i++) {
-    a[i] = (b[i] * c[i]) + a[i]; // c[i] is always 0
+void solve(int *a, int *b, int *c, int *d, int n){
+  for (int i=0; i<n; i++){
+    a[i] = (b[i] * c[i]) + a[i]; // c[i] is always 0 
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   int n = atoi(argv[1]);
-  int *a = (int *)malloc(sizeof(int) * n);
-  int *b = (int *)malloc(sizeof(int) * n);
-  int *c = (int *)malloc(sizeof(int) * n);
-  int *d = (int *)malloc(sizeof(int) * n);
+  int* a = (int*)malloc(sizeof(int)*n);
+  int* b = (int*)malloc(sizeof(int)*n);
+  int* c = (int*)malloc(sizeof(int)*n);
+  int* d = (int*)malloc(sizeof(int)*n);
 
   for (int i = 0; i < n; i++) {
     a[i] = i;

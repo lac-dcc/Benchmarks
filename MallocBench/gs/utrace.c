@@ -19,36 +19,51 @@ copies.  */
 
 /* utrace.c */
 /* Dummy tracing package for Unix C */
-#include "cframe_.h"
-#include "std.h"
-#include <setjmp.h>
 #include <stdio.h>
+#include <setjmp.h>
+#include "std.h"
+#include "cframe_.h"
 
 /* This file replaces trace.c for Unix and VMS. */
 /* It has only the stack parsing functionality of trace.c -- */
 /* the tracing procedures are stubs. */
 
-char *strupr(char *str) { return str; }
+char *
+strupr(char *str)
+{	return str;
+}
 
 /* Open the map file */
-FILE *trace_open_map(char *mapname, long *preloc) { return NULL; }
+FILE *
+trace_open_map(char *mapname, long *preloc)
+{	return NULL;
+}
 
 /* Enumerate a symbol file */
-char *trace_next_symbol(char **paddr, FILE *mapf) { return NULL; }
+char *
+trace_next_symbol(char **paddr, FILE *mapf)
+{	return NULL;
+}
+
 
 /* Look up a symbol in a file */
-char *trace_find_symbol(char *name, FILE *mapf) { return NULL; }
+char *
+trace_find_symbol(char *name, FILE *mapf)
+{	return NULL;
+}
 
 int trace_flush_flag;
 
 /* Trace a named procedure */
-int trace_name(char *name, FILE *mapf, char *arg_format, int retsize) {
-  return -1;
+int
+trace_name(char *name, FILE *mapf, char *arg_format, int retsize)
+{	return -1;
 }
 
 /* Trace a procedure */
-int trace(void (*proc)(), char *name, char *arg_format, int retsize) {
-  return -1;
+int
+trace(void (*proc)(), char *name, char *arg_format, int retsize)
+{	return -1;
 }
 
 /* ------ Stack parsing ------ */
@@ -57,20 +72,24 @@ int trace(void (*proc)(), char *name, char *arg_format, int retsize) {
 char *stack_next_frame(P1(char *));
 
 /* Get the address of the caller's frame */
-char *stack_top_frame() {
-  jmp_buf buf;
-  setjmp(buf); /* acquire registers */
-  return stack_next_frame(cstack_top_frame(buf));
+char *
+stack_top_frame()
+{	jmp_buf buf;
+	setjmp(buf);			/* acquire registers */
+	return stack_next_frame(cstack_top_frame(buf));
 }
 
 /* Get the return address of a frame. */
-unsigned long stack_return(char *bp) { return *(unsigned long *)(bp + 16); }
+unsigned long
+stack_return(char *bp)
+{	return *(unsigned long *)(bp + 16);
+}
 
 /* Get the address of the next higher frame, */
 /* or 0 if there is none. */
-char *stack_next_frame(char *bp) {
-  char *nbp = cstack_next_frame(bp);
-  if (nbp < bp)
-    return 0;
-  return nbp;
+char *
+stack_next_frame(char *bp)
+{	char *nbp = cstack_next_frame(bp);
+	if ( nbp < bp ) return 0;
+	return nbp;
 }

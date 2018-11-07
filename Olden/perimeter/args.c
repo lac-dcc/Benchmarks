@@ -14,16 +14,17 @@ int NumNodes;
 #endif
 
 #ifndef TORONTO
-void filestuff() {
+void filestuff()
+{
   CMMD_fset_io_mode(stdout, CMMD_independent);
   fcntl(fileno(stdout), F_SETFL, O_APPEND);
-  if (CMMD_self_address())
-    exit(0);
+  if (CMMD_self_address()) exit(0);
   __InitRegs(0);
 }
 #endif
 
-int dealwithargs(int argc, char *argv[]) {
+int dealwithargs(int argc, char *argv[])
+{
   int level;
 
   if (argc > 2)
@@ -43,4 +44,6 @@ int dealwithargs(int argc, char *argv[]) {
     level = 11;
 
   return level;
+
 }
+

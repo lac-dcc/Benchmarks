@@ -46,128 +46,144 @@ extern int fval(int newlib, int minlib);
 
 int findnextmove(int m, int n, int *i, int *j, int *val, int minlib)
 /* find new move i, j from group containing m, n */
-{
+ {
   int ti, tj, tval;
   int found = 0;
 
-  *i = -1;
-  *j = -1;
-  *val = -1;
-  /* mark current position */
+  *i = -1;   *j = -1;	*val = -1;
+/* mark current position */
   ma[m][n] = 1;
 
-  /* check North neighbor */
+/* check North neighbor */
   if (m != 0)
-    if (p[m - 1][n] == EMPTY) {
-      ti = m - 1;
-      tj = n;
-      lib = 0;
-      countlib(ti, tj, mymove);
-      tval = fval(lib, minlib);
-      found = 1;
-    } else if ((p[m - 1][n] == mymove) && !ma[m - 1][n])
-      if (findnextmove(m - 1, n, &ti, &tj, &tval, minlib))
-        found = 1;
+     if (p[m - 1][n] == EMPTY)
+      {
+       ti = m - 1;
+       tj = n;
+       lib = 0;
+       countlib(ti, tj, mymove);
+       tval = fval(lib, minlib);
+       found = 1;
+      }
+     else
+       if ((p[m - 1][n] == mymove) && !ma[m - 1][n])
+	 if (findnextmove(m - 1, n, &ti, &tj, &tval, minlib))
+	    found = 1;
 
-  if (found) {
-    found = 0;
-    if (tval > *val) {
-      *val = tval;
-      *i = ti;
-      *j = tj;
-    }
-    if (minlib == 1)
-      return 1;
-  }
+  if (found)
+    {
+     found = 0;
+     if (tval > *val)
+       {
+	*val = tval;
+	*i = ti;
+	*j = tj;
+      }
+     if (minlib == 1) return 1;
+   }
 
-  /* check South neighbor */
+/* check South neighbor */
   if (m != 18)
-    if (p[m + 1][n] == EMPTY) {
-      ti = m + 1;
-      tj = n;
-      lib = 0;
-      countlib(ti, tj, mymove);
-      tval = fval(lib, minlib);
-      found = 1;
-    } else if ((p[m + 1][n] == mymove) && !ma[m + 1][n])
-      if (findnextmove(m + 1, n, &ti, &tj, &tval, minlib))
-        found = 1;
+     if (p[m + 1][n] == EMPTY)
+      {
+       ti = m + 1;
+       tj = n;
+       lib = 0;
+       countlib(ti, tj, mymove);
+       tval = fval(lib, minlib);
+       found = 1;
+      }
+     else
+       if ((p[m + 1][n] == mymove) && !ma[m + 1][n])
+	  if (findnextmove(m + 1, n, &ti, &tj, &tval, minlib))
+	     found = 1;
 
-  if (found) {
-    found = 0;
-    if (tval > *val) {
-      *val = tval;
-      *i = ti;
-      *j = tj;
-    }
-    if (minlib == 1)
-      return 1;
-  }
+  if (found)
+    {
+     found = 0;
+     if (tval > *val)
+       {
+	*val = tval;
+	*i = ti;
+	*j = tj;
+      }
+     if (minlib == 1) return 1;
+   }
 
-  /* check West neighbor */
+/* check West neighbor */
   if (n != 0)
-    if (p[m][n - 1] == EMPTY) {
-      ti = m;
-      tj = n - 1;
-      lib = 0;
-      countlib(ti, tj, mymove);
-      tval = fval(lib, minlib);
-      found = 1;
-    } else if ((p[m][n - 1] == mymove) && !ma[m][n - 1])
-      if (findnextmove(m, n - 1, &ti, &tj, &tval, minlib))
-        found = 1;
+     if (p[m][n - 1] == EMPTY)
+      {
+       ti = m;
+       tj = n - 1;
+       lib = 0;
+       countlib(ti, tj, mymove);
+       tval = fval(lib, minlib);
+       found = 1;
+      }
+     else
+       if ((p[m][n - 1] == mymove) && !ma[m][n - 1])
+	  if (findnextmove(m, n - 1, &ti, &tj, &tval, minlib))
+	      found = 1;
 
-  if (found) {
-    found = 0;
-    if (tval > *val) {
-      *val = tval;
-      *i = ti;
-      *j = tj;
-    }
-    if (minlib == 1)
-      return 1;
-  }
+  if (found)
+    {
+     found = 0;
+     if (tval > *val)
+       {
+	*val = tval;
+	*i = ti;
+	*j = tj;
+      }
+     if (minlib == 1) return 1;
+   }
 
-  /* check East neighbor */
+/* check East neighbor */
   if (n != 18)
-    if (p[m][n + 1] == EMPTY) {
-      ti = m;
-      tj = n + 1;
-      lib = 0;
-      countlib(ti, tj, mymove);
-      tval = fval(lib, minlib);
-      found = 1;
-    } else if ((p[m][n + 1] == mymove) && !ma[m][n + 1])
-      if (findnextmove(m, n + 1, &ti, &tj, &tval, minlib))
-        found = 1;
+     if (p[m][n + 1] == EMPTY)
+      {
+       ti = m;
+       tj = n + 1;
+       lib = 0;
+       countlib(ti, tj, mymove);
+       tval = fval(lib, minlib);
+       found = 1;
+      }
+     else
+       if ((p[m][n + 1] == mymove) && !ma[m][n + 1])
+	  if (findnextmove(m, n + 1, &ti, &tj, &tval, minlib))
+	      found = 1;
 
-  if (found) {
-    found = 0;
-    if (tval > *val) {
-      *val = tval;
-      *i = ti;
-      *j = tj;
-    }
-    if (minlib == 1)
-      return 1;
-  }
+  if (found)
+    {
+     found = 0;
+     if (tval > *val)
+       {
+	*val = tval;
+	*i = ti;
+	*j = tj;
+      }
+     if (minlib == 1) return 1;
+   }
 
-  if (*val > 0) /* found next move */
+ if (*val > 0)	/* found next move */
     return 1;
-  else /* next move failed */
+ else	/* next move failed */
     return 0;
-} /* end findnextmove */
+}  /* end findnextmove */
+
 
 int fval(int newlib, int minlib)
 /* evaluate new move */
 {
-  int k, val;
+ int k, val;
 
-  if (newlib <= minlib)
+ if (newlib <= minlib)
     val = -1;
-  else {
+ else
+   {
     k = newlib - minlib;
     val = 40 + (k - 1) * 50 / (minlib * minlib * minlib);
   }
-  return val;
-} /* end fval */
+ return val;
+}  /* end fval */

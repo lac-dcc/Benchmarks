@@ -40,7 +40,7 @@ e-mail address: manli@cs.uh.edu         (Internet)
 
 extern unsigned char p[19][19];
 extern int mymove, umove;
-extern int mk, uk; /* piece captured */
+extern int mk, uk;  /* piece captured */
 
 extern int getij(char move[], int *i, int *j);
 extern void showboard(void);
@@ -49,77 +49,88 @@ extern int findcolor(int i, int j);
 void endgame(void)
 /* count pieces and announce the winner */
 {
-  char an[10];
-  int i, j, mtot, utot, cont;
+ char an[10];
+ int i, j, mtot, utot, cont;
 
-  printf("\nTo count score, we need the following steps:\n");
-  printf("First, I need you to remove all dead pieces on the board.\n");
-  printf("Second, I need you to fill in neutral territories with ");
-  printf("pieces.\n");
-  printf("Last, I will fill in all pieces and anounce the winner.\n");
+ printf("\nTo count score, we need the following steps:\n");
+ printf("First, I need you to remove all dead pieces on the board.\n");
+ printf("Second, I need you to fill in neutral territories with ");
+ printf("pieces.\n");
+ printf("Last, I will fill in all pieces and anounce the winner.\n");
 
-  /* remove dead pieces */
-  printf("\nFirst, you should enter the dead pieces (blank and white) to");
-  printf(" be removed.  Enter\n");
-  printf(" 'stop' when you have finished.\n");
+/* remove dead pieces */
+ printf("\nFirst, you should enter the dead pieces (blank and white) to");
+ printf(" be removed.  Enter\n");
+ printf(" 'stop' when you have finished.\n");
 
-  cont = 1;
-  do {
-    printf("Dead piece? ");
-    scanf("%s", an);
-    if (strcmp(an, "stop")) {
-      getij(an, &i, &j);
-      if (p[i][j] == mymove) {
-        p[i][j] = EMPTY;
-        mk++;
-      } else if (p[i][j] == umove) {
-        p[i][j] = EMPTY;
-        uk++;
+ cont = 1;
+ do {
+     printf("Dead piece? ");
+     scanf("%s", an);
+     if (strcmp(an, "stop"))
+       {
+	getij(an, &i, &j);
+	if (p[i][j] == mymove)
+	  {
+	   p[i][j] = EMPTY;
+	   mk++;
+	 }
+	else
+	   if (p[i][j] == umove)
+	     {
+	      p[i][j] = EMPTY;
+	      uk++;
+	    }
+	showboard();
       }
-      showboard();
-    } else
-      cont = 0;
-  } while (cont);
+    else
+       cont = 0;
+   }
+ while (cont);
 
-  /* fill in neutral */
-  printf("Next, you need to fill in pieces (black and white) in all neutral");
-  printf(" territories.\n");
-  printf("Enter your and my pieces alternately and enter 'stop' when finish\n");
-  cont = 1;
+/* fill in neutral */
+ printf("Next, you need to fill in pieces (black and white) in all neutral");
+ printf(" territories.\n");
+ printf("Enter your and my pieces alternately and enter 'stop' when finish\n");
+ cont = 1;
 
-  do {
-    printf("Your piece? ");
-    scanf("%s", an);
-    if (strcmp(an, "stop")) {
-      getij(an, &i, &j);
-      p[i][j] = umove;
-      printf("My piece? ");
-      scanf("%s", an);
-      getij(an, &i, &j);
-      p[i][j] = mymove;
-      showboard();
-    } else
-      cont = 0;
-  } while (cont);
+ do {
+     printf("Your piece? ");
+     scanf("%s", an);
+     if (strcmp(an, "stop"))
+       {
+	getij(an, &i, &j);
+	p[i][j] = umove;
+	printf("My piece? ");
+	scanf("%s", an);
+	getij(an, &i, &j);
+	p[i][j] = mymove;
+	showboard();
+      }
+     else
+	cont = 0;
+   }
+  while (cont);
 
-  /* set empty to side they belong to */
+/* set empty to side they belong to */
   for (i = 0; i < 19; i++)
-    for (j = 0; j < 19; j++)
-      if (p[i][j] == EMPTY)
-        p[i][j] = findcolor(i, j);
+     for (j = 0; j < 19; j++)
+	if (p[i][j] == EMPTY)
+	   p[i][j] = findcolor(i, j);
 
-  /* count total */
-  mtot = 0;
-  utot = 0;
+/* count total */
+  mtot = 0;  utot = 0;
   for (i = 0; i < 19; i++)
-    for (j = 0; j < 19; j++)
-      if (p[i][j] == mymove)
-        ++mtot;
-      else if (p[i][j] == umove)
-        ++utot;
+     for (j = 0; j < 19; j++)
+	if (p[i][j] == mymove)
+	  ++mtot;
+	else
+	   if (p[i][j] == umove)
+	     ++utot;
 
   showboard();
   printf("Your total number of pieces %d\n", utot);
   printf("My total number of pieces %d\n", mtot);
 
-} /* end endgame */
+}  /* end endgame */
+
