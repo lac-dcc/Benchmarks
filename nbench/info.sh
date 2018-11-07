@@ -1,9 +1,5 @@
-bnc_name="nbench" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="nbench"
 
-source_files=("emfloat.c" "misc.c" "nbench0.c" "nbench1.c" "sysspec.c") ;
-CXXFLAGS="-DBASE_ITERATIONS=25" ;
-RUN_OPTIONS="" ;
+source_files=("emfloat.c" "misc.c" "nbench0.c" "nbench1.c" "sysspec.c")
+COMPILE_FLAGS="-DBASE_ITERATIONS=25"
+RUN_OPTIONS=""

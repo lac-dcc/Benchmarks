@@ -1,16 +1,12 @@
-bnc_name="mst" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="mst"
 
 source_files=( "args.c" "hash.c" "main.c" "makegraph.c" )
-CXXFLAGS=" -lm -DTORONTO " ;
+COMPILE_FLAGS=" -lm -DTORONTO "
 
-PROJ_SRC_DIR=$(pwd) ;
+PROJ_SRC_DIR=$(pwd)
 
 if [[ -n $LARGE_PROBLEM_SIZE ]]; then
-  RUN_OPTIONS="4000" ;
+  RUN_OPTIONS="4000"
 else
-  RUN_OPTIONS="1000" ;
+  RUN_OPTIONS="1000"
 fi

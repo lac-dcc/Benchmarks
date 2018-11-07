@@ -1,8 +1,4 @@
-bnc_name="05-eks" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="05-eks"
 
 source_files=( "Divsol.c" "Jacobi.c" "MM.c" "QRfact.c" "Triang.c" "main.c" "print.c" )
-CXXFLAGS=" -lm " ;
+COMPILE_FLAGS=" -lm "

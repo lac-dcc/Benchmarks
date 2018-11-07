@@ -1,8 +1,4 @@
-bnc_name="g721" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="g721"
 
 source_files=("jcapimin.c" "jcapistd.c" "jctrans.c" "jcparam.c" "jdatadst.c"
   "jcinit.c" "jcmaster.c" "jcmarker.c" "jcmainct.c" "jcprepct.c" "jccoefct.c"
@@ -13,6 +9,6 @@ source_files=("jcapimin.c" "jcapistd.c" "jctrans.c" "jcparam.c" "jdatadst.c"
   "jidctint.c" "jidctred.c"  "jdsample.c" "jdcolor.c" "jquant1.c" "jquant2.c"
   "jdmerge.c" "jcomapi.c" "jutils.c" "jerror.c" "jmemmgr.c" "jmemnobs.c"
   "cjpeg.c" "rdppm.c" "rdgif.c" "rdtarga.c" "rdrle.c" "rdbmp.c" "rdswitch.c"
-  "cdjpeg.c") ;
-CXXFLAGS=" " ;
-RUN_OPTIONS=" -dct int -progressive -opt ../data/testimg.ppm " ;
+  "cdjpeg.c")
+COMPILE_FLAGS=" "
+RUN_OPTIONS=" -dct int -progressive -opt ../data/testimg.ppm "

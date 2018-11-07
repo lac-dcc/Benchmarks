@@ -1,9 +1,5 @@
-bnc_name="network-dijkstra" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="network-dijkstra"
 
 source_files=( "dijkstra.c" )
-CXXFLAGS=" -lm " ;
-RUN_OPTIONS=" input.dat " ;
+COMPILE_FLAGS=" -lm "
+RUN_OPTIONS=" input.dat "

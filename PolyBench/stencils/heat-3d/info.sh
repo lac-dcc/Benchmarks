@@ -1,10 +1,6 @@
-bnc_name="heat-3d" ;
-lnk_name="$bnc_name.rbc"
-prf_name="$bnc_name.ibc"
-obj_name="$bnc_name.o"
-exe_name="$bnc_name.exe"
+bench_name="heat-3d"
 
 source_files=($(ls *.c))
 
-CXXFLAGS=" -I. " ;
-RUN_OPTIONS=" " ;
+COMPILE_FLAGS=" -I. "
+RUN_OPTIONS=" "

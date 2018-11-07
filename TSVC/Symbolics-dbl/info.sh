@@ -1,9 +1,5 @@
-bnc_name="Symbolics-dbl" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="Symbolics-dbl"
 
 source_files=( "dummy.c" "tsc.c" )
-CXXFLAGS=" -std=gnu99 -lm " ;
-RUN_OPTIONS=" 9090 14 " ;
+COMPILE_FLAGS=" -std=gnu99 -lm "
+RUN_OPTIONS=" 9090 14 "

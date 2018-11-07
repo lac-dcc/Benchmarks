@@ -1,16 +1,12 @@
-bnc_name="beamformer" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="beamformer"
 
 source_files=( "beamformer.c" )
-CXXFLAGS=" -lm -DFP_ABSTOLERANCE=1e-5 " ;
+COMPILE_FLAGS=" -lm -DFP_ABSTOLERANCE=1e-5 "
 
 if [[ -n $LARGE_PROBLEM_SIZE ]]; then
-  RUN_OPTIONS="-i 400" ;
+  RUN_OPTIONS="-i 400"
 elif [[ -n $SMALL_PROBLEM_SIZE ]]; then
-  RUN_OPTIONS="-i 25" ;
+  RUN_OPTIONS="-i 25"
 else
-  RUN_OPTIONS="-i 140" ;
+  RUN_OPTIONS="-i 140"
 fi

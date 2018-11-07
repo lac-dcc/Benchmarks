@@ -1,8 +1,4 @@
-bnc_name="power" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="power"
 
 source_files=( "build.c" "compute.c" "main.c" )
-CXXFLAGS=" -lm -DTORONTO " ;
+COMPILE_FLAGS=" -lm -DTORONTO "

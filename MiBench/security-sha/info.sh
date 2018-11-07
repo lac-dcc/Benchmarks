@@ -1,9 +1,5 @@
-bnc_name="security-sha" ;
-lnk_name="$bnc_name.rbc" ;
-prf_name="$bnc_name.ibc" ;
-obj_name="$bnc_name.o" ;
-exe_name="$bnc_name.exe" ;
+bench_name="security-sha"
 
 source_files=( "sha.c" "sha_driver.c" )
-CXXFLAGS=" -lm " ;
-RUN_OPTIONS=" input_large.asc " ;
+COMPILE_FLAGS=" -lm "
+RUN_OPTIONS=" input_large.asc "
