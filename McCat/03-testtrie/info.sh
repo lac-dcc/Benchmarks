@@ -1,4 +1,4 @@
-bnc_name="$(basename $(pwd))" ;
+bnc_name="03-testtrie" ;
 lnk_name="$bnc_name.rbc" ;
 prf_name="$bnc_name.ibc" ;
 obj_name="$bnc_name.o" ;
