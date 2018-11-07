@@ -15,9 +15,9 @@
 
 inline double gen_random(double max) {
   static long last = 42;
-
+    
   last = (last * IA + IC) % IM;
-  return (max * last / IM);
+  return( max * last / IM );
 }
 
 int main(int argc, char *argv[]) {
@@ -27,10 +27,10 @@ int main(int argc, char *argv[]) {
 #define LENGTH 400000000
 #endif
   int N = ((argc == 2) ? atoi(argv[1]) : LENGTH) - 1;
-
+    
   while (N--) {
     gen_random(100.0);
   }
   printf("%.9f\n", gen_random(100.0));
-  return (0);
+  return(0);
 }

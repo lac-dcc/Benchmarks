@@ -13,6 +13,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 
+
 /*
  * Abort processing of a JPEG compression or decompression operation,
  * but don't destroy the object itself.
@@ -25,19 +26,21 @@
  */
 
 GLOBAL(void)
-jpeg_abort(j_common_ptr cinfo) {
+jpeg_abort (j_common_ptr cinfo)
+{
   int pool;
 
   /* Releasing pools in reverse order might help avoid fragmentation
    * with some (brain-damaged) malloc libraries.
    */
-  for (pool = JPOOL_NUMPOOLS - 1; pool > JPOOL_PERMANENT; pool--) {
-    (*cinfo->mem->free_pool)(cinfo, pool);
+  for (pool = JPOOL_NUMPOOLS-1; pool > JPOOL_PERMANENT; pool--) {
+    (*cinfo->mem->free_pool) (cinfo, pool);
   }
 
   /* Reset overall state for possible reuse of object */
   cinfo->global_state = (cinfo->is_decompressor ? DSTATE_START : CSTATE_START);
 }
+
 
 /*
  * Destruction of a JPEG object.
@@ -51,14 +54,16 @@ jpeg_abort(j_common_ptr cinfo) {
  */
 
 GLOBAL(void)
-jpeg_destroy(j_common_ptr cinfo) {
+jpeg_destroy (j_common_ptr cinfo)
+{
   /* We need only tell the memory manager to release everything. */
   /* NB: mem pointer is NULL if memory mgr failed to initialize. */
   if (cinfo->mem != NULL)
-    (*cinfo->mem->self_destruct)(cinfo);
-  cinfo->mem = NULL;       /* be safe if jpeg_destroy is called twice */
-  cinfo->global_state = 0; /* mark it destroyed */
+    (*cinfo->mem->self_destruct) (cinfo);
+  cinfo->mem = NULL;		/* be safe if jpeg_destroy is called twice */
+  cinfo->global_state = 0;	/* mark it destroyed */
 }
+
 
 /*
  * Convenience routines for allocating quantization and Huffman tables.
@@ -66,21 +71,24 @@ jpeg_destroy(j_common_ptr cinfo) {
  */
 
 GLOBAL(JQUANT_TBL *)
-jpeg_alloc_quant_table(j_common_ptr cinfo) {
+jpeg_alloc_quant_table (j_common_ptr cinfo)
+{
   JQUANT_TBL *tbl;
 
-  tbl = (JQUANT_TBL *)(*cinfo->mem->alloc_small)(cinfo, JPOOL_PERMANENT,
-                                                 SIZEOF(JQUANT_TBL));
-  tbl->sent_table = FALSE; /* make sure this is false in any new table */
+  tbl = (JQUANT_TBL *)
+    (*cinfo->mem->alloc_small) (cinfo, JPOOL_PERMANENT, SIZEOF(JQUANT_TBL));
+  tbl->sent_table = FALSE;	/* make sure this is false in any new table */
   return tbl;
 }
 
+
 GLOBAL(JHUFF_TBL *)
-jpeg_alloc_huff_table(j_common_ptr cinfo) {
+jpeg_alloc_huff_table (j_common_ptr cinfo)
+{
   JHUFF_TBL *tbl;
 
-  tbl = (JHUFF_TBL *)(*cinfo->mem->alloc_small)(cinfo, JPOOL_PERMANENT,
-                                                SIZEOF(JHUFF_TBL));
-  tbl->sent_table = FALSE; /* make sure this is false in any new table */
+  tbl = (JHUFF_TBL *)
+    (*cinfo->mem->alloc_small) (cinfo, JPOOL_PERMANENT, SIZEOF(JHUFF_TBL));
+  tbl->sent_table = FALSE;	/* make sure this is false in any new table */
   return tbl;
 }

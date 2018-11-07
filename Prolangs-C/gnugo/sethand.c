@@ -42,53 +42,62 @@ extern unsigned char p[19][19];
 void sethand(int i)
 /* set up handicap pieces */
 {
-  if (i > 0) {
+ if (i > 0)
+   {
     p[3][3] = BLACK;
-    if (i > 1) {
-      p[15][15] = BLACK;
-      if (i > 2) {
-        p[3][15] = BLACK;
-        if (i > 3) {
-          p[15][3] = BLACK;
-          if (i == 5)
-            p[9][9] = BLACK;
-          else if (i > 5) {
-            p[9][15] = BLACK;
-            p[9][3] = BLACK;
-            if (i == 7)
-              p[9][9] = BLACK;
-            else if (i > 7) {
-              p[15][9] = BLACK;
-              p[3][9] = BLACK;
-              if (i > 8)
-                p[9][9] = BLACK;
-              if (i > 9) {
-                p[2][2] = 2;
-                if (i > 10) {
-                  p[16][16] = 2;
-                  if (i > 11) {
-                    p[2][16] = 2;
-                    if (i > 12) {
-                      p[16][2] = 2;
-                      if (i > 13) {
-                        p[6][6] = 2;
-                        if (i > 14) {
-                          p[12][12] = 2;
-                          if (i > 15) {
-                            p[6][12] = 2;
-                            if (i > 16)
-                              p[12][6] = 2;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    if (i > 1)
+      {
+       p[15][15] = BLACK;
+       if (i > 2)
+	 {
+	  p[3][15] = BLACK;
+	  if (i > 3)
+	    {
+	     p[15][3] = BLACK;
+	     if (i == 5)
+		p[9][9] = BLACK;
+	     else
+		if (i > 5)
+		  {
+		   p[9][15] = BLACK;
+		   p[9][3] = BLACK;
+		   if (i == 7)
+		      p[9][9] = BLACK;
+		   else
+		      if (i > 7)
+			{
+			 p[15][9] = BLACK;
+			 p[3][9] = BLACK;
+			 if (i > 8)
+			 p[9][9] = BLACK;
+ 			 if (i > 9)
+ 			   {p[2][2] = 2;
+ 			    if (i > 10)
+ 			      {p[16][16] = 2;
+ 			       if (i > 11)
+ 				 {p[2][16] = 2;
+ 				  if (i > 12)
+ 				    {p[16][2] = 2;
+ 				     if (i > 13)
+ 				       {p[6][6] = 2;
+ 					if (i > 14)
+ 					  {p[12][12] = 2;
+ 					   if (i > 15)
+ 					     {p[6][12] = 2;
+ 					      if (i > 16)
+ 						p[12][6] = 2;
+ 					    }
+ 					 }
+ 				      }
+ 				   }
+ 				}
+ 			     }
+ 			  }
+		       }
+		 }
+	   }
+	}
+     }
   }
-} /* end sethand */
+}  /* end sethand */
+

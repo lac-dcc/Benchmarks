@@ -40,7 +40,7 @@ e-mail address: manli@cs.uh.edu         (Internet)
 extern unsigned char p[19][19], l[19][19];
 extern int mymove, umove;
 extern int lib;
-extern int uik, ujk; /* piece captured */
+extern int uik, ujk;  /* piece captured */
 
 extern void countlib(int m, int n, int color);
 extern void eval(int color);
@@ -48,36 +48,37 @@ extern void eval(int color);
 int suicide(int i, int j)
 /* check for suicide move of opponent at p[i][j] */
 {
-  int m, n, k;
+ int m, n, k;
 
-  /* check liberty of new move */
-  lib = 0;
-  countlib(i, j, umove);
-  if (lib == 0)
-  /* new move is suicide then check if kill my pieces and Ko possibility */
-  {
-    /* assume alive */
+/* check liberty of new move */
+ lib = 0;
+ countlib(i, j, umove);
+ if (lib == 0)
+/* new move is suicide then check if kill my pieces and Ko possibility */
+   {
+/* assume alive */
     p[i][j] = umove;
 
-    /* check my pieces */
+/* check my pieces */
     eval(mymove);
     k = 0;
 
     for (m = 0; m < 19; m++)
       for (n = 0; n < 19; n++)
-        /* count pieces will be killed */
-        if ((p[m][n] == mymove) && !l[m][n])
-          ++k;
+/* count pieces will be killed */
+	if ((p[m][n] == mymove) && !l[m][n]) ++k;
 
     if ((k == 0) || (k == 1 && ((i == uik) && (j == ujk))))
-    /* either no effect on my pieces or an illegal Ko take back */
-    {
-      p[i][j] = EMPTY; /* restore to open */
-      return 1;
-    } else
-      /* good move */
+/* either no effect on my pieces or an illegal Ko take back */
+      {
+       p[i][j] = EMPTY;   /* restore to open */
+       return 1;
+      }
+    else
+/* good move */
       return 0;
-  } else
-    /* valid move */
-    return 0;
-} /* end suicide */
+   }
+ else
+/* valid move */
+   return 0;
+}  /* end suicide */

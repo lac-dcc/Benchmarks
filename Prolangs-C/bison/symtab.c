@@ -25,15 +25,19 @@ notice and this notice must be preserved on all copies.
 #include <strings.h>
 #endif /* NOT USG */
 
-#include "gram.h"
 #include "new.h"
 #include "symtab.h"
+#include "gram.h"
+
 
 bucket **symtab;
 bucket *firstsymbol;
 bucket *lastsymbol;
 
-int hash(char *key) {
+
+
+int hash(char *key)
+{
   register char *cp;
   register int k;
 
@@ -45,7 +49,10 @@ int hash(char *key) {
   return (k % TABSIZE);
 }
 
-char *copys(char *s) {
+
+
+char *copys(char *s)
+{
   register int i;
   register char *cp;
   register char *result;
@@ -54,13 +61,14 @@ char *copys(char *s) {
   for (cp = s; *cp; cp++)
     i++;
 
-  result = mallocate((unsigned int)i);
+  result =  mallocate((unsigned int)i);
   strcpy(result, s);
   return (result);
 }
 
-void tabinit(void) {
-  /*   register int i; JF unused */
+void tabinit(void)
+{
+/*   register int i; JF unused */
 
   symtab = NEW2(TABSIZE, bucket *);
 
@@ -68,7 +76,8 @@ void tabinit(void) {
   lastsymbol = NULL;
 }
 
-bucket *getsym(char *key) {
+bucket *getsym(char *key)
+{
   register int hashval;
   register bucket *bp;
   register int found;
@@ -77,46 +86,54 @@ bucket *getsym(char *key) {
   bp = symtab[hashval];
 
   found = 0;
-  while (bp != NULL && found == 0) {
-    if (strcmp(key, bp->tag) == 0)
-      found = 1;
-    else
-      bp = bp->link;
-  }
-
-  if (found == 0) {
-    nsyms++;
-
-    bp = NEW(bucket);
-    bp->link = symtab[hashval];
-    bp->next = NULL;
-    bp->tag = copys(key);
-    bp->class = SUNKNOWN;
-
-    if (firstsymbol == NULL) {
-      firstsymbol = bp;
-      lastsymbol = bp;
-    } else {
-      lastsymbol->next = bp;
-      lastsymbol = bp;
+  while (bp != NULL && found == 0)
+    {
+      if (strcmp(key, bp->tag) == 0)
+	found = 1;
+      else
+	bp = bp->link;
     }
 
-    symtab[hashval] = bp;
-  }
+  if (found == 0)
+    {
+      nsyms++;
+
+      bp = NEW(bucket);
+      bp->link = symtab[hashval];
+      bp->next = NULL;
+      bp->tag = copys(key);
+      bp->class = SUNKNOWN;
+
+      if (firstsymbol == NULL)
+	{
+	  firstsymbol = bp;
+	  lastsymbol = bp;
+	}
+      else
+	{
+	  lastsymbol->next = bp;
+	  lastsymbol = bp;
+	}
+
+      symtab[hashval] = bp;
+    }
 
   return (bp);
 }
 
-void free_symtab(void) {
+void free_symtab(void)
+{
   register int i;
-  register bucket *bp, *bptmp; /* JF don't use ptr after free */
+  register bucket *bp,*bptmp;/* JF don't use ptr after free */
 
-  for (i = 0; i < TABSIZE; i++) {
-    bp = symtab[i];
-    while (bp) {
-      bptmp = bp->link;
-      FREE(bp);
-      bp = bptmp;
+  for (i = 0; i < TABSIZE; i++)
+    {
+      bp = symtab[i];
+      while (bp)
+	{
+	  bptmp=bp->link;
+	  FREE(bp);
+	  bp = bptmp;
+	}
     }
-  }
 }

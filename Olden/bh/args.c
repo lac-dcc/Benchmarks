@@ -7,9 +7,9 @@ extern int nbody;
 int dealwithargs(int argc, char *argv[]) {
   int level;
 
-  if (argc > 2)
+  if (argc > 2) 
     NumNodes = atoi(argv[2]);
-  else
+  else 
     NumNodes = 4;
 
   if (argc > 1)
@@ -19,3 +19,8 @@ int dealwithargs(int argc, char *argv[]) {
 
   return level;
 }
+
+
+
+
+

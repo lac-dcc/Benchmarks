@@ -42,15 +42,16 @@ extern void countlib(int m, int n, int color);
 
 void eval(int color)
 /* evaluate liberty of color pieces */
-{
+ {
   int i, j;
 
-  /* find liberty of each piece */
+/* find liberty of each piece */
   for (i = 0; i < 19; i++)
     for (j = 0; j < 19; j++)
-      if (p[i][j] == color) {
-        lib = 0;
-        countlib(i, j, color);
-        l[i][j] = lib;
+      if (p[i][j] == color)
+	{
+	 lib = 0;
+	 countlib(i, j, color);
+	 l[i][j] = lib;
       }
-} /* end eval */
+}  /* end eval */

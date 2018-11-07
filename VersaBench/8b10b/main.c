@@ -19,26 +19,31 @@
  * BE LIABLE FOR ANY CLAIM,  DAMAGES OR OTHER LIABILITY, WHETHER IN AN
  * ACTION OF  CONTRACT, TORT OR OTHERWISE, ARISING FROM,  OUT OF OR IN
  * CONNECTION  WITH THE SOFTWARE OR  THE USE OR OTHER  DEALINGS IN THE
- * SOFTWARE.
+ * SOFTWARE.  
  */
 
-#include "calc.h"
-#include "testbench.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "testbench.h"
+#include "calc.h"
 
-int main(int argc, char **argv) {
-  int numberOfWords;
-  if (argc == 3) {
-    calcSetup();
+int main (int argc, char **argv)
+{
+	int numberOfWords;
+	if(argc == 3)
+	{
+		calcSetup();
 #ifdef BIG_CALC
-    bigTableSetup();
+		bigTableSetup();
 #endif
-    numberOfWords = atoi(argv[2]);
-    runTestbench(numberOfWords, argv[1], 0);
-    return 0;
-  } else {
-    printf("Usage: input_name output_0_name number_of_bytes\n");
-    return -1;
-  }
+		numberOfWords = atoi(argv[2]);
+		runTestbench(numberOfWords, argv[1], 0);
+		return 0;
+	}
+	else
+	{
+		printf("Usage: input_name output_0_name number_of_bytes\n");
+		return -1;
+	}
 }
+

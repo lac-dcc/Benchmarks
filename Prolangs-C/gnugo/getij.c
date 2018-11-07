@@ -38,24 +38,26 @@ e-mail address: manli@cs.uh.edu         (Internet)
 int getij(char move[], int *i, int *j)
 /* convert string input to i, j coordinate */
 {
-  int k;
+ int k;
 
-  if ((move[0] >= 65) && (move[0] <= 72))
+ if ((move[0] >= 65) && (move[0] <= 72))
     *j = move[0] - 65;
-  else if ((move[0] >= 74) && (move[0] <= 84))
-    *j = move[0] - 66;
-  else if ((move[0] >= 97) && (move[0] <= 104))
-    *j = move[0] - 97;
-  else if ((move[0] >= 106) && (move[0] <= 116))
-    *j = move[0] - 98;
-  else
-    return 0;
-  k = move[1] - 48;
-  if (move[2])
-    k = k * 10 + move[2] - 48;
-  *i = 19 - k;
-  if ((*i >= 0) && (*i <= 18))
+ else
+    if ((move[0] >= 74) && (move[0] <= 84))
+       *j = move[0] - 66;
+    else
+       if ((move[0] >= 97) && (move[0] <= 104))
+	  *j = move[0] - 97;
+       else
+	  if ((move[0] >= 106) && (move[0] <= 116))
+	     *j = move[0] - 98;
+	  else
+	     return 0;
+ k = move[1] - 48;
+ if (move[2]) k = k * 10 + move[2] - 48;
+ *i = 19 - k;
+ if ((*i >= 0) && (*i <= 18))
     return 1;
-  else
+ else
     return 0;
-} /* end getij */
+}  /* end getij */

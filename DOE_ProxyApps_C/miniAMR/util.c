@@ -3,7 +3,7 @@
 // miniAMR: stencil computations with boundary exchange and AMR.
 //
 // Copyright (2014) Sandia Corporation. Under the terms of Contract
-// DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government
+// DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government 
 // retains certain rights in this software.
 //
 // This library is free software; you can redistribute it and/or modify
@@ -24,28 +24,32 @@
 //
 // ************************************************************************
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 
 #include "block.h"
 #include "proto.h"
 #include "timer.h"
 
-double timer(void) { return ((((double)clock()) / ((double)CLOCKS_PER_SEC))); }
+double timer(void)
+{
+   return((((double) clock())/((double) CLOCKS_PER_SEC)));
+}
 
-void *ma_malloc(size_t size, char *file, int line) {
-  void *ptr;
+void *ma_malloc(size_t size, char *file, int line)
+{
+   void *ptr;
 
-  ptr = (void *)malloc(size);
+   ptr = (void *) malloc(size);
 
-  if (ptr == NULL) {
-    printf("NULL pointer from malloc call in %s at %d\n", file, line);
-    exit(-1);
-  }
+   if (ptr == NULL) {
+      printf("NULL pointer from malloc call in %s at %d\n", file, line);
+      exit(-1);
+   }
 
-  counter_malloc++;
-  size_malloc += (double)size;
+   counter_malloc++;
+   size_malloc += (double) size;
 
-  return (ptr);
+   return(ptr);
 }

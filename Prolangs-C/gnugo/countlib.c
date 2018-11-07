@@ -42,13 +42,14 @@ extern void count(int i, int j, int color);
 void countlib(int m, int n, int color)
 /* count liberty of color piece at m, n */
 {
-  int i, j;
+ int i, j;
 
-  /* set all piece as unmarked */
-  for (i = 0; i < 19; i++)
-    for (j = 0; j < 19; j++)
-      ml[i][j] = 1;
+/* set all piece as unmarked */
+ for (i = 0; i < 19; i++)
+   for (j = 0; j < 19; j++)
+     ml[i][j] = 1;
 
-  /* count liberty of current piece */
-  count(m, n, color);
-} /* end countlib */
+/* count liberty of current piece */
+ count(m, n, color);
+}  /* end countlib */
+

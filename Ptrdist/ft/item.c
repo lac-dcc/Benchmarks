@@ -28,20 +28,28 @@
  *
  */
 
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "item.h"
 
-int LessThan(Item *item1, Item *item2) { return (KEY(item1) < KEY(item2)); }
-
-int Equal(Item *item1, Item *item2) { return (KEY(item1) == KEY(item2)); }
-
-Item *Subtract(Item *item, int delta) {
-  assert(delta > 0);
-
-  KEY(item) = KEY(item) - delta;
-
-  return (item);
+int LessThan(Item * item1, Item * item2)
+{
+  return(KEY(item1) < KEY(item2));
 }
+
+int Equal(Item * item1, Item * item2)
+{
+  return(KEY(item1) == KEY(item2));
+}
+
+Item * Subtract(Item * item, int delta)
+{
+    assert(delta > 0);
+
+    KEY(item) = KEY(item) - delta;
+
+    return(item);
+}
+

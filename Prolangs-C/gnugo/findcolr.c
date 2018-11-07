@@ -42,57 +42,60 @@ extern unsigned char p[19][19];
 int findcolor(int i, int j)
 /* find color for empty piece */
 {
-  int k, color1, color2;
+ int k, color1, color2;
 
-  /* check North neighbor */
-  color1 = 0;
-  k = i;
-  do
-    --k;
-  while ((p[k][j] == EMPTY) && (k > 0));
-  color1 = p[k][j];
+/* check North neighbor */
+ color1 = 0;
+ k = i;
+ do --k;
+ while ((p[k][j] == EMPTY) && (k > 0));
+ color1 = p[k][j];
 
-  /* check South neighbor */
-  color2 = 0;
-  k = i;
-  do
-    k++;
-  while ((p[k][j] == EMPTY) && (k < 18));
-  color2 = p[k][j];
+/* check South neighbor */
+ color2 = 0;
+ k = i;
+ do k++;
+ while ((p[k][j] == EMPTY) && (k < 18));
+ color2 = p[k][j];
 
-  if (color1) {
+ if (color1)
+   {
     if ((color1 == color2) || (color2 == 0))
-      return color1;
+       return color1;
     else
-      return 0; /* cannot determine */
-  } else if (color2)
-    return color2;
-  else /* both zero */
-  {
-    /* check West neighbor */
-    color1 = 0;
-    k = j;
-    do
-      --k;
-    while ((p[i][k] == EMPTY) && (k > 0));
-    color1 = p[i][k];
-
-    /* check East neighbor */
-    color2 = 0;
-    k = j;
-    do
-      k++;
-    while ((p[i][k] == EMPTY) && (k < 18));
-    color2 = p[i][k];
-
-    if (color1) {
-      if ((color1 == color2) || (color2 == 0))
-        return color1;
-      else
-        return 0; /* cannot determine */
-    } else if (color2)
-      return color2;
-    else
-      return 0;
+       return 0;  /* cannot determine */
   }
-} /* end findcolor */
+ else
+    if (color2)
+       return color2;
+    else  /* both zero */
+       {
+/* check West neighbor */
+	color1 = 0;
+	k = j;
+	do --k;
+	while ((p[i][k] == EMPTY) && (k > 0));
+	color1 = p[i][k];
+
+/* check East neighbor */
+	color2 = 0;
+	k = j;
+	do k++;
+	while ((p[i][k] == EMPTY) && (k < 18));
+	color2 = p[i][k];
+
+	if (color1)
+	  {
+	   if ((color1 == color2) || (color2 == 0))
+	      return color1;
+	   else
+	      return 0;  /* cannot determine */
+	 }
+	else
+	   if (color2)
+	      return color2;
+	   else
+	      return 0;
+      }
+}  /* end findcolor */
+

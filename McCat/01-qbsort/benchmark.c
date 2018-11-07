@@ -10,7 +10,7 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
 ****/
 
 /*         benchmark.c          */
@@ -24,11 +24,11 @@
 /*       Claus Brabrand         */
 /* Email: zracscan@daimi.aau.dk */
 
-#include "readlist.h"
-#include "sort.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sort.h"
+#include "readlist.h"
 
 #ifdef TIMEREPEAT
 #include <sys/time.h>
@@ -36,9 +36,13 @@
 
 BOOL LessThan(int x, int y);
 
-BOOL LessThan(int x, int y) { return (x < y); }
+BOOL LessThan(int x, int y)
+{
+  return (x < y);
+}
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   int listno = 1;
   int err;
   LinkList *ll; /* ll = lINKED lIST */
@@ -59,31 +63,28 @@ int main(int argc, char **argv) {
   while ((err = ReadList(&ll, &l)) == 0) {
     origLinkList = ll;
     origList = l->l;
-    l->l = (int *)malloc(sizeof(int) * l->n);
-    memcpy(l->l, origList, sizeof(int) * l->n);
+    l->l = (int*) malloc(sizeof(int)*l->n);
+    memcpy(l->l, origList, sizeof(int)*l->n);
 #ifdef TIMEREPEAT
-    gettimeofday(&t, 0);
+    gettimeofday(&t,0);
 #endif
     for (; repeat > 0; --repeat) {
       l = BubbleSort(l, LessThan);
-      memcpy(l->l, origList, sizeof(int) * l->n);
+      memcpy(l->l, origList, sizeof(int)*l->n);
       /* QuickSort returns a new list, and origLinkList is unmodified */
       ll = QuickSort(origLinkList, LessThan);
       FreeLinkList(ll);
     }
 #ifdef TIMEREPEAT
-    gettimeofday(&tt, 0);
-    stime += (tt.tv_sec - t.tv_sec) * 1000000 + (tt.tv_usec - t.tv_usec);
+    gettimeofday(&tt,0);
+    stime += (tt.tv_sec-t.tv_sec)*1000000 + (tt.tv_usec-t.tv_usec);
 #endif
-    printf("\nList read (reverse order): ");
-    fflush(stdout);
+    printf("\nList read (reverse order): ");fflush(stdout);
     PrintList(l);
-    printf("\nBubbleSort: ");
-    fflush(stdout);
+    printf("\nBubbleSort: "); fflush(stdout);
     l = BubbleSort(l, LessThan);
     PrintList(l);
-    printf("\nQuickSort:  ");
-    fflush(stdout);
+    printf("\nQuickSort:  "); fflush(stdout);
     ll = QuickSort(origLinkList, LessThan);
     PrintLinkList(ll);
     printf("\n");
@@ -95,7 +96,7 @@ int main(int argc, char **argv) {
     listno++;
   }
 
-  switch (err) {
+  switch(err) {
   case COMMA_EXPECTED:
     printf("Comma expected in list number %d\n", listno);
     exit(1);

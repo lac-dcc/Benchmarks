@@ -30,14 +30,15 @@
 
 #define JPEG_INTERNALS
 #include "jinclude.h"
-#include "jmemsys.h" /* import the system-dependent declarations */
 #include "jpeglib.h"
+#include "jmemsys.h"		/* import the system-dependent declarations */
 
-#include <Memory.h> /* we use the MacOS memory manager */
+#include <Memory.h>		/* we use the MacOS memory manager */
 
-#ifndef SEEK_SET   /* pre-ANSI systems may not define this; */
-#define SEEK_SET 0 /* if not, assume 0 is correct */
+#ifndef SEEK_SET		/* pre-ANSI systems may not define this; */
+#define SEEK_SET  0		/* if not, assume 0 is correct */
 #endif
+
 
 /*
  * Memory allocation and freeing are controlled by the MacOS library
@@ -47,14 +48,17 @@
  */
 
 GLOBAL(void *)
-jpeg_get_small(j_common_ptr cinfo, size_t sizeofobject) {
-  return (void *)NewPtr(sizeofobject);
+jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
+{
+  return (void *) NewPtr(sizeofobject);
 }
 
 GLOBAL(void)
-jpeg_free_small(j_common_ptr cinfo, void *object, size_t sizeofobject) {
-  DisposePtr((Ptr)object);
+jpeg_free_small (j_common_ptr cinfo, void * object, size_t sizeofobject)
+{
+  DisposePtr((Ptr) object);
 }
+
 
 /*
  * "Large" objects are treated the same as "small" ones.
@@ -64,22 +68,26 @@ jpeg_free_small(j_common_ptr cinfo, void *object, size_t sizeofobject) {
  */
 
 GLOBAL(void FAR *)
-jpeg_get_large(j_common_ptr cinfo, size_t sizeofobject) {
-  return (void FAR *)NewPtr(sizeofobject);
+jpeg_get_large (j_common_ptr cinfo, size_t sizeofobject)
+{
+  return (void FAR *) NewPtr(sizeofobject);
 }
 
 GLOBAL(void)
-jpeg_free_large(j_common_ptr cinfo, void FAR *object, size_t sizeofobject) {
-  DisposePtr((Ptr)object);
+jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
+{
+  DisposePtr((Ptr) object);
 }
+
 
 /*
  * This routine computes the total memory space available for allocation.
  */
 
 GLOBAL(long)
-jpeg_mem_available(j_common_ptr cinfo, long min_bytes_needed,
-                   long max_bytes_needed, long already_allocated) {
+jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
+		    long max_bytes_needed, long already_allocated)
+{
   long limit = cinfo->mem->max_memory_to_use - already_allocated;
   long slop, mem;
 
@@ -95,12 +103,13 @@ jpeg_mem_available(j_common_ptr cinfo, long min_bytes_needed,
   slop = max_bytes_needed / 16 + 32768L;
   mem = CompactMem(max_bytes_needed + slop) - slop;
   if (mem < 0)
-    mem = 0; /* sigh, couldn't even get the slop */
+    mem = 0;			/* sigh, couldn't even get the slop */
   /* Don't take more than the application says we can have */
   if (mem > limit && limit > 0)
     mem = limit;
   return mem;
 }
+
 
 /*
  * Backing store (temporary file) management.
@@ -109,34 +118,42 @@ jpeg_mem_available(j_common_ptr cinfo, long min_bytes_needed,
  * with these routines if you have plenty of virtual memory; see jmemnobs.c.
  */
 
+
 METHODDEF(void)
-read_backing_store(j_common_ptr cinfo, backing_store_ptr info,
-                   void FAR *buffer_address, long file_offset,
-                   long byte_count) {
+read_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+		    void FAR * buffer_address,
+		    long file_offset, long byte_count)
+{
   if (fseek(info->temp_file, file_offset, SEEK_SET))
     ERREXIT(cinfo, JERR_TFILE_SEEK);
-  if (JFREAD(info->temp_file, buffer_address, byte_count) != (size_t)byte_count)
+  if (JFREAD(info->temp_file, buffer_address, byte_count)
+      != (size_t) byte_count)
     ERREXIT(cinfo, JERR_TFILE_READ);
 }
 
+
 METHODDEF(void)
-write_backing_store(j_common_ptr cinfo, backing_store_ptr info,
-                    void FAR *buffer_address, long file_offset,
-                    long byte_count) {
+write_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+		     void FAR * buffer_address,
+		     long file_offset, long byte_count)
+{
   if (fseek(info->temp_file, file_offset, SEEK_SET))
     ERREXIT(cinfo, JERR_TFILE_SEEK);
-  if (JFWRITE(info->temp_file, buffer_address, byte_count) !=
-      (size_t)byte_count)
+  if (JFWRITE(info->temp_file, buffer_address, byte_count)
+      != (size_t) byte_count)
     ERREXIT(cinfo, JERR_TFILE_WRITE);
 }
 
+
 METHODDEF(void)
-close_backing_store(j_common_ptr cinfo, backing_store_ptr info) {
+close_backing_store (j_common_ptr cinfo, backing_store_ptr info)
+{
   fclose(info->temp_file);
   /* Since this implementation uses tmpfile() to create the file,
    * no explicit file deletion is needed.
    */
 }
+
 
 /*
  * Initial opening of a backing-store object.
@@ -147,8 +164,9 @@ close_backing_store(j_common_ptr cinfo, backing_store_ptr info) {
  */
 
 GLOBAL(void)
-jpeg_open_backing_store(j_common_ptr cinfo, backing_store_ptr info,
-                        long total_bytes_needed) {
+jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
+			 long total_bytes_needed)
+{
   if ((info->temp_file = tmpfile()) == NULL)
     ERREXITS(cinfo, JERR_TFILE_CREATE, "");
   info->read_backing_store = read_backing_store;
@@ -156,13 +174,15 @@ jpeg_open_backing_store(j_common_ptr cinfo, backing_store_ptr info,
   info->close_backing_store = close_backing_store;
 }
 
+
 /*
  * These routines take care of any system-dependent initialization and
  * cleanup required.
  */
 
 GLOBAL(long)
-jpeg_mem_init(j_common_ptr cinfo) {
+jpeg_mem_init (j_common_ptr cinfo)
+{
   /* max_memory_to_use will be initialized to FreeMem()'s result;
    * the calling application might later reduce it, for example
    * to leave room to invoke multiple JPEG objects.
@@ -173,4 +193,7 @@ jpeg_mem_init(j_common_ptr cinfo) {
 }
 
 GLOBAL(void)
-jpeg_mem_term(j_common_ptr cinfo) { /* no work */ }
+jpeg_mem_term (j_common_ptr cinfo)
+{
+  /* no work */
+}

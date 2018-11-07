@@ -1,11 +1,12 @@
 /* +++Date last modified: 05-Jul-1997 */
 
-#include "snipmath.h"
 #include <string.h>
+#include "snipmath.h"
 
 #define BITSPERLONG 32
 
-#define TOP2BITS(x) ((x & (3 << (BITSPERLONG - 2))) >> (BITSPERLONG - 2))
+#define TOP2BITS(x) ((x & (3 << (BITSPERLONG-2))) >> (BITSPERLONG-2))
+
 
 /* usqrt:
     ENTRY x: unsigned int
@@ -41,25 +42,26 @@
         This means it'll be fast on a wide range of processors.
 */
 
-void usqrt(unsigned int x, struct int_sqrt *q) {
-  unsigned int a = 0; /* accumulator      */
-  unsigned int r = 0; /* remainder        */
-  unsigned int e = 0; /* trial product    */
+void usqrt(unsigned int x, struct int_sqrt *q)
+{
+      unsigned int a = 0;                   /* accumulator      */
+      unsigned int r = 0;                   /* remainder        */
+      unsigned int e = 0;                   /* trial product    */
 
-  int i;
+      int i;
 
-  for (i = 0; i < BITSPERLONG; i++) /* NOTE 1 */
-  {
-    r = (r << 2) + TOP2BITS(x);
-    x <<= 2; /* NOTE 2 */
-    a <<= 1;
-    e = (a << 1) + 1;
-    if (r >= e) {
-      r -= e;
-      a++;
-    }
-  }
-  memcpy(q, &a, sizeof(int));
+      for (i = 0; i < BITSPERLONG; i++)   /* NOTE 1 */
+      {
+            r = (r << 2) + TOP2BITS(x); x <<= 2; /* NOTE 2 */
+            a <<= 1;
+            e = (a << 1) + 1;
+            if (r >= e)
+            {
+                  r -= e;
+                  a++;
+            }
+      }
+      memcpy(q, &a, sizeof(int));
 }
 
 #ifdef TEST
@@ -67,18 +69,21 @@ void usqrt(unsigned int x, struct int_sqrt *q) {
 #include <stdio.h>
 #include <stdlib.h>
 
-main(void) {
-  int i;
-  unsigned long l = 0x3fed0169L;
-  struct int_sqrt q;
+main(void)
+{
+      int i;
+      unsigned long l = 0x3fed0169L;
+      struct int_sqrt q;
 
-  for (i = 0; i < 101; ++i) {
-    usqrt(i, &q);
-    printf("sqrt(%3d) = %2d, remainder = %2d\n", i, q.sqrt, q.frac);
-  }
-  usqrt(l, &q);
-  printf("\nsqrt(%lX) = %X, remainder = %X\n", l, q.sqrt, q.frac);
-  return 0;
+      for (i = 0; i < 101; ++i)
+      {
+            usqrt(i, &q);
+            printf("sqrt(%3d) = %2d, remainder = %2d\n",
+                  i, q.sqrt, q.frac);
+      }
+      usqrt(l, &q);
+      printf("\nsqrt(%lX) = %X, remainder = %X\n", l, q.sqrt, q.frac);
+      return 0;
 }
 
 #endif /* TEST */

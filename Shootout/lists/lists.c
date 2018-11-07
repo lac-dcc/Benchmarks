@@ -14,14 +14,14 @@
    the head node is special, it's val is length of list */
 typedef struct DLL {
   int val;
-  struct DLL *next; /* points to next or head (if at tail) */
-  struct DLL *prev; /* points to prev or tail (if at head) */
+  struct DLL *next;   /* points to next or head (if at tail) */
+  struct DLL *prev;   /* points to prev or tail (if at head) */
 } DLL;
 
-inline int list_length(DLL *head) { return (head->val); }
-inline int list_empty(DLL *head) { return (list_length(head) == 0); }
-inline DLL *list_first(DLL *head) { return (head->next); }
-inline DLL *list_last(DLL *head) { return (head->prev); }
+inline int list_length(DLL *head) { return(head->val); }
+inline int list_empty(DLL *head) { return(list_length(head) == 0); }
+inline DLL *list_first(DLL *head) { return(head->next); }
+inline DLL *list_last(DLL *head) { return(head->prev); }
 
 void list_push_tail(DLL *head, DLL *item) {
   DLL *tail = head->prev;
@@ -34,14 +34,13 @@ void list_push_tail(DLL *head, DLL *item) {
 
 DLL *list_pop_tail(DLL *head) {
   DLL *prev, *tail;
-  if (list_empty(head))
-    return (NULL);
+  if (list_empty(head)) return(NULL);
   tail = head->prev;
   prev = tail->prev;
   prev->next = head;
   head->prev = prev;
   head->val--;
-  return (tail);
+  return(tail);
 }
 
 void list_push_head(DLL *head, DLL *item) {
@@ -55,25 +54,22 @@ void list_push_head(DLL *head, DLL *item) {
 
 DLL *list_pop_head(DLL *head) {
   DLL *next;
-  if (list_empty(head))
-    return (NULL);
+  if (list_empty(head)) return(NULL);
   next = head->next;
   head->next = next->next;
   next->next->prev = head;
   head->val--;
-  return (next);
+  return(next);
 }
 
 int list_equal(DLL *x, DLL *y) {
   DLL *xp, *yp;
   /* first val's checked will be list lengths */
-  for (xp = x, yp = y; xp->next != x; xp = xp->next, yp = yp->next) {
-    if (xp->val != yp->val)
-      return (0);
+  for (xp=x, yp=y; xp->next != x; xp=xp->next, yp=yp->next) {
+    if (xp->val != yp->val) return(0);
   }
-  if (xp->val != yp->val)
-    return (0);
-  return (yp->next == y);
+  if (xp->val != yp->val) return(0);
+  return(yp->next == y);
 }
 
 void list_print(char *msg, DLL *x) {
@@ -81,9 +77,9 @@ void list_print(char *msg, DLL *x) {
   int i = 0;
   puts(msg);
   printf("length: %d\n", list_length(x));
-  for (xp = x->next; xp->next != first; xp = xp->next) {
-    printf("i:%3d  v:%3d  n:%3d  p:%3d\n", ++i, xp->val, xp->next->val,
-           xp->prev->val);
+  for (xp=x->next; xp->next != first; xp=xp->next) {
+    printf("i:%3d  v:%3d  n:%3d  p:%3d\n", ++i,
+           xp->val, xp->next->val, xp->prev->val);
   }
   printf("[last entry points to list head]\n");
   printf("[val of next of tail is:  %d]\n", xp->next->val);
@@ -94,7 +90,7 @@ DLL *list_new() {
   l->next = l;
   l->prev = l;
   l->val = 0;
-  return (l);
+  return(l);
 }
 
 /* inclusive sequence 'from' <-> 'to' */
@@ -102,29 +98,27 @@ DLL *list_sequence(int from, int to) {
   int size, tmp, i, j;
   DLL *l;
   if (from > to) {
-    tmp = from;
-    from = to;
-    to = tmp;
+    tmp = from; from = to; to = tmp;
   }
   size = to - from + 1;
-  l = (DLL *)malloc((size + 1) * sizeof(DLL));
+  l = (DLL *)malloc((size+1) * sizeof(DLL));
   from--;
-  for (i = 0, j = 1; i < size; ++i, ++j) {
-    l[i].next = &l[i + 1];
-    l[j].prev = &l[j - 1];
+  for (i=0, j=1; i<size; ++i, ++j) {
+    l[i].next = &l[i+1];
+    l[j].prev = &l[j-1];
     l[i].val = from++;
   }
   l[0].prev = &l[size];
   l[size].next = &l[0];
-  l[size].prev = &l[size - 1];
+  l[size].prev = &l[size-1];
   l[size].val = from;
   l[0].val = size;
-  return (l);
+  return(l);
 }
 DLL *list_copy(DLL *x) {
   int i, j, size = list_length(x);
-  DLL *xp, *l = (DLL *)malloc((size + 1) * sizeof(DLL));
-  for (i = 0, j = 1, xp = x; i < size; i++, j++, xp = xp->next) {
+  DLL *xp, *l = (DLL *)malloc((size+1) * sizeof(DLL));
+  for (i=0, j=1, xp=x; i<size; i++, j++, xp=xp->next) {
     l[i].next = &l[j];
     l[j].prev = &l[i];
     l[i].val = xp->val;
@@ -132,10 +126,10 @@ DLL *list_copy(DLL *x) {
   l[0].prev = &l[size];
   l[size].next = &l[0];
   l[size].val = list_last(x)->val;
-  return (l);
+  return(l);
 }
 
-void list_reverse(DLL *head) {
+void list_reverse (DLL *head) {
   DLL *tmp, *p = head;
   do {
     tmp = p->next;
@@ -181,29 +175,32 @@ int test_lists() {
   list_reverse(li1);
   /* check that li1's first item is now SIZE */
   if (list_first(li1)->val != SIZE) {
-    printf("li1 first value wrong, wanted %d, got %d\n", SIZE,
-           list_first(li1)->val);
+    printf("li1 first value wrong, wanted %d, got %d\n",
+           SIZE, list_first(li1)->val);
     exit(1);
   }
   /* check that li1's last item is now 1 */
   if (list_last(li1)->val != 1) {
-    printf("last value wrong, wanted %d, got %d\n", SIZE, list_last(li1)->val);
+    printf("last value wrong, wanted %d, got %d\n",
+           SIZE, list_last(li1)->val);
     exit(1);
   }
   /* check that li2's first item is now SIZE */
   if (list_first(li2)->val != SIZE) {
-    printf("li2 first value wrong, wanted %d, got %d\n", SIZE,
-           list_first(li2)->val);
+    printf("li2 first value wrong, wanted %d, got %d\n",
+           SIZE, list_first(li2)->val);
     exit(1);
   }
   /* check that li2's last item is now 1 */
   if (list_last(li2)->val != 1) {
-    printf("last value wrong, wanted %d, got %d\n", SIZE, list_last(li2)->val);
+    printf("last value wrong, wanted %d, got %d\n",
+           SIZE, list_last(li2)->val);
     exit(1);
   }
   /* check that li1's length is still SIZE */
   if (list_length(li1) != SIZE) {
-    printf("li1 size wrong, wanted %d, got %d\n", SIZE, list_length(li1));
+    printf("li1 size wrong, wanted %d, got %d\n",
+           SIZE, list_length(li1));
     exit(1);
   }
   /* compare li1 and li2 for equality */
@@ -216,7 +213,7 @@ int test_lists() {
   free(li2);
   free(li3);
   /* return the length of the list */
-  return (len);
+  return(len);
 }
 
 int main(int argc, char *argv[]) {
@@ -227,8 +224,8 @@ int main(int argc, char *argv[]) {
 #endif
   int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
   int result = 0;
-  while (n--)
-    result = test_lists();
+  while(n--) result = test_lists();
   printf("%d\n", result);
   return 0;
 }
+
