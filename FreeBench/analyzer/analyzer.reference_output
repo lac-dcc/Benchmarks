@@ -12,4 +12,3 @@ REALISTIC RESTART RESULTS -- Unlimited amount of CPUs
 Time for speculative loop is 40 issues
 Potential speedup for loop: 576 times
 Potential speedup for program: 378 times
-exit 0

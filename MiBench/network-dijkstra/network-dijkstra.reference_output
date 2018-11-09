@@ -98,4 +98,3 @@ Shortest path is 0 in cost. Path is:  96 27 30 2 71 47 79 23 77 1 58 57 20 40 17
 Shortest path is 1 in cost. Path is:  97 14 38 41 45 51 68 2 71 47
 Shortest path is 1 in cost. Path is:  98 46 10 20 40 17 65 48
 Shortest path is 3 in cost. Path is:  99 3 21 70 55 12 37 63 72 46 10 58 33 13 97 49
-exit 0

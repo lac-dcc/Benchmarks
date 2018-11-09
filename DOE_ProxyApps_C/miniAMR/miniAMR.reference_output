@@ -169,4 +169,3 @@ Will not plot results
 Calculate on 40 variables with 7 point stencil
 Communicate 40 variables at a time
 Error tolorance for variable sums is 10^(-8)
-exit 0
