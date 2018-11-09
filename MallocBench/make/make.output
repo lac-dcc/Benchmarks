@@ -1,0 +1,21 @@
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o commands-bwgc.o -c commands.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o job-bwgc.o -c job.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o dir-bwgc.o -c dir.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o file-bwgc.o -c file.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o load-bwgc.o -c load.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o misc-bwgc.o -c misc.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o main-bwgc.o -c main.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o read-bwgc.o -c read.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o remake-bwgc.o -c remake.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o remote-bwgc.o -c remote.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o rule-bwgc.o -c rule.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o implicit-bwgc.o -c implicit.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o default-bwgc.o -c default.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o variable-bwgc.o -c variable.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o expand-bwgc.o -c expand.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o function-bwgc.o -c function.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o vpath-bwgc.o -c vpath.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o version-bwgc.o -c version.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o arscan-bwgc.o -c arscan.c
+gcc -DNOMEMOPT -DIGNOREFREE -DBWGC  -g -g    -o ar-bwgc.o -c ar.c
+gcc  -g -g    -o make-bwgc.exe commands-bwgc.o job-bwgc.o dir-bwgc.o file-bwgc.o load-bwgc.o misc-bwgc.o main-bwgc.o read-bwgc.o remake-bwgc.o remote-bwgc.o rule-bwgc.o implicit-bwgc.o default-bwgc.o variable-bwgc.o expand-bwgc.o function-bwgc.o vpath-bwgc.o version-bwgc.o arscan-bwgc.o ar-bwgc.o    /cs/research/gc/dec/dmm/lib/misc.a glob/libglob.a -lm 
