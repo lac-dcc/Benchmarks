@@ -22,4 +22,3 @@ MGSolve...                      done
 Error test: h = 7.812500e-03, max = 0.000000e+00
 Error test: h = 7.812500e-03, L2  = 0.000000e+00
 deallocating domain...   done
-exit 0

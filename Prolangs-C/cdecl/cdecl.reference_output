@@ -136,4 +136,3 @@ cast x into pointer to function returning int
 cast x into pointer to function (pointer to char) returning int
 cast x into pointer to function (pointer to char, int) returning int
 cast x into pointer to function (pointer to char, int, float) returning int
-exit 0

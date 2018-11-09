@@ -12,4 +12,3 @@ i =     4 j =     8    dtcdgd[i][j]   = 8.868500e-03
 i =     8 j =     0    dtcdgd[i][j]   = 8.109601e-02 
 i =     8 j =     4    dtcdgd[i][j]   = 6.064326e-02 
 i =     8 j =     8    dtcdgd[i][j]   = 1.600819e-01 
-exit 0

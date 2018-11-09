@@ -1139,4 +1139,3 @@ sz:    7     total:    2     edgesCut:    6     netsCuts:    1
 sz:    8     total:    4     edgesCut:    0     netsCuts:    0
 sz:    9     total:    3     edgesCut:   26     netsCuts:    2
 sz:   10     total:    4     edgesCut:   16     netsCuts:    1
-exit 0

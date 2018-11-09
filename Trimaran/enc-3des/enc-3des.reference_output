@@ -11,4 +11,3 @@
  Test 2, key size = 128 bits: passed.
  Test 3, key size = 192 bits: passed.
 
-exit 0
