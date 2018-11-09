@@ -1,0 +1,50 @@
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER) - DC Benchmark
+
+********************* ADC paramters
+ id		0
+ attributes 	10
+ measures   	1
+ tuples     	10000
+ class		W
+ filename       ADC
+***********************************
+
+GenerateADC: writing 10000 tuples of 10 attributes and 1 measures to ADC.dat.0
+Prime 	Generator 	Seed
+ 421	 16		 211
+ 601	 151		 301
+ 631	 98		 316
+ 701	 581		 351
+ 883	 729		 442
+ 419	 228		 210
+ 443	 98		 222
+ 647	 94		 324
+ 21737	 10567		 10869
+ 31769	 31023		 15885
+Binary ADC file ADC.dat.0 have been generated.
+View sizes are written into ADC.view.sz.0
+
+*** DC Benchmark Results:
+ Input Tuples     =                10000
+ Number of Views  =                 1023
+ Number of Tasks  =                    1
+ Tuples Generated =              9827551
+ Verification failed
+
+
+ DC Benchmark Completed
+ Class           =                        W
+ Size            =                    10000
+ Iterations      =                        1
+ Operation type  =         Tuples generated
+ Verification    =             UNSUCCESSFUL
+ Version         =                      3.3
+
+
+ Please send all errors/feedbacks to:
+
+ NPB Development Team
+ npb@nas.nasa.gov
+

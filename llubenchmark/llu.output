@@ -1,0 +1,9 @@
+This benchmark modified to not use hard coded pool allocation!
+0
+1000
+2000
+3000
+4000
+5000
+output = 538551608
+num allocated 391804
