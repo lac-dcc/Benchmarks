@@ -1,0 +1,4 @@
+[submodule "cpu2006"]
+    path = cpu2006
+    url = https://github.com/guilhermeleobas/cpu2006
+    branch = master
