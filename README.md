@@ -57,15 +57,12 @@ Saw something wrong or want to increase the list of benchmarks, send a pull requ
    contain the executable file that you are creating, add the following
    `info.sh` file there:
 ```bash
- bnc_name="XX" ;
- lnk_name="$bnc_name.rbc" ;
- prf_name="$bnc_name.ibc" ;
- obj_name="$bnc_name.o" ;
- exe_name="$bnc_name.exe" ;
+bench_name="XX"
 
- source_files=($(ls *.c)) ;
- CXXFLAGS=" -lm " ;
- COMPILER="clang"  # or clang++
- RUN_OPTIONS=" irsmk_input " ;
- STDIN=" file.in "
+source_files=( "foo.c" "bar.c" "baz.c" "..." )
+COMPILE_FLAGS=" -lm "
+COMPILER="clang"  # or clang++ for C++ programs
+RUN_OPTIONS=" irsmk_input "
+STDIN=" file.in "
+DIFF_CMD=""
 ```
