@@ -1,0 +1,39 @@
+#! /bin/sh
+
+#RUNTIME Environment
+#export CCC_RE=lli
+#export CCC_RE=cil32-ilrun
+
+if [ -f bench_list ]
+then
+  benchmarks=`grep -v ^# bench_list`
+else
+  benchmarks=*  
+fi
+
+for i in $benchmarks
+do
+
+if [ -d "$i" ] 
+then
+ tmp=$PWD
+ cd $i
+ if [ -d "src_work" ] 
+ then
+  # *** process directory ***
+  echo "**********************************************************"
+  echo $i
+  cd src_work
+   for j in `seq 1 1`;
+   do
+    echo "##########################################################"
+    echo "Dataset: $j"
+    __run $j
+   done
+  # *************************
+ fi
+ cd $tmp
+fi
+
+done
+

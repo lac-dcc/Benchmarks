@@ -1,0 +1,81 @@
+20
+=====
+1
+-a -q -o large_output.au < ../../office_data/1.txt > ftmp_out 2> ftmp_out1
+1300
+=====
+2
+-a -q -o large_output.au < ../../office_data/2.txt > ftmp_out 2> ftmp_out1
+1200
+=====
+3
+-a -q -o large_output.au < ../../office_data/3.txt > ftmp_out 2> ftmp_out1
+70
+=====
+4
+-a -q -o large_output.au < ../../office_data/4.txt > ftmp_out 2> ftmp_out1
+10
+=====
+5
+-a -q -o large_output.au < ../../office_data/5.txt > ftmp_out 2> ftmp_out1
+10
+=====
+6
+-a -q -o large_output.au < ../../office_data/6.s.txt > ftmp_out 2> ftmp_out1
+2
+=====
+7
+-a -q -o large_output.au < ../../office_data/7.txt > ftmp_out 2> ftmp_out1
+1
+=====
+8
+-a -q -o large_output.au < ../../office_data/8.txt > ftmp_out 2> ftmp_out1
+1
+=====
+9
+-a -q -o large_output.au < ../../office_data/9.txt > ftmp_out 2> ftmp_out1
+1
+=====
+10
+-a -q -o large_output.au < ../../office_data/10.txt > ftmp_out 2> ftmp_out1
+50000
+=====
+11
+-a -q -o large_output.au < ../../office_data/11.txt > ftmp_out 2> ftmp_out1
+1
+=====
+12
+-a -q -o large_output.au < ../../office_data/12.txt > ftmp_out 2> ftmp_out1
+1
+=====
+13
+-a -q -o large_output.au < ../../office_data/13.s.txt > ftmp_out 2> ftmp_out1
+2
+=====
+14
+-a -q -o large_output.au < ../../office_data/14.txt > ftmp_out 2> ftmp_out1
+1
+=====
+15
+-a -q -o large_output.au < ../../office_data/15.txt > ftmp_out 2> ftmp_out1
+1
+=====
+16
+-a -q -o large_output.au < ../../office_data/16.txt > ftmp_out 2> ftmp_out1
+1
+=====
+17
+-a -q -o large_output.au < ../../office_data/17.txt > ftmp_out 2> ftmp_out1
+1
+=====
+18
+-a -q -o large_output.au < ../../office_data/18.s.txt > ftmp_out 2> ftmp_out1
+1
+=====
+19
+-a -q -o large_output.au < ../../office_data/19.txt > ftmp_out 2> ftmp_out1
+150
+=====
+20
+-a -q -o large_output.au < ../../office_data/20.txt > ftmp_out 2> ftmp_out1
+1

@@ -1,0 +1,81 @@
+20
+=====
+1
+../../consumer_tiff_data/1.tif output_largebw.tif > ftmp_out
+6757
+=====
+2
+../../consumer_tiff_data/2.tif output_largebw.tif > ftmp_out
+4808
+=====
+3
+../../consumer_tiff_data/3.tif output_largebw.tif > ftmp_out
+47
+=====
+4
+../../consumer_tiff_data/4.tif output_largebw.tif > ftmp_out
+762
+=====
+5
+../../consumer_tiff_data/5.tif output_largebw.tif > ftmp_out
+16131
+=====
+6
+../../consumer_tiff_data/6.tif output_largebw.tif > ftmp_out
+8131
+=====
+7
+../../consumer_tiff_data/7.tif output_largebw.tif > ftmp_out
+865
+=====
+8
+../../consumer_tiff_data/8.tif output_largebw.tif > ftmp_out
+2257
+=====
+9
+../../consumer_tiff_data/9.tif output_largebw.tif > ftmp_out
+2088
+=====
+10
+../../consumer_tiff_data/10.tif output_largebw.tif > ftmp_out
+3311
+=====
+11
+../../consumer_tiff_data/11.tif output_largebw.tif > ftmp_out
+45
+=====
+12
+../../consumer_tiff_data/12.tif output_largebw.tif > ftmp_out
+3145
+=====
+13
+../../consumer_tiff_data/13.tif output_largebw.tif > ftmp_out
+5500
+=====
+14
+../../consumer_tiff_data/14.tif output_largebw.tif > ftmp_out
+1602
+=====
+15
+../../consumer_tiff_data/15.tif output_largebw.tif > ftmp_out
+233
+=====
+16
+../../consumer_tiff_data/16.tif output_largebw.tif > ftmp_out
+1176
+=====
+17
+../../consumer_tiff_data/17.tif output_largebw.tif > ftmp_out
+10
+=====
+18
+../../consumer_tiff_data/18.tif output_largebw.tif > ftmp_out
+1669
+=====
+19
+../../consumer_tiff_data/19.tif output_largebw.tif > ftmp_out
+730
+=====
+20
+../../consumer_tiff_data/20.tif output_largebw.tif > ftmp_out
+1653

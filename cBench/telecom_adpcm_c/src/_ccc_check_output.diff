@@ -1,0 +1,2 @@
+rm -f tmp-ccc-diff
+diff output_large.adpcm output_large.adpcm-std >> tmp-ccc-diff

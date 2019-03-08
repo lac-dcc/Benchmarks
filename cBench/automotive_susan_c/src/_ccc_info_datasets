@@ -1,0 +1,81 @@
+20
+=====
+1
+../../automotive_susan_data/1.pgm output_large.corners.pgm -c > ftmp_out
+782
+=====
+2
+../../automotive_susan_data/2.pgm output_large.corners.pgm -c > ftmp_out
+691
+=====
+3
+../../automotive_susan_data/3.pgm output_large.corners.pgm -c > ftmp_out
+217
+=====
+4
+../../automotive_susan_data/4.pgm output_large.corners.pgm -c > ftmp_out
+2740
+=====
+5
+../../automotive_susan_data/5.pgm output_large.corners.pgm -c > ftmp_out
+314
+=====
+6
+../../automotive_susan_data/6.pgm output_large.corners.pgm -c > ftmp_out
+214
+=====
+7
+../../automotive_susan_data/7.pgm output_large.corners.pgm -c > ftmp_out
+966
+=====
+8
+../../automotive_susan_data/8.pgm output_large.corners.pgm -c > ftmp_out
+3516
+=====
+9
+../../automotive_susan_data/9.pgm output_large.corners.pgm -c > ftmp_out
+145
+=====
+10
+../../automotive_susan_data/10.pgm output_large.corners.pgm -c > ftmp_out
+2325
+=====
+11
+../../automotive_susan_data/11.pgm output_large.corners.pgm -c > ftmp_out
+369
+=====
+12
+../../automotive_susan_data/12.pgm output_large.corners.pgm -c > ftmp_out
+109
+=====
+13
+../../automotive_susan_data/13.pgm output_large.corners.pgm -c > ftmp_out
+1688
+=====
+14
+../../automotive_susan_data/14.pgm output_large.corners.pgm -c > ftmp_out
+552
+=====
+15
+../../automotive_susan_data/15.pgm output_large.corners.pgm -c > ftmp_out
+414
+=====
+16
+../../automotive_susan_data/16.pgm output_large.corners.pgm -c > ftmp_out
+764
+=====
+17
+../../automotive_susan_data/17.pgm output_large.corners.pgm -c > ftmp_out
+569
+=====
+18
+../../automotive_susan_data/18.pgm output_large.corners.pgm -c > ftmp_out
+855
+=====
+19
+../../automotive_susan_data/19.pgm output_large.corners.pgm -c > ftmp_out
+152
+=====
+20
+../../automotive_susan_data/20.pgm output_large.corners.pgm -c > ftmp_out
+350
