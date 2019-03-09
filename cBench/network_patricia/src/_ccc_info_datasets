@@ -1,0 +1,81 @@
+20
+=====
+1
+../../network_patricia_data/1.udp > output_large.txt
+50000
+=====
+2
+../../network_patricia_data/2.udp > output_large.txt
+30000
+=====
+3
+../../network_patricia_data/3.udp > output_large.txt
+20000
+=====
+4
+../../network_patricia_data/4.udp > output_large.txt
+15000
+=====
+5
+../../network_patricia_data/5.udp > output_large.txt
+10000
+=====
+6
+../../network_patricia_data/6.udp > output_large.txt
+5000
+=====
+7
+../../network_patricia_data/7.udp > output_large.txt
+4000
+=====
+8
+../../network_patricia_data/8.udp > output_large.txt
+2000
+=====
+9
+../../network_patricia_data/9.udp > output_large.txt
+1500
+=====
+10
+../../network_patricia_data/10.udp > output_large.txt
+1000
+=====
+11
+../../network_patricia_data/11.udp > output_large.txt
+700
+=====
+12
+../../network_patricia_data/12.udp > output_large.txt
+500
+=====
+13
+../../network_patricia_data/13.udp > output_large.txt
+300
+=====
+14
+../../network_patricia_data/14.udp > output_large.txt
+200
+=====
+15
+../../network_patricia_data/15.udp > output_large.txt
+150
+=====
+16
+../../network_patricia_data/16.udp > output_large.txt
+90
+=====
+17
+../../network_patricia_data/17.udp > output_large.txt
+60
+=====
+18
+../../network_patricia_data/18.udp > output_large.txt
+40
+=====
+19
+../../network_patricia_data/19.udp > output_large.txt
+30
+=====
+20
+../../network_patricia_data/20.udp > output_large.txt
+20

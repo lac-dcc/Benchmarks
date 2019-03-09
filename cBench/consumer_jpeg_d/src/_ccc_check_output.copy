@@ -1,0 +1,2 @@
+cp -f ftmp_out ftmp_out-std
+cp -f output_large_decode.ppm output_large_decode.ppm-std

@@ -1,0 +1,3 @@
+rm -f tmp-ccc-diff
+diff ftmp_out ftmp_out-std >> tmp-ccc-diff
+diff output_large.enc output_large.enc-std >> tmp-ccc-diff

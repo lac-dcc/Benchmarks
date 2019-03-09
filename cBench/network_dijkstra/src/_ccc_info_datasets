@@ -1,0 +1,81 @@
+20
+=====
+1
+../../network_dijkstra_data/1.dat > output_large.dat
+500000
+=====
+2
+../../network_dijkstra_data/2.dat > output_large.dat
+20000
+=====
+3
+../../network_dijkstra_data/3.dat > output_large.dat
+3000
+=====
+4
+../../network_dijkstra_data/4.dat > output_large.dat
+700
+=====
+5
+../../network_dijkstra_data/5.dat > output_large.dat
+300
+=====
+6
+../../network_dijkstra_data/6.dat > output_large.dat
+120
+=====
+7
+../../network_dijkstra_data/7.dat > output_large.dat
+80
+=====
+8
+../../network_dijkstra_data/8.dat > output_large.dat
+50
+=====
+9
+../../network_dijkstra_data/9.dat > output_large.dat
+30
+=====
+10
+../../network_dijkstra_data/10.dat > output_large.dat
+20
+=====
+11
+../../network_dijkstra_data/11.dat > output_large.dat
+15
+=====
+12
+../../network_dijkstra_data/12.dat > output_large.dat
+10
+=====
+13
+../../network_dijkstra_data/13.dat > output_large.dat
+8
+=====
+14
+../../network_dijkstra_data/14.dat > output_large.dat
+6
+=====
+15
+../../network_dijkstra_data/15.dat > output_large.dat
+4
+=====
+16
+../../network_dijkstra_data/16.dat > output_large.dat
+4
+=====
+17
+../../network_dijkstra_data/17.dat > output_large.dat
+3
+=====
+18
+../../network_dijkstra_data/18.dat > output_large.dat
+2
+=====
+19
+../../network_dijkstra_data/19.dat > output_large.dat
+2
+=====
+20
+../../network_dijkstra_data/20.dat > output_large.dat
+2

@@ -1,0 +1,81 @@
+20
+=====
+1
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/1.jpg > ftmp_out
+8750
+=====
+2
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/2.jpg > ftmp_out
+5184
+=====
+3
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/3.jpg > ftmp_out
+41
+=====
+4
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/4.jpg > ftmp_out
+1038
+=====
+5
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/5.jpg > ftmp_out
+23044
+=====
+6
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/6.jpg > ftmp_out
+12740
+=====
+7
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/7.jpg > ftmp_out
+1050
+=====
+8
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/8.jpg > ftmp_out
+3352
+=====
+9
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/9.jpg > ftmp_out
+2644
+=====
+10
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/10.jpg > ftmp_out
+3153
+=====
+11
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/11.jpg > ftmp_out
+146
+=====
+12
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/12.jpg > ftmp_out
+3167
+=====
+13
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/13.jpg > ftmp_out
+10883
+=====
+14
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/14.jpg > ftmp_out
+1691
+=====
+15
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/15.jpg > ftmp_out
+361
+=====
+16
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/16.jpg > ftmp_out
+1601
+=====
+17
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/17.jpg > ftmp_out
+8
+=====
+18
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/18.jpg > ftmp_out
+2358
+=====
+19
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/19.jpg > ftmp_out
+1042
+=====
+20
+-dct int -ppm -outfile output_large_decode.ppm ../../consumer_jpeg_data/20.jpg > ftmp_out
+2098

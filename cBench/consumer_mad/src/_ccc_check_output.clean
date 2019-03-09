@@ -1,0 +1,2 @@
+rm -f ftmp_out
+rm -f output.wav

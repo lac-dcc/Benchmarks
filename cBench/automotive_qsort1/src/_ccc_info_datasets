@@ -1,0 +1,81 @@
+20
+=====
+1
+../../automotive_qsort_data/1.dat output.dat > ftmp_out
+226
+=====
+2
+../../automotive_qsort_data/2.dat output.dat > ftmp_out
+423
+=====
+3
+../../automotive_qsort_data/3.dat output.dat > ftmp_out
+303
+=====
+4
+../../automotive_qsort_data/4.dat output.dat > ftmp_out
+263
+=====
+5
+../../automotive_qsort_data/5.dat output.dat > ftmp_out
+375
+=====
+6
+../../automotive_qsort_data/6.dat output.dat > ftmp_out
+1300
+=====
+7
+../../automotive_qsort_data/7.dat output.dat > ftmp_out
+325
+=====
+8
+../../automotive_qsort_data/8.dat output.dat > ftmp_out
+461
+=====
+9
+../../automotive_qsort_data/9.dat output.dat > ftmp_out
+256
+=====
+10
+../../automotive_qsort_data/10.dat output.dat > ftmp_out
+294
+=====
+11
+../../automotive_qsort_data/11.dat output.dat > ftmp_out
+770
+=====
+12
+../../automotive_qsort_data/12.dat output.dat > ftmp_out
+274
+=====
+13
+../../automotive_qsort_data/13.dat output.dat > ftmp_out
+309
+=====
+14
+../../automotive_qsort_data/14.dat output.dat > ftmp_out
+511
+=====
+15
+../../automotive_qsort_data/15.dat output.dat > ftmp_out
+705
+=====
+16
+../../automotive_qsort_data/16.dat output.dat > ftmp_out
+2300
+=====
+17
+../../automotive_qsort_data/17.dat output.dat > ftmp_out
+316
+=====
+18
+../../automotive_qsort_data/18.dat output.dat > ftmp_out
+236
+=====
+19
+../../automotive_qsort_data/19.dat output.dat > ftmp_out
+1300
+=====
+20
+../../automotive_qsort_data/20.dat output.dat > ftmp_out
+200

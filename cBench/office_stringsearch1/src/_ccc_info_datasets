@@ -1,0 +1,81 @@
+20
+=====
+1
+../../office_data/1.txt ../../office_data/1.s.txt output.txt > ftmp_out
+2778240
+=====
+2
+../../office_data/2.txt ../../office_data/2.s.txt output.txt > ftmp_out
+195724
+=====
+3
+../../office_data/3.txt ../../office_data/3.s.txt output.txt > ftmp_out
+48246
+=====
+4
+../../office_data/4.txt ../../office_data/4.s.txt output.txt > ftmp_out
+3685
+=====
+5
+../../office_data/5.txt ../../office_data/5.s.txt output.txt > ftmp_out
+31570
+=====
+6
+../../office_data/6.txt ../../office_data/6.s.txt output.txt > ftmp_out
+4627
+=====
+7
+../../office_data/7.txt ../../office_data/7.s.txt output.txt > ftmp_out
+194582
+=====
+8
+../../office_data/8.txt ../../office_data/8.s.txt output.txt > ftmp_out
+5556481
+=====
+9
+../../office_data/9.txt ../../office_data/9.s.txt output.txt > ftmp_out
+55410
+=====
+10
+../../office_data/10.txt ../../office_data/10.s.txt output.txt > ftmp_out
+255141
+=====
+11
+../../office_data/11.txt ../../office_data/11.s.txt output.txt > ftmp_out
+156273
+=====
+12
+../../office_data/12.txt ../../office_data/12.s.txt output.txt > ftmp_out
+209236
+=====
+13
+../../office_data/13.txt ../../office_data/13.s.txt output.txt > ftmp_out
+123934
+=====
+14
+../../office_data/14.txt ../../office_data/14.s.txt output.txt > ftmp_out
+93734
+=====
+15
+../../office_data/15.txt ../../office_data/15.s.txt output.txt > ftmp_out
+18845
+=====
+16
+../../office_data/16.txt ../../office_data/16.s.txt output.txt > ftmp_out
+15110
+=====
+17
+../../office_data/17.txt ../../office_data/17.s.txt output.txt > ftmp_out
+128885
+=====
+18
+../../office_data/18.txt ../../office_data/18.s.txt output.txt > ftmp_out
+324724
+=====
+19
+../../office_data/19.txt ../../office_data/19.s.txt output.txt > ftmp_out
+94176
+=====
+20
+../../office_data/20.txt ../../office_data/20.s.txt output.txt > ftmp_out
+13079
