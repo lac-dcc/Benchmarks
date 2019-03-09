@@ -1,0 +1,129 @@
+32
+=====
+1
+-d -k -f -c ../../bzip2_data/1.bz2 > ftmp_out
+80
+=====
+2
+-d -k -f -c ../../bzip2_data/2.bz2 > ftmp_out
+750
+=====
+3
+-d -k -f -c ../../bzip2_data/3.bz2 > ftmp_out
+240
+=====
+4
+-z -k -f -c ../../automotive_susan_data/8.pgm > ftmp_out
+1000
+=====
+5
+-z -k -f -c ../../consumer_data/1.mp3 > ftmp_out
+600
+=====
+6
+-z -k -f -c ../../consumer_data/1.wav > ftmp_out
+150
+=====
+7
+-z -k -f -c ../../consumer_data/2.mp3 > ftmp_out
+20
+=====
+8
+-z -k -f -c ../../consumer_data/2.wav > ftmp_out
+2
+=====
+9
+-z -k -f -c ../../consumer_jpeg_data/1.jpg > ftmp_out
+1700
+=====
+10
+-d -k -f -c ../../bzip2_data/10.bz2 > ftmp_out
+900
+=====
+11
+-d -k -f -c ../../bzip2_data/11.bz2 > ftmp_out
+600
+=====
+12
+-d -k -f -c ../../bzip2_data/12.bz2 > ftmp_out
+30
+=====
+13
+-d -k -f -c ../../bzip2_data/13.bz2 > ftmp_out
+2200
+=====
+14
+-d -k -f -c ../../bzip2_data/14.bz2 > ftmp_out
+1000
+=====
+15
+-d -k -f -c ../../bzip2_data/15.bz2 > ftmp_out
+1200
+=====
+16
+-d -k -f -c ../../bzip2_data/16.bz2 > ftmp_out
+280
+=====
+17
+-d -k -f -c ../../bzip2_data/17.bz2 > ftmp_out
+130
+=====
+18
+-d -k -f -c ../../bzip2_data/18.bz2 > ftmp_out
+130
+=====
+19
+-d -k -f -c ../../bzip2_data/19.bz2 > ftmp_out
+28000
+=====
+20
+-d -k -f -c ../../bzip2_data/20.bz2 > ftmp_out
+240
+=====
+21
+-d -k -f -c ../../bzip2_data/21.bz2 > ftmp_out
+32000
+=====
+22
+-d -k -f -c ../../bzip2_data/22.bz2 > ftmp_out
+120
+=====
+23
+-d -k -f -c ../../bzip2_data/23.bz2 > ftmp_out
+600
+=====
+24
+-d -k -f -c ../../bzip2_data/24.bz2 > ftmp_out
+600
+=====
+25
+-d -k -f -c ../../bzip2_data/25.bz2 > ftmp_out
+2400
+=====
+26
+-d -k -f -c ../../bzip2_data/26.bz2 > ftmp_out
+140
+=====
+27
+-d -k -f -c ../../bzip2_data/27.bz2 > ftmp_out
+14000
+=====
+28
+-d -k -f -c ../../bzip2_data/28.bz2 > ftmp_out
+1700
+=====
+29
+-d -k -f -c ../../bzip2_data/29.bz2 > ftmp_out
+500
+=====
+30
+-d -k -f -c ../../bzip2_data/30.bz2 > ftmp_out
+100
+=====
+31
+-d -k -f -c ../../bzip2_data/31.bz2 > ftmp_out
+100
+=====
+32
+-d -k -f -c ../../bzip2_data/32.bz2 > ftmp_out
+900

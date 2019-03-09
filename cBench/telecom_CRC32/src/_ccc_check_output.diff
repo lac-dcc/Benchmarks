@@ -1,0 +1,2 @@
+rm -f tmp-ccc-diff
+diff output_large.txt output_large.txt-std >> tmp-ccc-diff

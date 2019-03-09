@@ -1,0 +1,81 @@
+20
+=====
+1
+-fps -c ../../telecom_gsm_data/1.au > output_large.encode.gsm
+558
+=====
+2
+-fps -c ../../telecom_gsm_data/2.au > output_large.encode.gsm
+7
+=====
+3
+-fps -c ../../telecom_gsm_data/3.au > output_large.encode.gsm
+125
+=====
+4
+-fps -c ../../telecom_gsm_data/4.au > output_large.encode.gsm
+69
+=====
+5
+-fps -c ../../telecom_gsm_data/5.au > output_large.encode.gsm
+68
+=====
+6
+-fps -c ../../telecom_gsm_data/6.au > output_large.encode.gsm
+28
+=====
+7
+-fps -c ../../telecom_gsm_data/7.au > output_large.encode.gsm
+60
+=====
+8
+-fps -c ../../telecom_gsm_data/8.au > output_large.encode.gsm
+114
+=====
+9
+-fps -c ../../telecom_gsm_data/9.au > output_large.encode.gsm
+488
+=====
+10
+-fps -c ../../telecom_gsm_data/10.au > output_large.encode.gsm
+263
+=====
+11
+-fps -c ../../telecom_gsm_data/11.au > output_large.encode.gsm
+125
+=====
+12
+-fps -c ../../telecom_gsm_data/12.au > output_large.encode.gsm
+372
+=====
+13
+-fps -c ../../telecom_gsm_data/13.au > output_large.encode.gsm
+76
+=====
+14
+-fps -c ../../telecom_gsm_data/14.au > output_large.encode.gsm
+82
+=====
+15
+-fps -c ../../telecom_gsm_data/15.au > output_large.encode.gsm
+473
+=====
+16
+-fps -c ../../telecom_gsm_data/16.au > output_large.encode.gsm
+330
+=====
+17
+-fps -c ../../telecom_gsm_data/17.au > output_large.encode.gsm
+74
+=====
+18
+-fps -c ../../telecom_gsm_data/18.au > output_large.encode.gsm
+998
+=====
+19
+-fps -c ../../telecom_gsm_data/19.au > output_large.encode.gsm
+164
+=====
+20
+-fps -c ../../telecom_gsm_data/20.au > output_large.encode.gsm
+49

@@ -1,0 +1,129 @@
+32
+=====
+1
+-z -k -f -c ../../automotive_qsort_data/1.dat > ftmp_out
+40
+=====
+2
+-z -k -f -c ../../automotive_qsort_data/16.dat > ftmp_out
+350
+=====
+3
+-z -k -f -c ../../automotive_susan_data/12.pgm > ftmp_out
+110
+=====
+4
+-z -k -f -c ../../automotive_susan_data/8.pgm > ftmp_out
+1000
+=====
+5
+-z -k -f -c ../../consumer_data/1.mp3 > ftmp_out
+600
+=====
+6
+-z -k -f -c ../../consumer_data/1.wav > ftmp_out
+150
+=====
+7
+-z -k -f -c ../../consumer_data/2.mp3 > ftmp_out
+20
+=====
+8
+-z -k -f -c ../../consumer_data/2.wav > ftmp_out
+2
+=====
+9
+-z -k -f -c ../../consumer_jpeg_data/1.jpg > ftmp_out
+1700
+=====
+10
+-z -k -f -c ../../consumer_jpeg_data/1.ppm > ftmp_out
+400
+=====
+11
+-z -k -f -c ../../consumer_jpeg_data/15.jpg > ftmp_out
+250
+=====
+12
+-z -k -f -c ../../consumer_jpeg_data/15.ppm > ftmp_out
+17
+=====
+13
+-z -k -f -c ../../consumer_tiff_data/1.bw.tif > ftmp_out
+700
+=====
+14
+-z -k -f -c ../../consumer_tiff_data/1.nocomp.tif > ftmp_out
+400
+=====
+15
+-z -k -f -c ../../consumer_tiff_data/1.tif > ftmp_out
+400
+=====
+16
+-z -k -f -c ../../consumer_tiff_data/7.bw.tif > ftmp_out
+90
+=====
+17
+-z -k -f -c ../../consumer_tiff_data/7.nocomp.tif > ftmp_out
+40
+=====
+18
+-z -k -f -c ../../consumer_tiff_data/7.tif > ftmp_out
+40
+=====
+19
+-z -k -f -c ../../network_dijkstra_data/3.dat > ftmp_out
+8000
+=====
+20
+-z -k -f -c ../../network_dijkstra_data/19.dat > ftmp_out
+100
+=====
+21
+-z -k -f -c ../../network_patricia_data/5.udp > ftmp_out
+8000
+=====
+22
+-z -k -f -c ../../network_patricia_data/18.udp > ftmp_out
+50
+=====
+23
+-z -k -f -c ../../office_data/14.benc > ftmp_out
+180
+=====
+24
+-z -k -f -c ../../office_data/14.enc > ftmp_out
+180
+=====
+25
+-z -k -f -c ../../office_data/14.pgp > ftmp_out
+600
+=====
+26
+-z -k -f -c ../../office_data/14.ps > ftmp_out
+60
+=====
+27
+-z -k -f -c ../../office_data/14.s.txt > ftmp_out
+4500
+=====
+28
+-z -k -f -c ../../office_data/14.txt > ftmp_out
+450
+=====
+29
+-z -k -f -c ../../telecom_data/13.adpcm > ftmp_out
+180
+=====
+30
+-z -k -f -c ../../telecom_data/13.pcm > ftmp_out
+20
+=====
+31
+-z -k -f -c ../../telecom_gsm_data/13.au > ftmp_out
+20
+=====
+32
+-z -k -f -c ../../telecom_gsm_data/13.gsm > ftmp_out
+100

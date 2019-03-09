@@ -1,0 +1,81 @@
+20
+=====
+1
+d ../../office_data/1.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+180006
+=====
+2
+d ../../office_data/2.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+13000
+=====
+3
+d ../../office_data/3.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+6000
+=====
+4
+d ../../office_data/4.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+160
+=====
+5
+d ../../office_data/5.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+2900
+=====
+6
+d ../../office_data/6.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+200
+=====
+7
+d ../../office_data/7.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+13000
+=====
+8
+d ../../office_data/8.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+80000
+=====
+9
+d ../../office_data/9.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+6000
+=====
+10
+d ../../office_data/10.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+20000
+=====
+11
+d ../../office_data/11.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+12
+d ../../office_data/12.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+20000
+=====
+13
+d ../../office_data/13.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+10000
+=====
+14
+d ../../office_data/14.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+15
+d ../../office_data/15.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+1200
+=====
+16
+d ../../office_data/16.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+1600
+=====
+17
+d ../../office_data/17.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+12000
+=====
+18
+d ../../office_data/18.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+17000
+=====
+19
+d ../../office_data/19.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+20
+d ../../office_data/20.benc output_large.txt 1234567890abcdeffedcba0987654321 > ftmp_out
+1300

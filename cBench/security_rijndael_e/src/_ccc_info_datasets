@@ -1,0 +1,81 @@
+20
+=====
+1
+../../office_data/1.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+129259
+=====
+2
+../../office_data/2.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+9391
+=====
+3
+../../office_data/3.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+3925
+=====
+4
+../../office_data/4.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+125
+=====
+5
+../../office_data/5.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+1975
+=====
+6
+../../office_data/6.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+141
+=====
+7
+../../office_data/7.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+10034
+=====
+8
+../../office_data/8.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+61669
+=====
+9
+../../office_data/9.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+3935
+=====
+10
+../../office_data/10.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+13857
+=====
+11
+../../office_data/11.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+5587
+=====
+12
+../../office_data/12.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+14235
+=====
+13
+../../office_data/13.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+6917
+=====
+14
+../../office_data/14.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+5433
+=====
+15
+../../office_data/15.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+927
+=====
+16
+../../office_data/16.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+1034
+=====
+17
+../../office_data/17.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+9181
+=====
+18
+../../office_data/18.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+12174
+=====
+19
+../../office_data/19.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+5545
+=====
+20
+../../office_data/20.txt output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321 > ftmp_out
+914
