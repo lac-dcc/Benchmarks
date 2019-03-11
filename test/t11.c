@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void solve(float *a, float *b, float *c, int n) {
+float solve(float *a, float *b, float *c, int n) {
+  float x = 0;
   for (int i = 0; i < n; i++) {
-    int t = a[i] + b[i];
-    a[i] = t + c[i];
+    a[i] *= b[i]*c[i] + c[i]/b[i];
+    /* x += a[i] + b[i] + c[i]; */
   }
+  return x;
 }
 
 int main(int argc, char **argv) {
@@ -20,7 +22,8 @@ int main(int argc, char **argv) {
     c[i] = 2.0*i;
   }
 
-  solve(a, b, c, n);
+  float x = solve(a, b, c, n);
+  printf("%f\n", x);
 
   return 0;
 }
