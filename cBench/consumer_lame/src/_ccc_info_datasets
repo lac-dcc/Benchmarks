@@ -1,0 +1,81 @@
+20
+=====
+1
+../../consumer_data/1.wav output_large.mp3 2> ftmp_out
+228
+=====
+2
+../../consumer_data/2.wav output_large.mp3 2> ftmp_out
+4
+=====
+3
+../../consumer_data/3.wav output_large.mp3 2> ftmp_out
+98
+=====
+4
+../../consumer_data/4.wav output_large.mp3 2> ftmp_out
+48
+=====
+5
+../../consumer_data/5.wav output_large.mp3 2> ftmp_out
+47
+=====
+6
+../../consumer_data/6.wav output_large.mp3 2> ftmp_out
+20
+=====
+7
+../../consumer_data/7.wav output_large.mp3 2> ftmp_out
+55
+=====
+8
+../../consumer_data/8.wav output_large.mp3 2> ftmp_out
+70
+=====
+9
+../../consumer_data/9.wav output_large.mp3 2> ftmp_out
+86
+=====
+10
+../../consumer_data/10.wav output_large.mp3 2> ftmp_out
+98
+=====
+11
+../../consumer_data/11.wav output_large.mp3 2> ftmp_out
+45
+=====
+12
+../../consumer_data/12.wav output_large.mp3 2> ftmp_out
+68
+=====
+13
+../../consumer_data/13.wav output_large.mp3 2> ftmp_out
+55
+=====
+14
+../../consumer_data/14.wav output_large.mp3 2> ftmp_out
+15
+=====
+15
+../../consumer_data/15.wav output_large.mp3 2> ftmp_out
+166
+=====
+16
+../../consumer_data/16.wav output_large.mp3 2> ftmp_out
+128
+=====
+17
+../../consumer_data/17.wav output_large.mp3 2> ftmp_out
+28
+=====
+18
+../../consumer_data/18.wav output_large.mp3 2> ftmp_out
+351
+=====
+19
+../../consumer_data/19.wav output_large.mp3 2> ftmp_out
+145
+=====
+20
+../../consumer_data/20.wav output_large.mp3 2> ftmp_out
+47

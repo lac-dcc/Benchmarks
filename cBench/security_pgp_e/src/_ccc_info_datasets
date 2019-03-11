@@ -1,0 +1,81 @@
+20
+=====
+1
+-s ../../office_data/1.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+6072
+=====
+2
+-s ../../office_data/2.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4946
+=====
+3
+-s ../../office_data/3.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4031
+=====
+4
+-s ../../office_data/4.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+449
+=====
+5
+-s ../../office_data/5.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+3338
+=====
+6
+-s ../../office_data/6.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+501
+=====
+7
+-s ../../office_data/7.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+5220
+=====
+8
+-s ../../office_data/8.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+5827
+=====
+9
+-s ../../office_data/9.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+3958
+=====
+10
+-s ../../office_data/10.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+5396
+=====
+11
+-s ../../office_data/11.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4954
+=====
+12
+-s ../../office_data/12.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+5377
+=====
+13
+-s ../../office_data/13.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4915
+=====
+14
+-s ../../office_data/14.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4959
+=====
+15
+-s ../../office_data/15.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+2199
+=====
+16
+-s ../../office_data/16.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+2385
+=====
+17
+-s ../../office_data/17.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4992
+=====
+18
+-s ../../office_data/18.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+5027
+=====
+19
+-s ../../office_data/19.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+4096
+=====
+20
+-s ../../office_data/20.txt test -o output.pgp > ftmp_out 2> ftmp_out1
+2164

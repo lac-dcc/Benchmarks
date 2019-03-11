@@ -1,0 +1,81 @@
+20
+=====
+1
+../../office_data/1.pgp -o output.txt > ftmp_out 2> ftmp_out1
+41673
+=====
+2
+../../office_data/2.pgp -o output.txt > ftmp_out 2> ftmp_out1
+10990
+=====
+3
+../../office_data/3.pgp -o output.txt > ftmp_out 2> ftmp_out1
+4608
+=====
+4
+../../office_data/4.pgp -o output.txt > ftmp_out 2> ftmp_out1
+169
+=====
+5
+../../office_data/5.pgp -o output.txt > ftmp_out 2> ftmp_out1
+2631
+=====
+6
+../../office_data/6.pgp -o output.txt > ftmp_out 2> ftmp_out1
+200
+=====
+7
+../../office_data/7.pgp -o output.txt > ftmp_out 2> ftmp_out1
+10871
+=====
+8
+../../office_data/8.pgp -o output.txt > ftmp_out 2> ftmp_out1
+35720
+=====
+9
+../../office_data/9.pgp -o output.txt > ftmp_out 2> ftmp_out1
+5155
+=====
+10
+../../office_data/10.pgp -o output.txt > ftmp_out 2> ftmp_out1
+14708
+=====
+11
+../../office_data/11.pgp -o output.txt > ftmp_out 2> ftmp_out1
+7043
+=====
+12
+../../office_data/12.pgp -o output.txt > ftmp_out 2> ftmp_out1
+14708
+=====
+13
+../../office_data/13.pgp -o output.txt > ftmp_out 2> ftmp_out1
+8548
+=====
+14
+../../office_data/14.pgp -o output.txt > ftmp_out 2> ftmp_out1
+7519
+=====
+15
+../../office_data/15.pgp -o output.txt > ftmp_out 2> ftmp_out1
+1202
+=====
+16
+../../office_data/16.pgp -o output.txt > ftmp_out 2> ftmp_out1
+1247
+=====
+17
+../../office_data/17.pgp -o output.txt > ftmp_out 2> ftmp_out1
+10754
+=====
+18
+../../office_data/18.pgp -o output.txt > ftmp_out 2> ftmp_out1
+15386
+=====
+19
+../../office_data/19.pgp -o output.txt > ftmp_out 2> ftmp_out1
+6250
+=====
+20
+../../office_data/20.pgp -o output.txt > ftmp_out 2> ftmp_out1
+1080

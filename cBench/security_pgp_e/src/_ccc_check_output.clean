@@ -1,0 +1,3 @@
+rm -f ftmp_out
+rm -f ftmp_out1
+rm -f output.pgp

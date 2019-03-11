@@ -1,0 +1,4 @@
+rm -f tmp-ccc-diff
+diff ftmp_out ftmp_out-std >> tmp-ccc-diff
+diff ftmp_out1 ftmp_out1-std >> tmp-ccc-diff
+diff output.pgp output.pgp-std >> tmp-ccc-diff
