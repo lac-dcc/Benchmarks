@@ -5,6 +5,12 @@
 *.exe
 *.csv
 *.log
+*.ibc.opt.1
+*.ibc.opt.2
+*.ibc.opt.3
+*.ibc.1
+*.ibc.3
+*.opt
 map.txt
 store_count.txt
 arith.txt
