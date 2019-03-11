@@ -1,0 +1,2 @@
+rm -f tmp-ccc-diff
+diff output_large.encode.gsm output_large.encode.gsm-std >> tmp-ccc-diff

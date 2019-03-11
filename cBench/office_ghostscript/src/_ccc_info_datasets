@@ -1,0 +1,81 @@
+20
+=====
+1
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/1.ps > ftmp_out
+40
+=====
+2
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/2.ps > ftmp_out
+40
+=====
+3
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/3.ps > ftmp_out
+40
+=====
+4
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/4.ps > ftmp_out
+2
+=====
+5
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/5.ps > ftmp_out
+6
+=====
+6
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/6.ps > ftmp_out
+40
+=====
+7
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/7.ps > ftmp_out
+8
+=====
+8
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/8.ps > ftmp_out
+11
+=====
+9
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/9.ps > ftmp_out
+40
+=====
+10
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/10.ps > ftmp_out
+20
+=====
+11
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/11.ps > ftmp_out
+12
+=====
+12
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/12.ps > ftmp_out
+8
+=====
+13
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/13.ps > ftmp_out
+7
+=====
+14
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/14.ps > ftmp_out
+1
+=====
+15
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/15.ps > ftmp_out
+1
+=====
+16
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/16.ps > ftmp_out
+40
+=====
+17
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/17.ps > ftmp_out
+20
+=====
+18
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/18.ps > ftmp_out
+3
+=====
+19
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/19.ps > ftmp_out
+8
+=====
+20
+-sDEVICE=ppm -dNOPAUSE -q -sOutputFile=output.ppm -- ../../office_data/20.ps > ftmp_out
+12

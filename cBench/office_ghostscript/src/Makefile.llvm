@@ -1,0 +1,29 @@
+# ************ CCC - passing optimization flags ************ 
+ifeq ($(CCC_OPTS),)
+ CCC_OPTS =
+endif
+ifeq ($(CCC_OPTS_ADD),)
+ CCC_OPTS_ADD =
+endif
+
+# Declarations
+ifeq ($(ZCC),) 
+ ZCC = llvm-gcc 
+endif
+ifeq ($(CC_OPTS),)
+ CC_OPTS = -emit-llvm
+endif
+ifeq ($(LDCC),)
+ LDCC = llvm-link
+endif
+ifeq ($(LD_OPTS),)
+ LD_OPTS = -f -o a.out
+endif
+
+# Actions
+all:		
+	$(ZCC) $(CCC_OPTS) $(CCC_OPTS_ADD) $(CC_OPTS) $(CCC_OPTS_ADD) -c *.c
+	$(LDCC) $(LD_OPTS) $(CCC_OPTS_ADD) *.o
+
+clean:
+	rm -f a.out *.o *.a *.s *.i *.I

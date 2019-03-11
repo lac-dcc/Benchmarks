@@ -1,0 +1,81 @@
+20
+=====
+1
+e ../../office_data/1.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+180006
+=====
+2
+e ../../office_data/2.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+13000
+=====
+3
+e ../../office_data/3.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+6000
+=====
+4
+e ../../office_data/4.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+160
+=====
+5
+e ../../office_data/5.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+2900
+=====
+6
+e ../../office_data/6.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+200
+=====
+7
+e ../../office_data/7.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+13000
+=====
+8
+e ../../office_data/8.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+80000
+=====
+9
+e ../../office_data/9.txt output_large.enc 1234567890abcdeffedcba0987654321  > ftmp_out
+6000
+=====
+10
+e ../../office_data/10.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+20000
+=====
+11
+e ../../office_data/11.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+12
+e ../../office_data/12.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+20000
+=====
+13
+e ../../office_data/13.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+10000
+=====
+14
+e ../../office_data/14.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+15
+e ../../office_data/15.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+1200
+=====
+16
+e ../../office_data/16.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+1600
+=====
+17
+e ../../office_data/17.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+12000
+=====
+18
+e ../../office_data/18.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+17000
+=====
+19
+e ../../office_data/19.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+8000
+=====
+20
+e ../../office_data/20.txt output_large.enc 1234567890abcdeffedcba0987654321 > ftmp_out
+1300

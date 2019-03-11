@@ -1,0 +1,81 @@
+20
+=====
+1
+../../telecom_data/1.pcm > output_large.txt
+3431
+=====
+2
+../../telecom_data/2.pcm > output_large.txt
+46
+=====
+3
+../../telecom_data/3.pcm > output_large.txt
+755
+=====
+4
+../../telecom_data/4.pcm > output_large.txt
+435
+=====
+5
+../../telecom_data/5.pcm > output_large.txt
+420
+=====
+6
+../../telecom_data/6.pcm > output_large.txt
+172
+=====
+7
+../../telecom_data/7.pcm > output_large.txt
+366
+=====
+8
+../../telecom_data/8.pcm > output_large.txt
+715
+=====
+9
+../../telecom_data/9.pcm > output_large.txt
+2988
+=====
+10
+../../telecom_data/10.pcm > output_large.txt
+1571
+=====
+11
+../../telecom_data/11.pcm > output_large.txt
+758
+=====
+12
+../../telecom_data/12.pcm > output_large.txt
+2253
+=====
+13
+../../telecom_data/13.pcm > output_large.txt
+451
+=====
+14
+../../telecom_data/14.pcm > output_large.txt
+499
+=====
+15
+../../telecom_data/15.pcm > output_large.txt
+2850
+=====
+16
+../../telecom_data/16.pcm > output_large.txt
+1967
+=====
+17
+../../telecom_data/17.pcm > output_large.txt
+451
+=====
+18
+../../telecom_data/18.pcm > output_large.txt
+6176
+=====
+19
+../../telecom_data/19.pcm > output_large.txt
+977
+=====
+20
+../../telecom_data/20.pcm > output_large.txt
+293

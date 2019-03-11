@@ -1,0 +1,81 @@
+20
+=====
+1
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/1.ppm > ftmp_out
+2114
+=====
+2
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/2.ppm > ftmp_out
+1494
+=====
+3
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/3.ppm > ftmp_out
+13
+=====
+4
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/4.ppm > ftmp_out
+257
+=====
+5
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/5.ppm > ftmp_out
+5051
+=====
+6
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/6.ppm > ftmp_out
+3049
+=====
+7
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/7.ppm > ftmp_out
+277
+=====
+8
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/8.ppm > ftmp_out
+817
+=====
+9
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/9.ppm > ftmp_out
+728
+=====
+10
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/10.ppm > ftmp_out
+1225
+=====
+11
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/11.ppm > ftmp_out
+9
+=====
+12
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/12.ppm > ftmp_out
+1030
+=====
+13
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/13.ppm > ftmp_out
+1287
+=====
+14
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/14.ppm > ftmp_out
+574
+=====
+15
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/15.ppm > ftmp_out
+93
+=====
+16
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/16.ppm > ftmp_out
+429
+=====
+17
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/17.ppm > ftmp_out
+2
+=====
+18
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/18.ppm > ftmp_out
+589
+=====
+19
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/19.ppm > ftmp_out
+272
+=====
+20
+-dct int -progressive -opt -outfile output_large_encode.jpeg ../../consumer_jpeg_data/20.ppm > ftmp_out
+509

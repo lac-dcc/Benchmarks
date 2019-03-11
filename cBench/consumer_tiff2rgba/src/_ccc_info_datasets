@@ -1,0 +1,81 @@
+20
+=====
+1
+-c none ../../consumer_tiff_data/1.tif output_largergba.tif > ftmp_out
+6579
+=====
+2
+-c none ../../consumer_tiff_data/2.tif output_largergba.tif > ftmp_out
+4465
+=====
+3
+-c none ../../consumer_tiff_data/3.tif output_largergba.tif > ftmp_out
+34
+=====
+4
+-c none ../../consumer_tiff_data/4.tif output_largergba.tif > ftmp_out
+633
+=====
+5
+-c none ../../consumer_tiff_data/5.tif output_largergba.tif > ftmp_out
+14708
+=====
+6
+-c none ../../consumer_tiff_data/6.tif output_largergba.tif > ftmp_out
+8065
+=====
+7
+-c none ../../consumer_tiff_data/7.tif output_largergba.tif > ftmp_out
+726
+=====
+8
+-c none ../../consumer_tiff_data/8.tif output_largergba.tif > ftmp_out
+2232
+=====
+9
+-c none ../../consumer_tiff_data/9.tif output_largergba.tif > ftmp_out
+1894
+=====
+10
+-c none ../../consumer_tiff_data/10.tif output_largergba.tif > ftmp_out
+3165
+=====
+11
+-c none ../../consumer_tiff_data/11.tif output_largergba.tif > ftmp_out
+34
+=====
+12
+-c none ../../consumer_tiff_data/12.tif output_largergba.tif > ftmp_out
+2976
+=====
+13
+-c none ../../consumer_tiff_data/13.tif output_largergba.tif > ftmp_out
+7043
+=====
+14
+-c none ../../consumer_tiff_data/14.tif output_largergba.tif > ftmp_out
+1538
+=====
+15
+-c none ../../consumer_tiff_data/15.tif output_largergba.tif > ftmp_out
+196
+=====
+16
+-c none ../../consumer_tiff_data/16.tif output_largergba.tif > ftmp_out
+1046
+=====
+17
+-c none ../../consumer_tiff_data/17.tif output_largergba.tif > ftmp_out
+7
+=====
+18
+-c none ../../consumer_tiff_data/18.tif output_largergba.tif > ftmp_out
+1602
+=====
+19
+-c none ../../consumer_tiff_data/19.tif output_largergba.tif > ftmp_out
+635
+=====
+20
+-c none ../../consumer_tiff_data/20.tif output_largergba.tif > ftmp_out
+1602

@@ -1,0 +1,81 @@
+20
+=====
+1
+--time=100000 --output=wave:output.wav ../../consumer_data/1.mp3 2> ftmp_out
+1742
+=====
+2
+--time=100000 --output=wave:output.wav ../../consumer_data/2.mp3 2> ftmp_out
+30
+=====
+3
+--time=100000 --output=wave:output.wav ../../consumer_data/3.mp3 2> ftmp_out
+518
+=====
+4
+--time=100000 --output=wave:output.wav ../../consumer_data/4.mp3 2> ftmp_out
+286
+=====
+5
+--time=100000 --output=wave:output.wav ../../consumer_data/5.mp3 2> ftmp_out
+273
+=====
+6
+--time=100000 --output=wave:output.wav ../../consumer_data/6.mp3 2> ftmp_out
+123
+=====
+7
+--time=100000 --output=wave:output.wav ../../consumer_data/7.mp3 2> ftmp_out
+241
+=====
+8
+--time=100000 --output=wave:output.wav ../../consumer_data/8.mp3 2> ftmp_out
+448
+=====
+9
+--time=100000 --output=wave:output.wav ../../consumer_data/9.mp3 2> ftmp_out
+1045
+=====
+10
+--time=100000 --output=wave:output.wav ../../consumer_data/10.mp3 2> ftmp_out
+829
+=====
+11
+--time=100000 --output=wave:output.wav ../../consumer_data/11.mp3 2> ftmp_out
+409
+=====
+12
+--time=100000 --output=wave:output.wav ../../consumer_data/12.mp3 2> ftmp_out
+802
+=====
+13
+--time=100000 --output=wave:output.wav ../../consumer_data/13.mp3 2> ftmp_out
+328
+=====
+14
+--time=100000 --output=wave:output.wav ../../consumer_data/14.mp3 2> ftmp_out
+176
+=====
+15
+--time=100000 --output=wave:output.wav ../../consumer_data/15.mp3 2> ftmp_out
+1557
+=====
+16
+--time=100000 --output=wave:output.wav ../../consumer_data/16.mp3 2> ftmp_out
+1052
+=====
+17
+--time=100000 --output=wave:output.wav ../../consumer_data/17.mp3 2> ftmp_out
+237
+=====
+18
+--time=100000 --output=wave:output.wav ../../consumer_data/18.mp3 2> ftmp_out
+3333
+=====
+19
+--time=100000 --output=wave:output.wav ../../consumer_data/19.mp3 2> ftmp_out
+660
+=====
+20
+--time=100000 --output=wave:output.wav ../../consumer_data/20.mp3 2> ftmp_out
+214
