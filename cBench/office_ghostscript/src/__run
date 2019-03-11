@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if test -z "$1"; then
- echo "Usage: __run <dataset number> <number of runs (optional)>"
+ echo "Usage: __run <dataset number> <exe name> <number of runs (optional)>"
  exit
 fi
 
@@ -28,16 +28,19 @@ if [ $found != "1" ] ; then
  exit
 fi
 
-if test -n "$2"; then
- loop_wrap=$2
+exe_name=$2
+
+if test -n "$3"; then
+ loop_wrap=$3
 fi
 
 echo "Found dataset: " $ds
 echo "Command line:  " $cmd
 echo "Loop wrap:     " $loop_wrap
+echo "Exe name:      " $exe_name
 
-if test -n "$2"; then
- echo $2 > _finfo_dataset
+if test -n "$3"; then
+ echo $3 > _finfo_dataset
 else
  echo $loop_wrap > _finfo_dataset
 fi
@@ -45,9 +48,9 @@ fi
 echo ""
 
 if test -n "$CCC_RE"; then
- 	echo "time $CCC_RE ./a.out $cmd" > tmp_bat
+ 	echo "time $CCC_RE ./$exe_name $cmd" > tmp_bat
 else
-	echo "time ./a.out $cmd" > tmp_bat
+	echo "time ./$exe_name $cmd" > tmp_bat
 fi
 
 source tmp_bat
