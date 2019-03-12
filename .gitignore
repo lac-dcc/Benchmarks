@@ -22,3 +22,7 @@ Sub.txt
 Xor.txt
 Mul.txt
 *.output
+tmp_bat
+ftmp_out
+_finfo_dataset
+a.out
