@@ -1,0 +1,4 @@
+for j in `seq 1 30`; do 
+   echo $j; 
+   convert -monochrome -depth 8 $j.tif tif:$j.bw.tif
+done

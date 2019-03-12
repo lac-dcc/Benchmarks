@@ -1,0 +1,4 @@
+for j in `seq 1 30`; do 
+   echo $j; 
+   convert -compress none $j.tif tif:$j.nocomp.tif
+done
