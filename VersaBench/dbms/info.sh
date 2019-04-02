@@ -4,6 +4,7 @@ source_files=( "calcMetricsData.c" "chooseEntry.c" "clearLine.c" "closeFiles.c" 
 COMPILE_FLAGS=""
 
 PROJ_SRC_DIR=$(pwd)
+
 if [[ -n $SMALL_PROBLEM_SIZE ]]; then
   RUN_OPTIONS="-i ${PROJ_SRC_DIR}/dbms.train.in"
 else

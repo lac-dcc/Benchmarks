@@ -14,8 +14,8 @@ source_files=( "HYPRE_pcg.c" "HYPRE_struct_grid.c" "HYPRE_struct_matrix.c" "HYPR
 
 COMPILE_FLAGS=" -I. -lm -D_POSIX_SOURCE -DHYPRE_TIMING -DHYPRE_SEQUENTIAL"
 
-if [[ -n $LARGE_PROBLEM_SIZE ]]; then
-  RUN_OPTIONS=" -n 100 40 100 -c 0.1 1.0 10.0 "
-else
+if [[ -n $SMALL_PROBLEM_SIZE ]]; then
   RUN_OPTIONS=" -n 30 15 30 -c 0.1 1.0 10.0 "
+else
+  RUN_OPTIONS=" -n 100 40 100 -c 0.1 1.0 10.0 "
 fi

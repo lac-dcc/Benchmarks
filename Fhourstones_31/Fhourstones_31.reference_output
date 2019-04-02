@@ -9,3 +9,7 @@ score = 5 (+)  work = 14
 Solving 8-ply position after 35333571 . . .
 score = 1 (-)  work = 21
 - 0.271  < 0.036  = 0.020  > 0.089  + 0.584
+
+Solving 8-ply position after 13333111 . . .
+score = 3 (=)  work = 26
+- 0.216  < 0.144  = 0.021  > 0.242  + 0.377

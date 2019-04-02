@@ -1,4 +1,4 @@
-Hello world--Doing em3d with args 256 250 35 1
+Hello world--Doing em3d with args 1024 1000 125 1
 making tables 
 making neighbors
 updating from and coeffs
@@ -8,4 +8,4 @@ cleanup for return now
 Clearing NumMisses
 Returning
 nonlocals = 0
-percentcheck=480874,numlocal=168417
+percentcheck=7836441,numlocal=7836441

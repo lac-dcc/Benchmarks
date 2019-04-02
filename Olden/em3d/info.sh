@@ -5,8 +5,8 @@ COMPILE_FLAGS=" -lm -DTORONTO "
 
 PROJ_SRC_DIR=$(pwd)
 
-if [[ -n $LARGE_PROBLEM_SIZE ]]; then
-  RUN_OPTIONS="1024 1000 125"
-else
+if [[ -n $SMALL_PROBLEM_SIZE ]]; then
   RUN_OPTIONS="256 250 35"
+else
+  RUN_OPTIONS="1024 1000 125"
 fi

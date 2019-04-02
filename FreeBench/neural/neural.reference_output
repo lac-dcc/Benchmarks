@@ -1,6 +1,6 @@
 Compile date: today
 Compiler switches: 
-Matrix size is 20x28
+Matrix size is 50x70
 Vectors read from file!
 Checking hamming distances...
 Generating T matrix...

@@ -53,6 +53,6 @@
 
 #define TRUE		1
 #define FALSE		0
-#define MAX_RANK	10000
+#define MAX_RANK	1000000
 
 #endif
