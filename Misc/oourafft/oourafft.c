@@ -17,11 +17,13 @@ double errorcheck(int nini, int nend, double scale, double *a);
 
 double get_time(void);
 
-#define N 1024
+#define N 8192
+// #define N 1024
 #ifdef SMALL_PROBLEM_SIZE
 #define TRIES 5000
 #else
 #define TRIES 150000
+// #define TRIES 1500000
 #endif
 
 int main()
