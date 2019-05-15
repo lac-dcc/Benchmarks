@@ -21,6 +21,17 @@
 #include "cholesky.h"
 
 
+unsigned __sampling(int n, DATA_TYPE POLYBENCH_2D(A,N,N,n,n)){
+  unsigned cnt = 0;
+
+  for (int i=0; i<n; i++)
+    for (int j=0; j<n; j++)
+      if (A[i][j] == 0.0)
+        cnt++;
+
+  return cnt;
+}
+
 /* Array initialization. */
 static
 void init_array(int n,

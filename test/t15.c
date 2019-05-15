@@ -1,9 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int __sampling(float *a, float *b, float *c, float *d, float *e, int n) {
+  int cnt = 0;
+  for (int i=0; i<n; i++)
+    if (d[i] == 0.0)
+      cnt++;
+  return cnt;
+}
+
 void solve(float *a, float *b, float *c, float *d, float *e, int n) {
   for (int i = 0; i < n; i++) {
-    a[i] +=  (b[i] + c[i]) * (d[i] * e[i]);
+    for (int j = 0; j < n; j++)
+      a[i] +=  (b[i] + c[i]) * (d[i] * e[i]);
   }
 }
 
