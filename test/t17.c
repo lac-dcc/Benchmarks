@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 float** alloc_matrix(int n){
   float **m = (float**) malloc(sizeof(float*) * n);
@@ -58,7 +59,7 @@ void print(int **m, int n){
 }
 
 int main(int argc, char *argv[]){
-  
+
   int n = atoi(argv[1]);
   float **a = alloc_matrix(n);
   float **b = alloc_matrix(n);
@@ -70,8 +71,13 @@ int main(int argc, char *argv[]){
   
   snprintf(buf, sizeof buf, "matrices/%s_b.txt", argv[2]);
   read_matrix(buf, b, n);
-  
+
+  // clock_t start = clock();
+   //... do work here
   matrix_mul(a, b, c, n);
+  // clock_t end = clock();
+  // double time_elapsed_in_seconds = (end - start)/(double)CLOCKS_PER_SEC; 
+  // printf("elapsed time: %lf\n", time_elapsed_in_seconds);
   
   
   return 0;
