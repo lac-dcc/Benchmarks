@@ -3,13 +3,8 @@
 #include <string.h>
 #include <time.h>
 
-float** alloc_matrix(int n){
-  float **m = (float**) malloc(sizeof(float*) * n);
-  for (int i=0; i<n; i++){
-    m[i] = (float*) malloc(sizeof(float) * n);
-    memset(m[i], 0.0, sizeof(float) * n);
-  }
-  
+float* alloc_matrix(int n){
+  float *m = (float*) malloc(sizeof(float) * n * n);
   return m;
 }
 
@@ -20,7 +15,7 @@ int matrix_size(char *filename){
   return n;
 }
 
-float** read_matrix(char *filename, float **m, int n){
+float* read_matrix(char *filename, float *m, int n){
   FILE *f = fopen(filename, "r");
   
   float v = 0.0;
@@ -28,7 +23,7 @@ float** read_matrix(char *filename, float **m, int n){
   for (int i=0; i<n; i++){
     for (int j=0; j<n; j++){
       fscanf(f, "%f", &v);
-      m[i][j] = v;
+      m[i*n + j] = v;
     }
   }
   
@@ -37,33 +32,22 @@ float** read_matrix(char *filename, float **m, int n){
   return m;
 }
 
-void matrix_mul(float **a, float **b, float **c, int n){
+void matrix_mul(float *restrict a, float *restrict b, float *restrict c, int n){
   for (int i=0; i<n; i++){
     for (int j=0; j<n; j++){
       for (int k=0; k<n; k++){
-        c[i][j] += a[i][k] * b[k][j]; 
+        c[i*n + j] += a[i*n + k] * b[k*n + j]; 
       }
     }
   }
 }
 
-void print(int **m, int n){
-  printf("-----\n");
-  for (int i=0; i<n; i++){
-    for (int j=0; j<n; j++){
-      printf("%d ", m[i][j]);
-    }
-    printf("\n");
-  }
-  printf("\n");
-}
-
 int main(int argc, char *argv[]){
 
   int n = atoi(argv[1]);
-  float **a = alloc_matrix(n);
-  float **b = alloc_matrix(n);
-  float **c = alloc_matrix(n);
+  float *a = alloc_matrix(n);
+  float *b = alloc_matrix(n);
+  float *c = alloc_matrix(n);
   
   char buf[20];
   snprintf(buf, sizeof buf, "matrices/%s_a.txt", argv[2]);
