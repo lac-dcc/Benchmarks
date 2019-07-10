@@ -32,40 +32,46 @@ void init_matrix(float *restrict m, int n, double factor) {
 
 void matrix_mul(float *restrict a, float *restrict b, float *restrict c, int n){
   for (int i=0; i<n; i++)
-    for (int j=0; j<n; j++)
+    for (int j=0; j<n; j++) {
+      c[i*n + j] = 0;
       for (int k=0; k<n; k++)
         c[i*n + j] += a[i*n + k] * b[k*n + j];
+    }
 }
 
-void matrix_store(float *restrict a, float *restrict b, float *restrict c, int n){
+void matrix_sil(float *restrict a, float *restrict b, float *restrict c, int n){
   for (int i=0; i<n; i++)
-    for (int j=0; j<n; j++)
+    for (int j=0; j<n; j++) {
+      c[i*n + j] = 0;
       for (int k=0; k<n; k++) {
         float aux = a[i*n + k] * b[k*n + j];
         if (aux) {
           c[i*n + j] += aux;
         }
       }
+    }
 }
 
-void matrix_load(float *restrict a, float *restrict b, float *restrict c, int n){
+void matrix_lde(float *restrict a, float *restrict b, float *restrict c, int n){
   for (int i=0; i<n; i++)
-    for (int j=0; j<n; j++)
+    for (int j=0; j<n; j++) {
+      c[i*n + j] = 0;
       for (int k=0; k<n; k++) {
         float t0 = a[i*n + k];
-        if (t0 != 0.0){
+        if (t0 != 0.0) {
           float t1 = b[k*n + j];
-          if (t1 != 0.0){
+          // if (t1 != 0.0){
             c[i*n + j] += t0 * t1;
-          }
+          // }
         }
       }
+    }
 }
 
-void matrix_sample(float *restrict a, float *restrict b, float *restrict c, int n){
-  if (sampling(a, n) > 0.94) {
+void matrix_spl(float *restrict a, float *restrict b, float *restrict c, int n){
+  if (sampling(a, n) > 0.50) {
     printf("Entering matrix load\n");
-    matrix_load(a, b, c, n);
+    matrix_lde(a, b, c, n);
   } else {
     matrix_mul(a, b, c, n);
   }
@@ -89,47 +95,39 @@ float sum_matrix(float *restrict a, int n) {
   return sum;
 }
 
+double run_code(
+    void (*mul)(float *restrict, float *restrict, float *restrict, int),
+    float *restrict a, float *restrict b, float *restrict c, int N
+) {
+  struct timespec start, end;
+  clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+  (*mul)(a, b, c, N);
+  clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+  uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 +
+    (end.tv_nsec - start.tv_nsec) / 1000;
+  return delta_us / 1000000.0;
+}
+
 int main(int argc, char** argv) {
-  if (argc < 4) {
-    fprintf(stderr, "Sintax: %s size factor choice\n", argv[0]);
+  if (argc < 2) {
+    fprintf(stderr, "Sintax: %s size\n", argv[0]);
   } else {
     // srand(time(NULL));
     const int N = atoi(argv[1]);
-    const double F = atof(argv[2]);
-    const int choice = atoi(argv[3]);
     float *a = (float*)malloc(sizeof(float) * N * N);
     float *b = (float*)malloc(sizeof(float) * N * N);
     float *c = (float*)malloc(sizeof(float) * N * N);
-    init_matrix(a, N, F);
-    init_matrix(b, N, F);
-    int zeros_A = sum_zeros(a, N);
-    int zeros_B = sum_zeros(b, N);
-    printf("Zeros a = %lf\n", zeros_A/(double)N);
-    printf("Zeros b = %lf\n", zeros_B/(double)N);
-    // struct timespec start, end;
-    // clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-    matrix_mul(a, b, c, N);
-    switch(choice) {
-      case 0: {
-                matrix_mul(a, b, c, N);
-                break;
-              }
-      case 1: {
-                matrix_store(a, b, c, N);
-                break;
-              }
-      case 2: {
-                matrix_load(a, b, c, N);
-                break;
-              }
-      case 3: {
-                matrix_sample(a, b, c, N);
-                break;
-              }
+    printf("F, mul, sil, lde, spl\n");
+    for (double F = 0; F <= 1.0; F += 0.05) {
+      init_matrix(a, N, F);
+      init_matrix(b, N, F);
+      double mul_time = run_code(&matrix_mul, a, b, c, N);
+      double sil_time = run_code(&matrix_sil, a, b, c, N);
+      double lde_time = run_code(&matrix_lde, a, b, c, N);
+      double spl_time = run_code(&matrix_spl, a, b, c, N);
+      printf("%.2f, %.2lf, %.2lf, %.2lf, %.2lf\n",
+          F, mul_time, sil_time, lde_time, spl_time);
     }
-    // clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-    // uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
-    // printf("time %llu, sum = %f\n", delta_us, sum_matrix(c, N));
     return 0;
   }
 }
