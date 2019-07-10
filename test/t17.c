@@ -2,6 +2,7 @@
 #include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define SAMPLING_FACTOR 1000
 
@@ -20,6 +21,22 @@ double sampling(float *restrict m, int n){
     }
   }
   return 0;
+}
+
+void matrix_check(float *restrict a, float *restrict b, float *restrict c, int n){
+  for (int i=0; i<n; i++){
+    for (int j=0; j<n; j++){
+      float tc = 0.0;
+      for (int k=0; k<n; k++){
+        float ta = a[i*n + k];
+        float tb = b[k*n + j];
+
+        tc += + (ta * tb);
+        // c[i*n + j] += a[i*n + k] * b[k*n + j];
+      }
+      assert(tc == c[i*n + j]);
+    }
+  }
 }
 
 void init_matrix(float *restrict m, int n, double factor) {
@@ -127,6 +144,8 @@ int main(int argc, char** argv) {
                 break;
               }
     }
+
+    matrix_check(a, b, c, N);
     // clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     // uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
     // printf("time %llu, sum = %f\n", delta_us, sum_matrix(c, N));
