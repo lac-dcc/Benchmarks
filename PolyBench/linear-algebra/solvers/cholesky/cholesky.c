@@ -18,19 +18,7 @@
 #include <polybench.h>
 
 /* Include benchmark-specific header. */
-#include "cholesky.h"
-
-
-unsigned __sampling(int n, DATA_TYPE POLYBENCH_2D(A,N,N,n,n)){
-  unsigned cnt = 0;
-
-  for (int i=0; i<n; i++)
-    for (int j=0; j<n; j++)
-      if (A[i][j] == 0.0)
-        cnt++;
-
-  return cnt;
-}
+#include "cholesky.h" 
 
 /* Array initialization. */
 static
@@ -48,6 +36,12 @@ void init_array(int n,
       }
       A[i][i] = 1;
     }
+
+  print_value(2.0);
+
+  // for (int i=0;i<n; i++)
+  //   for (int j=0; j<n; j++)
+  //     A[i][j] = 0;
 
   /* Make the matrix positive semi-definite. */
   int r,s,t;

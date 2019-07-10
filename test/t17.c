@@ -1,68 +1,135 @@
+#include <time.h>
+#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
-float* alloc_matrix(int n){
-  float *m = (float*) malloc(sizeof(float) * n * n);
-  return m;
-}
+// #define SAMPLING_FACTOR 1000
 
-int matrix_size(char *filename){
-  FILE *f = fopen(filename, "r");
-  int n = fscanf(f, "%d", &n);
-  fclose(f);
-  return n;
-}
+// double sampling(float *restrict m, int n){
+//   int sum = 0;
+//   double zeros = 0.0;
+//   for (int i=0; i<n; i++) {
+//     for (int j=0; j<n; j++) {
+//       if (!m[i*n + j]) {
+//         zeros++;
+//       }
+//       sum++;
+//       if (sum > SAMPLING_FACTOR) {
+//         return zeros / (double)SAMPLING_FACTOR;
+//       }
+//     }
+//   }
+//   return 0;
+// }
 
-float* read_matrix(char *filename, float *m, int n){
-  FILE *f = fopen(filename, "r");
-  
-  float v = 0.0;
-  
-  for (int i=0; i<n; i++){
-    for (int j=0; j<n; j++){
-      fscanf(f, "%f", &v);
-      m[i*n + j] = v;
+void init_matrix(float *restrict m, int n, double factor) {
+  for (int i=0; i<n; i++)
+    for (int j=0; j<n; j++) {
+      float value = (float) rand()/RAND_MAX;
+      m[i*n + j] = value > factor ? 1.0 : 0.0;
     }
-  }
-  
-  fclose(f);
-  
-  return m;
 }
 
 void matrix_mul(float *restrict a, float *restrict b, float *restrict c, int n){
-  for (int i=0; i<n; i++){
-    for (int j=0; j<n; j++){
-      for (int k=0; k<n; k++){
-        c[i*n + j] += a[i*n + k] * b[k*n + j]; 
-      }
-    }
-  }
+  for (int i=0; i<n; i++)
+    for (int j=0; j<n; j++)
+      for (int k=0; k<n; k++)
+        c[i*n + j] += a[i*n + k] * b[k*n + j];
 }
 
-int main(int argc, char *argv[]){
+// void matrix_store(float *restrict a, float *restrict b, float *restrict c, int n){
+//   for (int i=0; i<n; i++)
+//     for (int j=0; j<n; j++)
+//       for (int k=0; k<n; k++) {
+//         float aux = a[i*n + k] * b[k*n + j];
+//         if (aux) {
+//           c[i*n + j] += aux;
+//         }
+//       }
+// }
 
-  int n = atoi(argv[1]);
-  float *a = alloc_matrix(n);
-  float *b = alloc_matrix(n);
-  float *c = alloc_matrix(n);
-  
-  char buf[20];
-  snprintf(buf, sizeof buf, "matrices/%s_a.txt", argv[2]);
-  read_matrix(buf, a, n);
-  
-  snprintf(buf, sizeof buf, "matrices/%s_b.txt", argv[2]);
-  read_matrix(buf, b, n);
+// void matrix_load(float *restrict a, float *restrict b, float *restrict c, int n){
+//   for (int i=0; i<n; i++)
+//     for (int j=0; j<n; j++)
+//       for (int k=0; k<n; k++) {
+//         float t0 = a[i*n + k];
+//         if (t0 != 0.0){
+//           float t1 = b[k*n + j];
+//           if (t1 != 0.0){
+//             c[i*n + j] += t0 * t1;
+//           }
+//         }
+//       }
+// }
 
-  // clock_t start = clock();
-   //... do work here
-  matrix_mul(a, b, c, n);
-  // clock_t end = clock();
-  // double time_elapsed_in_seconds = (end - start)/(double)CLOCKS_PER_SEC; 
-  // printf("elapsed time: %lf\n", time_elapsed_in_seconds);
-  
-  
-  return 0;
+// void matrix_sample(float *restrict a, float *restrict b, float *restrict c, int n){
+//   if (sampling(a, n) > 0.94) {
+//     printf("Entering matrix load\n");
+//     matrix_load(a, b, c, n);
+//   } else {
+//     matrix_mul(a, b, c, n);
+//   }
+// }
+
+int sum_zeros(float *restrict a, int n){
+  int zeros = 0;
+  for (int i=0; i<n; i++)
+    for (int j=0; j<n; j++)
+      if (!a[i*n+j]) {
+        zeros++;
+      }
+  return zeros;
+}
+
+float sum_matrix(float *restrict a, int n) {
+  float sum = 0.0;
+  for (int i=0; i<n; i++)
+    for (int j=0; j<n; j++)
+      sum += a[i*n + j];
+  return sum;
+}
+
+int main(int argc, char** argv) {
+  if (argc < 3) {
+    fprintf(stderr, "Sintax: %s size factor\n", argv[0]);
+  } else {
+    // srand(time(NULL));
+    const int N = atoi(argv[1]);
+    const double F = atof(argv[2]);
+    const int choice = atoi(argv[3]);
+    float *a = (float*)malloc(sizeof(float) * N * N);
+    float *b = (float*)malloc(sizeof(float) * N * N);
+    float *c = (float*)malloc(sizeof(float) * N * N);
+    init_matrix(a, N, F);
+    init_matrix(b, N, F);
+    int zeros_A = sum_zeros(a, N);
+    int zeros_B = sum_zeros(b, N);
+    printf("Zeros a = %lf\n", zeros_A/(double)N);
+    printf("Zeros b = %lf\n", zeros_B/(double)N);
+    // struct timespec start, end;
+    // clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    matrix_mul(a, b, c, N);
+    // switch(choice) {
+    //   case 0: {
+    //             matrix_mul(a, b, c, N);
+    //             break;
+    //           }
+    //   case 1: {
+    //             matrix_store(a, b, c, N);
+    //             break;
+    //           }
+    //   case 2: {
+    //             matrix_load(a, b, c, N);
+    //             break;
+    //           }
+    //   case 3: {
+    //             matrix_sample(a, b, c, N);
+    //             break;
+    //           }
+    // }
+    // clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    // uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
+    // printf("time %llu, sum = %f\n", delta_us, sum_matrix(c, N));
+    return 0;
+  }
 }
