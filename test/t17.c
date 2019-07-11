@@ -125,7 +125,6 @@ int main(int argc, char** argv) {
     printf("Zeros b = %lf\n", zeros_B/(double)N);
     // struct timespec start, end;
     // clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-    matrix_mul(a, b, c, N);
     switch(choice) {
       case 0: {
                 matrix_mul(a, b, c, N);
@@ -145,7 +144,7 @@ int main(int argc, char** argv) {
               }
     }
 
-    matrix_check(a, b, c, N);
+    /* matrix_check(a, b, c, N); */
     // clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     // uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
     // printf("time %llu, sum = %f\n", delta_us, sum_matrix(c, N));
