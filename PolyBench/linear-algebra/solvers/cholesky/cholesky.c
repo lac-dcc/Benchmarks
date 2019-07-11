@@ -37,12 +37,6 @@ void init_array(int n,
       A[i][i] = 1;
     }
 
-  print_value(2.0);
-
-  // for (int i=0;i<n; i++)
-  //   for (int j=0; j<n; j++)
-  //     A[i][j] = 0;
-
   /* Make the matrix positive semi-definite. */
   int r,s,t;
   POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE, N, N, n, n);
