@@ -1,4 +1,4 @@
-bench_name="g721"
+bench_name="jpeg-6a"
 
 source_files=("jcapimin.c" "jcapistd.c" "jctrans.c" "jcparam.c" "jdatadst.c"
   "jcinit.c" "jcmaster.c" "jcmarker.c" "jcmainct.c" "jcprepct.c" "jccoefct.c"
