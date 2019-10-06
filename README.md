@@ -64,5 +64,10 @@ COMPILE_FLAGS=" -lm "
 COMPILER="clang"  # or clang++ for C++ programs
 RUN_OPTIONS=" irsmk_input "
 STDIN=" file.in "
-DIFF_CMD=""
+```
+
+The last two options are passed to the executable:
+
+```{sh}
+./XX.exe ${RUN_OPTIONS} < ${STDIN}
 ```
